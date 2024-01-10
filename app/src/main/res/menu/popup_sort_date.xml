@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sort_new"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/sort_date_new"
+        app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/sort_hight"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/sort_date_hight"
+        app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/sort_low"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/sort_date_low"
+        app:showAsAction="collapseActionView"/>
+
+</menu>

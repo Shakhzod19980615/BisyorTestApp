@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //Default
+    <!--    <color name="purple_200">#FFBB86FC</color>-->
+    <!--    <color name="purple_500">#FF6200EE</color>-->
+    <!--    <color name="purple_700">#FF3700B3</color>-->
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    //App color
+    <color name="ripple_color">#DADADA</color>
+    <color name="colorPrimary">#fafafa</color>
+    <color name="colorPrimaryDark">#c7c7c7</color>
+    <color name="colorPrimaryLight">#ffffff</color>
+    <color name="colorSecondary">#1976d2</color>
+    <color name="colorSecondaryDark">#004ba0</color>
+    <color name="colorSecondaryLight">#63a4ff</color>
+    <color name="textOnPrimary">#000000</color>
+    <color name="textOnSecondary">#ffffff</color>
+    <color name="colorAccent">#007AFF</color>
+    <color name="bckBadge">#C5C8CB</color>
+    <color name="bckBadgeDark">#475262</color>
+    <color name="badgeTextColor">#fff</color>
+
+    //Design Colors
+    <color name="colorAppDarkBlue">#13649e</color>
+    <color name="colorAppLightBlue">#3eb1dc</color>
+    <color name="colorAppOrange">#ef8265</color>
+    <color name="colorAppYellow">#fac611</color>
+
+    <color name="buttonColor">@color/colorAppDarkBlue</color>
+    <color name="someColor">#2613649E</color>
+    <color name="inactiveIconColor">#8d9aaf</color>
+    <color name="activeIconColor">#C71923</color>
+
+    <color name="categoryBckColor">#F3F5F6</color>
+    <color name="toolbarButtonBckColor">#f3f6fc</color>
+    <color name="bckItemLoading">@color/shimmercolor</color>
+
+
+    <color name="defaultTextColor">@color/black</color>
+    <color name="defaultTextBckColor">@color/white</color>
+    <color name="blackTransition20p">#33000000</color>
+    <color name="progressBckColor">#40000000</color>
+
+
+    <color name="white_inactive">#4DFFFFFF</color>
+    <color name="red">#ff0000</color>
+    <color name="green">#008577</color>
+    <color name="grey">#7e7e7e</color>
+    <color name="creamy">#fcfffe</color>
+    <color name="tour_green">#195939</color>
+    <color name="tour_price_color">#515151</color>
+    <color name="inactiveButtonColor">#8D9AAF</color>
+    <color name="bckButtonColor">#e5e5e5</color>
+    <color name="messageColorGrey">#EFEEF3</color>
+    <color name="messageColorBlue">#007AFF</color>
+
+
+    <color name="pink">#D81B60</color>
+    <color name="back">#cecece</color>
+    <color name="line">#D7D8DA</color>
+    <color name="bck_fb">#40599b</color>
+    <color name="bck_google">#e1442c</color>
+    <color name="bck">#f1f1f1</color>
+    <color name="noitem_back">#f7f7f7</color>
+    <color name="shimmercolor">#EFF3F9</color>
+    <color name="reys_type_bck">#e2e2e2</color>
+    <color name="tabback">#cacaca</color>
+
+    //hameleon colors
+    <color name="transparent">#00000000</color>
+    <color name="text_inactive_color">#8D9AAF</color>
+    <color name="edit_text_line">#D7D8DA</color>
+    <color name="login_stage_bck">#F8FAFB</color>
+    <color name="list_bck">#F6F8F9</color>
+    <color name="color_service_selected">#590576F4</color>
+
+    //Common color
+    <color name="chip_color1">#cc6b81</color>
+    <color name="chip_color2">#14a895</color>
+    <color name="chip_color3">#2484ef</color>
+    <color name="chip_color4">#a854d4</color>
+    <color name="chip_color5">#8f8f8f</color>
+    <color name="chip_color6">#8cf9eb</color>
+    <color name="chip_color7">#e4b5fc</color>
+    <color name="chip_color8">#93c6fd</color>
+    <color name="editext_selector">@color/edittext_color</color>
+
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_dark">#30000000</color> <!-- 19% black -->
+
+</resources>

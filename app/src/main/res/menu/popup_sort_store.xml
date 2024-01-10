@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sort_all"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/all_time"
+        app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/sort_week"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/weekly"
+        app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/sort_day"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/daily"
+        app:showAsAction="collapseActionView"/>
+
+</menu>
