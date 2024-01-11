@@ -1,7 +1,9 @@
 package com.example.testapp.presentation.home.viewModel
 
+import android.content.Context
 import android.net.http.HttpException
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,6 +39,7 @@ class CategoryViewModel @Inject constructor(
                     _categoryItems.value = Resource.Success(category)
                 } catch (e: HttpException) {
                     (Resource.Error( "An unexpected error occured", null))
+
                 } catch (e: IOException) {
                     (Resource.Error("Couldn't reach server. Check your internet connection.", null))
                 }

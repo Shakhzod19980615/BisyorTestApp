@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresExtension
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -39,12 +40,12 @@ class HomeFragment: Fragment(R.layout.window_home) {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getCategoryItems()
+        getCategoryList()
 
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    private fun getCategoryItems(){
+    private fun getCategoryList(){
         val categoryRecyclerView = view?.findViewById<RecyclerView>(R.id.list_tab_categories)
         categoryRecyclerView?.apply {
             layoutManager = LinearLayoutManager(
@@ -62,11 +63,12 @@ class HomeFragment: Fragment(R.layout.window_home) {
                         categoryAdapter.setCategoryItems(resource.data)
                     }
                     is Resource.Error -> {
-                        // Handle error state
-                        // You can use resource.message to get the error message
+                        (Resource.Error("Couldn't reach server. Check your internet connection.", null))
+                        Toast.makeText(context, "An unexpected error occured", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> {
-                        // Handle loading state
+                        (Resource.Loading("Loading"))
+                        Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
