@@ -8,23 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testapp.R
 import com.example.testapp.databinding.ItemTabBinding
-import com.example.testapp.domain.model.CategoryItem
+import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
 
-class CategoryAdapter(
+class CategoryTabAdapter(
     private val layoutInflater: LayoutInflater,
-): RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
-    private val categoryList : MutableList<CategoryItem> = mutableListOf()
+): RecyclerView.Adapter<CategoryTabAdapter.CategoryViewHolder>() {
+    private val categoryList : MutableList<CategoryTabItemModel> = mutableListOf()
     private var selectedCategoryIndex = 0
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CategoryAdapter.CategoryViewHolder {
+    ): CategoryTabAdapter.CategoryViewHolder {
         val binding = ItemTabBinding.inflate(layoutInflater,parent,false)
         return CategoryViewHolder(binding)
     }
 
     @SuppressLint("ResourceAsColor")
-    override fun onBindViewHolder(holder: CategoryAdapter.CategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CategoryTabAdapter.CategoryViewHolder, position: Int) {
         holder.bind(categoryList[position])
          if (selectedCategoryIndex == position) {
              holder.itemView.setBackgroundResource(R.drawable.tab_selected_bg)
@@ -39,7 +39,7 @@ class CategoryAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setCategoryItems(categoryList: List<CategoryItem>){
+    fun setCategoryItems(categoryList: List<CategoryTabItemModel>){
         this.categoryList.clear()
         this.categoryList.addAll(categoryList)
         notifyDataSetChanged()
@@ -50,7 +50,7 @@ inner class CategoryViewHolder(
     private val binding: ItemTabBinding
 ): RecyclerView.ViewHolder(binding.root){
     @SuppressLint("ResourceAsColor")
-    fun bind(categoryItem: CategoryItem){
+    fun bind(categoryItem: CategoryTabItemModel){
         binding.name.text = categoryItem.title
         Glide.with(binding.root).load(categoryItem.icon).into(binding.image)
         updateTextColor()

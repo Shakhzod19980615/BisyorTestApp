@@ -16,15 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowHomeBinding
-import com.example.testapp.presentation.home.adapter.CategoryAdapter
-import com.example.testapp.presentation.home.viewModel.CategoryViewModel
+import com.example.testapp.presentation.home.adapter.CategoryTabAdapter
+import com.example.testapp.presentation.home.viewModel.CategoryTabViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class HomeFragment: Fragment(R.layout.window_home) {
-    private val viewModel: CategoryViewModel by viewModels()
+    private val viewModel: CategoryTabViewModel by viewModels()
     private var binding : WindowHomeBinding by Delegates.notNull()
 
     override fun onCreateView(
@@ -53,14 +53,14 @@ class HomeFragment: Fragment(R.layout.window_home) {
             )
         }
 
-        val categoryAdapter = CategoryAdapter(layoutInflater)
+        val categoryTabAdapter = CategoryTabAdapter(layoutInflater)
         viewModel.getAllCategories()
-        categoryRecyclerView?.adapter = categoryAdapter
+        categoryRecyclerView?.adapter = categoryTabAdapter
         lifecycleScope.launch {
             viewModel.categoryItems.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
-                        categoryAdapter.setCategoryItems(resource.data)
+                        categoryTabAdapter.setCategoryItems(resource.data)
                     }
                     is Resource.Error -> {
                         (Resource.Error("Couldn't reach server. Check your internet connection.", null))

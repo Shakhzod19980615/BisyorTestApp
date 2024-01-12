@@ -1,6 +1,6 @@
-package com.example.testapp.domain.model
+package com.example.testapp.domain.model.categoryTab
 
-data class CategoryItem(
+data class CategoryTabItemModel(
     val addr: Int,
     val categoryId: Int,
     val icon: String,

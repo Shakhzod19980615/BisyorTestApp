@@ -1,8 +1,10 @@
 package com.example.testapp.di
 import com.example.testapp.common.Constants
 import com.example.testapp.data.remote.AppService
-import com.example.testapp.data.repository.CategoryRepositoryImpl
-import com.example.testapp.domain.repository.CategoryRepository
+import com.example.testapp.data.repository.announcement.AnnouncementItemRepositoryImpl
+import com.example.testapp.data.repository.categoryTab.CategoryTabRepositoryImpl
+import com.example.testapp.domain.repository.announcement.AnnouncementItemRepository
+import com.example.testapp.domain.repository.categoryTab.CategoryTabRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,9 +32,16 @@ object AppModule {
     }
     @Provides
     @Singleton
-    fun provideCategoryRepository(api : AppService): CategoryRepository {
-        return CategoryRepositoryImpl(api) // Replace with your actual implementation
+    fun provideCategoryRepository(api : AppService): CategoryTabRepository {
+        return CategoryTabRepositoryImpl(api) // Replace with your actual implementation
     }
+
+    @Provides
+    @Singleton
+    fun provideAnnouncementItemRepository(api : AppService): AnnouncementItemRepository {
+        return AnnouncementItemRepositoryImpl(api) // Replace with your actual implementation
+    }
+
   /*  @Provides
     @Singleton
     fun provideCoinRepository(api: CoinPaprikaApi): CoinRepository {

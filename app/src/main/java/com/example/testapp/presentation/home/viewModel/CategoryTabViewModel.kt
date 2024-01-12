@@ -1,15 +1,13 @@
 package com.example.testapp.presentation.home.viewModel
 
-import android.content.Context
 import android.net.http.HttpException
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.Resource
-import com.example.testapp.domain.model.CategoryItem
-import com.example.testapp.domain.use_case.GetCategoryUseCase
+import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
+import com.example.testapp.domain.use_case.categoryTab.GetCategoryTabUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,16 +16,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.lang.Error
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(
-    private val getCategoriesUseCase: GetCategoryUseCase
+class CategoryTabViewModel @Inject constructor(
+    private val getCategoriesUseCase: GetCategoryTabUseCase
 ) : ViewModel() {
 
-    private val _categoryItems = MutableStateFlow<Resource<List<CategoryItem>>>(Resource.Loading())
-    val categoryItems: StateFlow<Resource<List<CategoryItem>>> get() = _categoryItems.asStateFlow()
+    private val _categoryItems = MutableStateFlow<Resource<List<CategoryTabItemModel>>>(Resource.Loading())
+    val categoryItems: StateFlow<Resource<List<CategoryTabItemModel>>> get() = _categoryItems.asStateFlow()
 
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
