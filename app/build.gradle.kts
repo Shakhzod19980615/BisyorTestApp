@@ -105,6 +105,8 @@ dependencies {
     api ("com.airbnb.android:lottie:3.5.0")
     //fragment
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    //CardView
+    //implementation("androidx.card-view:card-view:1.0.0")
 }
 
 kapt {
