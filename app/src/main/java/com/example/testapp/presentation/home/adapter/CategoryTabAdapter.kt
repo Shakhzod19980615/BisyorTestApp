@@ -12,6 +12,7 @@ import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
 
 class CategoryTabAdapter(
     private val layoutInflater: LayoutInflater,
+    val onTabClicked: (Int) -> Unit
 ): RecyclerView.Adapter<CategoryTabAdapter.CategoryViewHolder>() {
     private val categoryList : MutableList<CategoryTabItemModel> = mutableListOf()
     private var selectedCategoryIndex = 0
@@ -47,7 +48,7 @@ class CategoryTabAdapter(
 
 @SuppressLint("NotifyDataSetChanged")
 inner class CategoryViewHolder(
-    private val binding: ItemTabBinding
+    private val binding: ItemTabBinding,
 ): RecyclerView.ViewHolder(binding.root){
     @SuppressLint("ResourceAsColor")
     fun bind(categoryItem: CategoryTabItemModel){
@@ -64,6 +65,8 @@ inner class CategoryViewHolder(
     }
     init {
         itemView.setOnClickListener {
+            val item = categoryList[adapterPosition]
+            onTabClicked(item.categoryId)
             selectedCategoryIndex = adapterPosition
             notifyDataSetChanged()
         // Handle item click or any other actions here

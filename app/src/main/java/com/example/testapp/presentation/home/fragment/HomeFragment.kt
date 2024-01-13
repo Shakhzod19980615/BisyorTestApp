@@ -10,13 +10,16 @@ import androidx.annotation.RequiresExtension
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowHomeBinding
+import com.example.testapp.presentation.home.adapter.AnnouncementListAdapter
 import com.example.testapp.presentation.home.adapter.CategoryTabAdapter
+import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
 import com.example.testapp.presentation.home.viewModel.CategoryTabViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -24,7 +27,8 @@ import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class HomeFragment: Fragment(R.layout.window_home) {
-    private val viewModel: CategoryTabViewModel by viewModels()
+    private val viewModelTab: CategoryTabViewModel by viewModels()
+    private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
     private var binding : WindowHomeBinding by Delegates.notNull()
 
     override fun onCreateView(
@@ -41,6 +45,7 @@ class HomeFragment: Fragment(R.layout.window_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getCategoryList()
+        getAnnoucementList()
 
     }
 
@@ -53,11 +58,14 @@ class HomeFragment: Fragment(R.layout.window_home) {
             )
         }
 
-        val categoryTabAdapter = CategoryTabAdapter(layoutInflater)
-        viewModel.getAllCategories()
+        val categoryTabAdapter = CategoryTabAdapter(layoutInflater,
+            onTabClicked = {
+                viewModelAnnouncement.getAnnouncementList(categoryId = it)
+            })
+        viewModelTab.getAllCategories()
         categoryRecyclerView?.adapter = categoryTabAdapter
         lifecycleScope.launch {
-            viewModel.categoryItems.collect { resource ->
+            viewModelTab.categoryItems.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         categoryTabAdapter.setCategoryItems(resource.data)
@@ -70,8 +78,42 @@ class HomeFragment: Fragment(R.layout.window_home) {
                         (Resource.Loading("Loading"))
                         Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
                     }
+
+                    else -> {}
                 }
             }
         }
+    }
+
+    private fun getAnnoucementList(){
+        val announcementRecyclerView = view?.findViewById<RecyclerView>(R.id.list)
+        announcementRecyclerView?.apply {
+            layoutManager = GridLayoutManager(requireContext(),2)
+
+        }
+        val announcementAdapter = AnnouncementListAdapter(layoutInflater)
+        announcementRecyclerView?.adapter = announcementAdapter
+        lifecycleScope.launch {
+            viewModelAnnouncement.announcementItems.collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        announcementAdapter.setAnnouncementItems(resource.data)
+                    }
+                    is Resource.Error -> {
+                        (Resource.Error("Couldn't reach server. Check your internet connection.", null))
+                        Toast.makeText(context, "An unexpected error occured", Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {
+                        (Resource.Loading("Loading"))
+                        Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
     }
 }
