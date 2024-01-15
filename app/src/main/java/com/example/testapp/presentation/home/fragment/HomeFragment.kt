@@ -44,8 +44,9 @@ class HomeFragment: Fragment(R.layout.window_home) {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getCategoryList()
         getAnnoucementList()
+        getCategoryList()
+
 
     }
 
@@ -62,6 +63,7 @@ class HomeFragment: Fragment(R.layout.window_home) {
             onTabClicked = {
                 viewModelAnnouncement.getAnnouncementList(categoryId = it)
             })
+
         viewModelTab.getAllCategories()
         categoryRecyclerView?.adapter = categoryTabAdapter
         lifecycleScope.launch {
@@ -69,6 +71,8 @@ class HomeFragment: Fragment(R.layout.window_home) {
                 when (resource) {
                     is Resource.Success -> {
                         categoryTabAdapter.setCategoryItems(resource.data)
+                        val firstCategoryId = resource.data.first().categoryId
+                        viewModelAnnouncement.getAnnouncementList(categoryId = firstCategoryId)
                     }
                     is Resource.Error -> {
                         (Resource.Error("Couldn't reach server. Check your internet connection.", null))

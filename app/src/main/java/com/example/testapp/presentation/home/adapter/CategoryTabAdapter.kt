@@ -45,7 +45,6 @@ class CategoryTabAdapter(
         this.categoryList.addAll(categoryList)
         notifyDataSetChanged()
     }
-
 @SuppressLint("NotifyDataSetChanged")
 inner class CategoryViewHolder(
     private val binding: ItemTabBinding,
@@ -56,6 +55,7 @@ inner class CategoryViewHolder(
         Glide.with(binding.root).load(categoryItem.icon).into(binding.image)
         updateTextColor()
     }
+
     private fun updateTextColor() {
         if (selectedCategoryIndex == adapterPosition) {
             binding.name.setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
