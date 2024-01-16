@@ -23,6 +23,13 @@
         <item name="android:textAllCaps">false</item>
         <item name="colorPrimary">@color/colorSecondary</item>
     </style>
+    <style name="Bisyor.SurfaceStyle" parent="">
+        <item name="android:background">@color/list_bck</item>
+        <item name="background">@color/list_bck</item>
+    </style>
+    <style name="Bisyor.TitleText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
     <!--<style name="SmoothCheckBoxStyle.">
         <item name="color_checked">@color/purple_500</item>
         <item name="color_tick">@color/white</item>

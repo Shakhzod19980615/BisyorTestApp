@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.testapp.databinding.ActivityMainBinding
-import com.example.testapp.presentation.home.fragment.HomeFragment
+import com.example.testapp.presentation.home.fragment.FragmentHome
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,15 +17,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.fragmentContainerViewTag
         if (savedInstanceState == null) {
-            replaceFragment(HomeFragment())
+            replaceFragment(FragmentHome())
         }
         binding.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.search -> replaceFragment(HomeFragment())
-                R.id.create_item -> replaceFragment(HomeFragment())
-                R.id.chat -> replaceFragment(HomeFragment())
-                R.id.profile -> replaceFragment(HomeFragment())
+                R.id.home -> replaceFragment(FragmentHome())
+                R.id.search -> replaceFragment(FragmentHome())
+                R.id.create_item -> replaceFragment(FragmentHome())
+                R.id.chat -> replaceFragment(FragmentHome())
+                R.id.profile -> replaceFragment(FragmentHome())
                 else -> Unit
             }
             true

@@ -11,6 +11,7 @@ import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
 
 class AnnouncementListAdapter (
     private val layoutInflater: LayoutInflater,
+    private val onItemClicked: (itemId:Int) -> Unit
 ): RecyclerView.Adapter<AnnouncementListAdapter.ViewHolder> () {
     private val announcementList : MutableList<AnnouncementItemModel> = mutableListOf()
     override fun onCreateViewHolder(
@@ -42,6 +43,13 @@ class AnnouncementListAdapter (
             binding.title.text = announcementItem.title
             binding.price.text = announcementItem.price
             Glide.with(binding.root).load(announcementItem.img_m).into(binding.img)
+        }
+
+        init {
+            itemView.setOnClickListener {
+                val item = announcementList[adapterPosition]
+                onItemClicked(item.id)
+            }
         }
     }
 

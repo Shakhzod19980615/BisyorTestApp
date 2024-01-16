@@ -105,6 +105,11 @@ dependencies {
     api ("com.airbnb.android:lottie:3.5.0")
     //fragment
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    //ViewPager
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    //indicator
+    implementation ("me.relex:circleindicator:2.1.6")
+
     //CardView
     //implementation("androidx.card-view:card-view:1.0.0")
 }

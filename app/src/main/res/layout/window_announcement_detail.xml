@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+   <!-- <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="uz.bisyor.android.ui.itemsection.mvvm.FragmentAnnouncementDetailVM" />
+    </data>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="12dp">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="exitUntilCollapsed|scroll">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_image">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="128dp"
+                        android:background="@drawable/gradient_item_detail" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/gradient_item_detail_bottom" />
+
+                    <LinearLayout
+                        android:id="@+id/lay_dots"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:translationZ="1dp">
+
+                    </LinearLayout>
+
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        app:navigationIcon="@drawable/vicon_arrow_back_white">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/icon_more"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/custom_ripple_borderless"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="4dp"
+                                android:src="@drawable/vicon_more_vert" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/icon_share"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="8dp"
+                                android:layout_toStartOf="@id/icon_more"
+                                android:background="@drawable/custom_ripple_borderless"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="4dp"
+                                android:src="@drawable/vicon_share"
+                                android:tint="@color/white" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/icon_like"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="12dp"
+                                android:layout_toStartOf="@id/icon_share"
+                                android:background="@drawable/custom_ripple_borderless"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="4dp"
+                                android:src="@drawable/vicon_favorite_inactive" />
+                            <!-- set_item_detail_favorite_status="@{viewModel.model}"-->
+                        </RelativeLayout>
+
+
+                    </androidx.appcompat.widget.Toolbar>
+
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <androidx.core.widget.NestedScrollView
+                style="@style/Bisyor.SurfaceStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    style="@style/Bisyor.SurfaceStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="64dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/price"
+                            style="@style/Bisyor.TitleText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16sp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            tools:text="1232 y.e" />
+                        <!-- android:text="@{viewModel.model.price}"-->
+                        <TextView
+                            android:id="@+id/title"
+                            style="@style/Bisyor.TitleText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingMultiplier="1.1"
+                            android:textSize="18sp"
+                            tools:text="Some title" />
+                        <!-- android:text="@{viewModel.model.title}"-->
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/clicker_coordinates"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="16sp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/custom_ripple"
+                            android:clickable="true"
+                            android:drawableStart="@drawable/vicon_location"
+                            android:drawablePadding="6dp"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-medium"
+                            android:textAlignment="textEnd"
+                            android:textColor="#2196F3"
+                            android:textSize="15sp"
+                            tools:text="Ташкент, ул. Амир Темур 1" />
+                        <!--android:text="@{viewModel.model.address}"-->
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/description_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:animateLayoutChanges="true"
+                        android:background="@drawable/item_detail_desc_bck"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/content"
+                            style="@style/Bisyor.TitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="12dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingMultiplier="1.4"
+                            android:maxLines="7"
+                            android:textSize="16sp"
+                            tools:text="sdasdasdadasdadasdsdasdasdadasdadasdsdasdasdadasdadasdsdasdasdadasdadasd" />
+                        <!--android:text="@{viewModel.model.description}"-->
+                        <TextView
+                            android:id="@+id/clicker_expand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="16sp"
+                            android:background="@drawable/bck_border_16dp"
+                            android:clickable="true"
+                            android:drawablePadding="8dp"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif"
+                            android:paddingStart="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="12dp"
+                            android:paddingBottom="4dp"
+                            android:text="@string/more"
+                            android:textColor="#2196f3"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            app:drawableEndCompat="@drawable/vicon_more_bottom"
+                            tools:visibility="visible" />
+                        <!--android:drawableEnd="@{model.expanded ? @drawable/ic_expand_less : @drawable/ic_expand_more}"-->
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/dynamic_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/item_detail_desc_bck"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:orientation="vertical"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="12dp"
+                        tools:visibility="visible">
+                        <!-- android:visibility="@{viewModel.model.properties.empty ? View.GONE : View.VISIBLE}"-->
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/item_detail_desc_bck"
+                        android:backgroundTint="#0D005AFF"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="16dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/icon_comment" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/id"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/attached"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/viewed"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/categories"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/itemId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#6A7992"
+                                android:textSize="16sp" />
+                            <!--android:text="@{String.valueOf(viewModel.model.id)}"-->
+                            <TextView
+                                android:id="@+id/announcedDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#6A7992"
+                                android:textSize="16sp" />
+                            <!--set_date_default="@{viewModel.model.date}"-->
+                            <TextView
+                                android:id="@+id/viewedTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#6A7992"
+                                android:textSize="16sp" />
+                            <!--android:text="@{String.valueOf(viewModel.model.viewedTotal)}"-->
+                            <TextView
+                                android:id="@+id/clicker_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:ellipsize="end"
+                                android:focusable="true"
+                                android:fontFamily="sans-serif"
+                                android:singleLine="true"
+                                android:textColor="@color/buttonColor"
+                                android:textSize="16sp" />
+                            <!-- android:text="@{viewModel.model.categoryName}"-->
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/clicker_statistics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/item_detail_desc_bck"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="16dp">
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/bck_oval"
+                            android:backgroundTint="#1A2196F3"
+                            android:padding="12dp"
+                            android:src="@drawable/vicon_chart" />
+
+                        <TextView
+                            style="@style/Bisyor.TitleText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/statistics"
+                            android:textSize="17sp" />
+
+                        <include
+                            layout="@layout/view_more_right"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/comments_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="4dp"
+                        android:animateLayoutChanges="true"
+                        android:background="@drawable/item_detail_desc_bck"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/clicker_user_announcements"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="16dp"
+                                    tools:src="@drawable/vicon_user_avatar" />
+                                <!--load_avatar="@{viewModel.model.userAvatar}"-->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="16dp"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:textSize="17sp" />
+                                    <!--android:text="@{viewModel.model.userName}"-->
+                                    <TextView
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="16dp"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif"
+                                        android:textSize="15sp" />
+                                    <!--phone_hidden="@{viewModel.model.phones.size() > 0 ? viewModel.model.phones.get(0) : ``}"-->
+
+                                </LinearLayout>
+
+                                <include
+                                    layout="@layout/view_more_right"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp" />
+
+
+                            </LinearLayout>
+
+                        </FrameLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:alpha="0.1"
+                            android:background="@color/black" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/clicker_comments"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="16dp"
+                                    android:src="@drawable/icon_comment" />
+
+
+                                <TextView
+                                    style="@style/Bisyor.TitleText"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/comments"
+                                    android:textSize="17sp" />
+
+                                <include
+                                    layout="@layout/view_more_right"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp" />
+
+
+                            </LinearLayout>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/similar_items_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="12dp">
+
+                            <TextView
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="8sp"
+                                android:text="@string/similar_announcements"
+                                android:textSize="20sp"
+                                android:textStyle="normal" />
+
+                            <!--                    <TextView-->
+                            <!--                        android:layout_width="wrap_content"-->
+                            <!--                        android:layout_height="wrap_content"-->
+                            <!--                        android:layout_alignParentEnd="true"-->
+                            <!--                        android:layout_gravity="center"-->
+                            <!--                        android:background="@drawable/oval_bck_all"-->
+                            <!--                        android:clickable="true"-->
+                            <!--                        android:focusable="true"-->
+                            <!--                        android:fontFamily="sans-serif"-->
+                            <!--                        android:paddingStart="16dp"-->
+                            <!--                        android:paddingTop="6dp"-->
+                            <!--                        android:paddingEnd="16dp"-->
+                            <!--                        android:paddingBottom="6dp"-->
+                            <!--                        android:text="Все"-->
+                            <!--                        android:textColor="#2196f3"-->
+                            <!--                        android:textSize="14sp" />-->
+
+
+                        </RelativeLayout>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/list_same"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/list_bck"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="2"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/item_product_grid">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/custom_ripple_borderless"
+                android:clickable="true"
+                android:contentDescription="@string/favourites"
+                android:focusable="true"
+                app:backgroundTint="@color/white"
+                app:fabCustomSize="48dp"
+                app:layout_anchor="@id/app_bar"
+                app:layout_anchorGravity="end|bottom"
+                app:maxImageSize="24dp"
+                app:rippleColor="@color/colorAppYellow"
+                app:srcCompat="@drawable/vicon_favorite_inactive"
+                app:tint="#fac611" />
+            <!--set_item_detail_favorite_status="@{viewModel.model}"-->
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0.5dp"-->
+            <!--                android:alpha="0.1"-->
+            <!--                android:background="@color/black" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/clicker_call"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_submit_button"
+                    android:backgroundTint="#35CC62"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/write"
+                        android:src="@drawable/vicon_call" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/call"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/clicker_messaging"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_submit_button"
+                    android:backgroundTint="#D9E3F3"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/write"
+                        android:src="@drawable/icon_item_message" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/write"
+                        android:textAllCaps="false"
+                        android:textColor="#8D9AAF"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>
