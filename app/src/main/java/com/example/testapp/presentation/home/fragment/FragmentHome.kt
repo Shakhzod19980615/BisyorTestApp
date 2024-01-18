@@ -48,9 +48,8 @@ class FragmentHome: Fragment(R.layout.window_home) {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getAnnoucementList()
         getCategoryList()
-
+        getAnnoucementList()
 
     }
 
@@ -101,6 +100,8 @@ class FragmentHome: Fragment(R.layout.window_home) {
         }
         val announcementAdapter = AnnouncementListAdapter(layoutInflater,
             onItemClicked = {itemId->
+                print("clicked")
+                Toast(requireContext()).show()
                 activity?.supportFragmentManager?.commit {
                     replace<FragmentAnnouncementDetail>(
                         R.id.fragment_container_view_tag,
