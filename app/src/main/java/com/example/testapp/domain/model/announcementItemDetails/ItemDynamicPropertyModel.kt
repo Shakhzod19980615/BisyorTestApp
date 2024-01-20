@@ -4,5 +4,5 @@ class ItemDynamicPropertyModel(
     val title: String,
     val type: Int,
     val typeName: String,
-    val value: Int
+    val value: Any
 )

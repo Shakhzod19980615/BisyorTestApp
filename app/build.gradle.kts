@@ -104,6 +104,8 @@ dependencies {
     //lottieAnimation
     api ("com.airbnb.android:lottie:3.5.0")
     //fragment
+    //ViewPagerIndicator
+    //implementation("com.tbuonomo.viewpagerdotsindicator:viewpagerdotsindicator:5.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     //ViewPager
     implementation ("androidx.viewpager2:viewpager2:1.0.0")

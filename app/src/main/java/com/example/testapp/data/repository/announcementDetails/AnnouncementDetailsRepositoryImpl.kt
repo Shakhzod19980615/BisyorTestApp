@@ -8,7 +8,8 @@ import javax.inject.Inject
 class AnnouncementDetailsRepositoryImpl @Inject constructor(
     private val api : AppService
 ):AnnouncementDetailsRepository {
-    override suspend fun getAnnouncementDetails(itemId: Int): AnnouncementItemDetailsDto {
-        return api.getAnnouncementDetails(itemId = itemId)
+
+    override suspend fun getAnnouncementDetails(itemId: Int?): AnnouncementItemDetailsDto {
+        return api.getAnnouncementDetails(itemId = itemId?:-1)
     }
 }

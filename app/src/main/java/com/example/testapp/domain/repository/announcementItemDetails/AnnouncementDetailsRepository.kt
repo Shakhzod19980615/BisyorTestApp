@@ -4,5 +4,5 @@ import com.example.testapp.data.remote.dto.announcementItemDetails.AnnouncementI
 
 interface AnnouncementDetailsRepository {
 
-    suspend fun getAnnouncementDetails(itemId: Int): AnnouncementItemDetailsDto
+    suspend fun getAnnouncementDetails(itemId: Int?): AnnouncementItemDetailsDto
 }

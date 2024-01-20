@@ -1,5 +1,172 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/ripple_color</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+
+    </style>
+    <style name="ContentTheme.SwipingActivity" parent="@style/Theme.Bisyor">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+    <style name="Theme.Bisyor" parent="Theme.Tivi.Home">
+        <item name="colorAccent">@color/buttonColor</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/textOnPrimary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryDark</item>
+        <item name="colorOnSecondary">@color/red</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <item name="badgeStyle">@style/Bisyor.BadgeStyle</item>
+        <item name="colorSurface">@color/white</item>
+
+        <item name="colorOnSurface">@color/inactiveIconColor</item>
+
+        <item name="textInputStyle">@style/Bisyor.TextInputLayoutStyle</item>
+        <item name="switchStyle">@style/Bisyor.Switch</item>
+        <item name="buttonStyle">@style/Bisyor.ContainedButton</item>
+        <item name="materialButtonStyle">@style/Bisyor.ContainedButton</item>
+        <item name="materialButtonOutlinedStyle">@style/Bisyor.OutlinedButton</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogMaterialTheme</item>
+    </style>
+    <style name="Bisyor.ContainedButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/buttonColor</item>
+        <item name="android:backgroundTint">@color/buttonColor</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">6dp</item>
+    </style>
+    <style name="Bisyor.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/buttonColor</item>
+        <item name="strokeColor">@color/buttonColor</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+    <style name="AlertDialogMaterialTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+
+        <item name="buttonBarStyle">@style/MaterialAlertDialog.App</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body
+        </item>
+
+
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Negative</item>
+
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button.Negative</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Alert.Button.Negative</item>
+    </style>
+    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:colorPrimary">@color/buttonColor</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="MaterialAlertDialog.App.Body">
+        <item name="android:colorPrimary">@color/buttonColor</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="Alert.Button.Positive" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:fillColor">@color/buttonColor</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Alert.Button.Negative" parent="Bisyor.TextButton">
+        <item name="colorAccent">@color/buttonColor</item>
+        <item name="android:textColor">@color/buttonColor</item>
+        <item name="titleTextColor">@color/buttonColor</item>
+        <item name="android:colorAccent">@color/buttonColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+    </style>
+    <style name="Bisyor.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="theme">@style/Theme.Bisyor.TextButton</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
+        <item name="android:textSize">15sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/buttonColor</item>
+        <item name="colorAccent">@color/buttonColor</item>
+        <item name="android:colorAccent">@color/buttonColor</item>
+        <item name="colorSecondary">@color/buttonColor</item>
+    </style>
+    <style name="Theme.Bisyor.TextButton" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorAccent">@color/buttonColor</item>
+        <item name="colorPrimary">@color/buttonColor</item>
+    </style>
+    <style name="Bisyor.BadgeStyle" parent="Widget.MaterialComponents.Badge">
+        <item name="badgeTextColor">@color/badgeTextColor</item>
+        <item name="backgroundColor">@color/bckBadge</item>
+    </style>
+    <style name="Bisyor.TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/transparent</item>
+        <item name="hintTextColor">@color/buttonColor</item>
+        <item name="android:textColorHint">@color/inactiveIconColor</item>
+        <item name="boxStrokeColor">@color/edittext_color</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="endIconTint">?attr/colorControlNormal</item>
+
+        <item name="editTextStyle">@style/ThemeOverlay.MaterialComponents.TextInputEditText</item>
+
+        <item name="colorOnSurface">@color/white</item>
+    </style>
+    <style name="Bisyor.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+    </style>
+    <style name="ThemeOverlay.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="colorOnSurface">@color/buttonColor</item>
+        <item name="colorSecondary">@color/inactiveIconColor</item>
+    </style>
+    <style name="Theme.Tivi.Home" parent="Theme.Tivi.Immerse">
+
+    </style>
+    <style name="Theme.Tivi" parent="Base.Theme.Tivi">
+    </style>
+    <style name="Base.Theme.Tivi" parent="Platform.Theme.Tivi">
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+    <style name="Platform.Theme.Tivi" parent="Theme.MaterialComponents.DayNight.DarkActionBar" />
+    <style name="Theme.Tivi.Immerse" parent="Theme.Tivi.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_nav_bar</item>
+    </style>
+    <style name="Theme.Tivi.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
     <style name="Theme.Dana" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -29,6 +196,19 @@
     </style>
     <style name="Bisyor.TitleText" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="my_bottom_navigation_inactive_view_text_appearance" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+
+        <!--<item name="android:textSize">5dp</item>-->
+    </style>
+    <style name="my_bottom_navigation_active_view_text_appearance" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">false</item>
+        <!--<item name="android:textSize">5dp</item>-->
     </style>
     <!--<style name="SmoothCheckBoxStyle.">
         <item name="color_checked">@color/purple_500</item>

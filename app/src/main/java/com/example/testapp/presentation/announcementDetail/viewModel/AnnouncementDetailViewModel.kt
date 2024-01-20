@@ -21,10 +21,10 @@ class AnnouncementDetailViewModel @Inject constructor(
     private val _announcementDetail = MutableStateFlow<Resource<AnnouncementItemDetailsModel>>(Resource.Loading())
     val announcementDetail: StateFlow<Resource<AnnouncementItemDetailsModel>> get() = _announcementDetail.asStateFlow()
 
-    fun getAnnouncementDetails(itemId: Int){
+    fun getAnnouncementDetails(itemId: Int?){
         viewModelScope.launch {
             try {
-                val announcementDetail = getAnnouncementDetailsUseCase.invoke(itemId = itemId)
+                val announcementDetail = getAnnouncementDetailsUseCase.invoke(itemId = itemId?:-1)
                 _announcementDetail.value = Resource.Success(announcementDetail)
             } catch (e: HttpException) {
                 (Resource.Error( "An unexpected error occured", null))

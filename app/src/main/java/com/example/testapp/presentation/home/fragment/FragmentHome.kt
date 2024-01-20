@@ -2,6 +2,8 @@ package com.example.testapp.presentation.home.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils.replace
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,14 +102,28 @@ class FragmentHome: Fragment(R.layout.window_home) {
         }
         val announcementAdapter = AnnouncementListAdapter(layoutInflater,
             onItemClicked = {itemId->
-                print("clicked")
-                Toast(requireContext()).show()
+               // replaceFragment(FragmentAnnouncementDetail())
                 activity?.supportFragmentManager?.commit {
                     replace<FragmentAnnouncementDetail>(
-                        R.id.fragment_container_view_tag,
+                        containerViewId= R.id.fragment_container_view_tag,
                         args = bundleOf("itemId" to itemId)
-                    )
+                    ).addToBackStack("replacement")
                 }
+               /* activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.fragment_container_view_tag, FragmentAnnouncementDetail().apply {
+                        arguments = bundleOf("itemId" to itemId)
+                    })
+                    addToBackStack("replacement")
+                    commit()
+                }*/
+                /*val fragment = FragmentAnnouncementDetail()
+                fragment.arguments = bundleOf("itemId" to itemId)
+
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.fragment_container_view_tag, fragment)
+                    addToBackStack("replacement")
+                    commit()
+                }*/
             }
         )
         announcementRecyclerView?.adapter = announcementAdapter
@@ -126,12 +142,15 @@ class FragmentHome: Fragment(R.layout.window_home) {
                         Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
                     }
 
-                    else -> {
-
-                    }
                 }
             }
         }
 
+    }
+    private fun replaceFragment(fragment: Fragment){
+        activity?.supportFragmentManager?.commit {
+            replace(R.id.fragment_container_view_tag,
+                fragment)
+        }
     }
 }

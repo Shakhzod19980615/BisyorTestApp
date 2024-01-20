@@ -24,6 +24,8 @@
     <color name="bckBadge">#C5C8CB</color>
     <color name="bckBadgeDark">#475262</color>
     <color name="badgeTextColor">#fff</color>
+    <color name="selected_dot_color">#ffffff</color>
+    <color name="unselected_dot_color">#808080</color>
 
     //Design Colors
     <color name="colorAppDarkBlue">#13649e</color>

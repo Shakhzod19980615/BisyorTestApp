@@ -6,7 +6,7 @@ data class DynamicField(
     val title: String,
     val type: Int,
     val typeName: String,
-    val value: Int
+    val value: Any
 )
 fun DynamicField.toItemDynamicPropertyModel() = ItemDynamicPropertyModel(
     title = title,

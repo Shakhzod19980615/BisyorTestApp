@@ -43,14 +43,26 @@ class AnnouncementListAdapter (
             binding.title.text = announcementItem.title
             binding.price.text = announcementItem.price
             Glide.with(binding.root).load(announcementItem.img_m).into(binding.img)
-        }
-
-        init {
-            itemView.setOnClickListener {
+           /* binding.cardNewsCategory.setOnClickListener {
+                val item = announcementList[adapterPosition]
+                onItemClicked(item.id)
+            }*/
+           /* binding.starButton.setOnClickListener {
+                val item = announcementList[adapterPosition]
+                onItemClicked(item.id)
+            }*/
+            binding.baseLay.setOnClickListener {
                 val item = announcementList[adapterPosition]
                 onItemClicked(item.id)
             }
         }
+
+        /*init {
+            itemView.setOnClickListener {
+                val item = announcementList[adapterPosition]
+                onItemClicked(item.id)
+            }
+        }*/
     }
 
 }
