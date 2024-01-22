@@ -1,23 +1,31 @@
 package com.example.testapp.presentation.announcementDetail.fragment
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresExtension
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowAnnouncementDetailBinding
@@ -35,7 +43,7 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
     private val itemId : Int? by lazy {
         arguments?.getInt("itemId")
     }
-
+    private var isDescExpanded = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,6 +81,9 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
                         binding.viewedTotal.text = resources.data.viewedTotal.toString()
                         binding.clickerCategory.text = resources.data.categoryName
                         binding.clickerCoordinates.text = resources.data.address
+                        binding.userName.text = resources.data.userName
+                        binding.userPhone.text = resources.data.phones?.get(0)
+                        Glide.with(binding.root).load(resources.data.userAvatar).into(binding.userImage)
                         if(resources.data.properties.isEmpty()){
                             binding.dynamicLay.visibility = View.GONE
                         }else{
@@ -94,6 +105,7 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
         }
 
     }
+    @SuppressLint("ResourceType")
     private fun initClickers(){
        binding.toolbar.setNavigationOnClickListener {
            activity?.onBackPressed()
@@ -116,8 +128,159 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
                 }
             }
            }
+       /* binding.clickerCall.setOnClickListener {
+            announcementDetailViewModel.announcementDetail.value.let {
+                if (it.phones.isNullOrEmpty().not())
+                    if (it.phones!!.size == 1) {
+                        startActivity(Intent(Intent.ACTION_DIAL).apply {
+                            data = Uri.parse("tel:" + it.phones!![0])
+                        })
+                    } else {
+                        val dialog = PhonesPickerDialog(it.phones!!)
+                        dialog.show(childFragmentManager, "phones_picker")
+                    }
+            }
+        }*/
+        binding.appBar.addOnOffsetChangedListener { _, verticalOffset ->
+            val activeIconColor = ContextCompat.getColor(requireContext(), R.color.defaultTextBckColor)
+            val inactiveIconColor =
+                ContextCompat.getColor(requireContext(), R.color.inactiveIconColor)
+            if (binding.collapsingToolbar.height + verticalOffset < 2 * ViewCompat.getMinimumHeight(
+                    binding.collapsingToolbar
+                )
+            ) {
+                //TODO: - AppBar collapsed mode
+                binding.iconLike.visibility = View.VISIBLE
+                binding.toolbar.navigationIcon?.setColorFilter(inactiveIconColor, PorterDuff.Mode.SRC_IN)
+                binding.iconShare.setColorFilter(inactiveIconColor)
+                binding.iconMore.setColorFilter(inactiveIconColor)
+                binding.layDots.visibility = View.GONE
+            } else {
+                //TODO: - AppBar expanded mode
+                binding.iconLike.visibility = View.GONE
+                binding.layDots.visibility = View.VISIBLE
+                binding.toolbar.navigationIcon?.setColorFilter(activeIconColor,PorterDuff.Mode.SRC_IN)
+                binding.iconShare.setColorFilter(activeIconColor)
+                binding.iconMore.setColorFilter(activeIconColor)
+            }
+        }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun configureContent(){
+        binding.appBar.addOnOffsetChangedListener { _, verticalOffset ->
+            val activeIconColor = ContextCompat.getColor(requireContext(), R.color.defaultTextBckColor)
+            val inactiveIconColor =
+                ContextCompat.getColor(requireContext(), R.color.inactiveIconColor)
+            if (binding.collapsingToolbar.height + verticalOffset < 2 * ViewCompat.getMinimumHeight(
+                    binding.collapsingToolbar
+                )
+            ) {
+                //TODO: - AppBar collapsed mode
+                binding.iconLike.visibility = View.VISIBLE
+                binding.toolbar.navigationIcon?.setColorFilter(inactiveIconColor, PorterDuff.Mode.SRC_IN)
+                binding.iconShare.setColorFilter(inactiveIconColor)
+                binding.iconMore.setColorFilter(inactiveIconColor)
+                binding.layDots.visibility = View.GONE
+            } else {
+                //TODO: - AppBar expanded mode
+                binding.iconLike.visibility = View.GONE
+                binding.layDots.visibility = View.VISIBLE
+                binding.toolbar.navigationIcon?.setColorFilter(activeIconColor,PorterDuff.Mode.SRC_IN)
+                binding.iconShare.setColorFilter(activeIconColor)
+                binding.iconMore.setColorFilter(activeIconColor)
+            }
+        }
+        binding.clickerExpand.setOnClickListener {
+            if(isDescExpanded){
+                animateMaxLines(binding.content, 7)
+                binding.clickerExpand.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    resources.getDrawable(R.drawable.vicon_expand_less),
+                    null
+                )
+                binding.clickerExpand.text = resources.getText(R.string.less)
+               /* val animation: ObjectAnimator = ObjectAnimator.ofInt(
+                    binding.content,
+                    "maxLines",
+                    100
+                )
+                animation.duration = 500
+                animation.interpolator = LinearInterpolator()
+                animation.addUpdateListener {
+                    // Request layout during the animation
+                    binding.content.requestLayout()
+                }
+                animation.start()*/
+            }else{
+                animateMaxLines(binding.content, 100)
+                binding.clickerExpand.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    resources.getDrawable(R.drawable.vicon_more_bottom),
+                    null
+                )
+                binding.clickerExpand.text = resources.getText(R.string.more)
+                /*val animation: ObjectAnimator = ObjectAnimator.ofInt(
+                    binding.content,
+                    "maxLines",
+                    7
+                )
+                animation.duration = 300
+                animation.interpolator = LinearInterpolator()
+                animation.addUpdateListener {
+                    // Request layout during the animation
+                    binding.content.requestLayout()
+                }
+                animation.start()*/
+            }
+            isDescExpanded = !isDescExpanded
+        }
 
     }
+    private fun animateMaxLines(textView: TextView, targetMaxLines: Int) {
+        val initialMaxLines = textView.maxLines
+        val valueAnimator = ValueAnimator.ofInt(initialMaxLines, targetMaxLines)
+        valueAnimator.duration = 500 // Adjust duration as needed
+        valueAnimator.interpolator = LinearInterpolator()
+        textView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                // Remove the listener to avoid continuous callbacks
+                textView.viewTreeObserver.removeOnPreDrawListener(this)
+
+                // Handle layout changes before animation
+                textView.maxLines = initialMaxLines
+                textView.requestLayout()
+
+                // Start the animation
+                valueAnimator.addUpdateListener { animator ->
+                    val value = animator.animatedValue as Int
+                    textView.maxLines = value
+                    textView.requestLayout() // Request layout during the animation
+                }
+                valueAnimator.doOnEnd {
+                    textView.maxLines = targetMaxLines // Ensure final state is set
+                    textView.requestLayout() // Request layout after animation completes
+                }
+                valueAnimator.start()
+
+                return true
+            }
+        }
+        )
+    }
+        /*valueAnimator.addUpdateListener { animator ->
+            val value = animator.animatedValue as Int
+            textView.maxLines = value
+            textView.requestLayout() // Request layout during the animation
+        }
+        valueAnimator.doOnEnd {
+            textView.maxLines = targetMaxLines // Ensure final state is set
+            textView.requestLayout() // Request layout after animation completes
+        }
+        valueAnimator.start()*/
+
     @SuppressLint("SuspiciousIndentation")
     private  fun configureImages(){
         val dot1: View =binding.root.findViewById(R.id.dot1)
