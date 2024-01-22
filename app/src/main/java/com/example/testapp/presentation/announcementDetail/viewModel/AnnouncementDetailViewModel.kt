@@ -19,7 +19,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     private val getAnnouncementDetailsUseCase: GetAnnouncementDetailsUseCase
 ): ViewModel() {
     private val _announcementDetail = MutableStateFlow<Resource<AnnouncementItemDetailsModel>>(Resource.Loading())
-    val announcementDetail: StateFlow<Resource<AnnouncementItemDetailsModel>> get() = _announcementDetail.asStateFlow()
+    val announcementDetail: StateFlow<Resource<AnnouncementItemDetailsModel>> = _announcementDetail.asStateFlow()
 
     fun getAnnouncementDetails(itemId: Int?){
         viewModelScope.launch {

@@ -7,12 +7,14 @@
     android:gravity="center">
 
     <!-- Add dots dynamically here using layout_width and layout_height as the dot size -->
-    <View
+   <!-- <ImageView
         android:id="@+id/dot1"
         android:layout_width="8dp"
         android:layout_height="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/dot_indicator"
-        android:layout_margin="4dp"/>
+        android:layout_margin="4dp"/>-->
 
     <!-- Add more dots as needed -->
 
