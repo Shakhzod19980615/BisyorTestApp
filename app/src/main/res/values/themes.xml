@@ -214,7 +214,7 @@
         <item name="color_checked">@color/purple_500</item>
         <item name="color_tick">@color/white</item>
     </style>-->
-    <style name="AppTheme.Day" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Day" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -227,12 +227,12 @@
         <item name="android:background">@color/list_bck</item>
         <item name="background">@color/list_bck</item>
     </style>
-    <style name="Theme.Tivi.Immerse" parent="Widget.Design.BottomNavigationView">
+    <!--<style name="Bisyor.BottomNav" parent="Widget.Design.BottomNavigationView">
         <item name="android:statusBarColor">@android:color/transparent</item>
-
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/status_bar_scrim</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_nav_bar</item>
-    </style>
+    </style>-->
     <!-- Night Theme -->
     <style name="AppTheme.Night" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here -->

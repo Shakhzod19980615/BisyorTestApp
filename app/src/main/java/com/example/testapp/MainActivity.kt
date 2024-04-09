@@ -15,12 +15,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.bottomNav.itemIconTintList = null
         setContentView(binding.root)
         binding.fragmentContainerViewTag
         if (savedInstanceState == null) {
             replaceFragment(FragmentHome())
         }
         binding.bottomNav.setOnItemSelectedListener {
+            binding.bottomNav.itemIconTintList = null
             when (it.itemId) {
                 R.id.home -> replaceFragment(FragmentHome())
                 R.id.search -> replaceFragment(FragmentAnnouncementDetail())

@@ -60,6 +60,8 @@
                 android:layout_margin="8dp"
                 android:padding="8dp"
                 android:src="@drawable/vicon_favorite_inactive"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintEnd_toEndOf="@id/img"
                 app:layout_constraintTop_toTopOf="@id/img" />
             <!-- set_favorite_status="@{model}"-->

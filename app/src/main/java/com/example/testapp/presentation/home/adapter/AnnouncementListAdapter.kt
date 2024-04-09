@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.testapp.R
 import com.example.testapp.databinding.ItemProductGridBinding
 import com.example.testapp.domain.model.announcement.AnnouncementItemModel
 import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
@@ -14,6 +15,7 @@ class AnnouncementListAdapter (
     private val onItemClicked: (itemId:Int) -> Unit
 ): RecyclerView.Adapter<AnnouncementListAdapter.ViewHolder> () {
     private val announcementList : MutableList<AnnouncementItemModel> = mutableListOf()
+    private var isFavorite = false
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,6 +41,7 @@ class AnnouncementListAdapter (
     inner class ViewHolder(
         private val binding: ItemProductGridBinding
     ): RecyclerView.ViewHolder(binding.root){
+
         fun bind(announcementItem: AnnouncementItemModel){
             binding.title.text = announcementItem.title
             binding.price.text = announcementItem.price
@@ -51,18 +54,26 @@ class AnnouncementListAdapter (
                 val item = announcementList[adapterPosition]
                 onItemClicked(item.id)
             }*/
-            binding.baseLay.setOnClickListener {
+           /* binding.img.setOnClickListener {
                 val item = announcementList[adapterPosition]
                 onItemClicked(item.id)
+            }*/
+            binding.starButton.setOnClickListener {
+                val item = announcementList[adapterPosition]
+                //onItemClicked(item.id)
+                if(isFavorite) binding.starButton.setImageResource(R.drawable.vicon_favorite_active)
+                else binding.starButton.setImageResource(R.drawable.vicon_favorite_inactive)
+                isFavorite = !isFavorite
             }
+
         }
 
-        /*init {
+        init {
             itemView.setOnClickListener {
                 val item = announcementList[adapterPosition]
                 onItemClicked(item.id)
             }
-        }*/
+        }
     }
 
 }

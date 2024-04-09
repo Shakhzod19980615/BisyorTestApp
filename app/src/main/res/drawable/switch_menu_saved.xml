@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:drawable="@drawable/micon_menu_search_active"  />
-    <item android:drawable="@drawable/micon_menu_search" tools:ignore="StateListReachable" />
+    <item android:drawable="@drawable/micon_menu_search_active" android:state_checked="true"  />
+    <item android:drawable="@drawable/micon_menu_search" tools:ignore="StateListReachable" android:state_checked="false" />
 </selector>
