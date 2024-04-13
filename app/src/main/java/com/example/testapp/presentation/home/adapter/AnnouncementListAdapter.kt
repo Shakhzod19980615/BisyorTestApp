@@ -54,10 +54,10 @@ class AnnouncementListAdapter (
                 val item = announcementList[adapterPosition]
                 onItemClicked(item.id)
             }*/
-           /* binding.img.setOnClickListener {
+            binding.baseLay.setOnClickListener {
                 val item = announcementList[adapterPosition]
                 onItemClicked(item.id)
-            }*/
+            }
             binding.starButton.setOnClickListener {
                 val item = announcementList[adapterPosition]
                 //onItemClicked(item.id)
