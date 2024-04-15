@@ -36,4 +36,32 @@ interface AppService {
 
     @POST("favorites/favorites-set-list")
     suspend fun saveUnAuthUserFavorites(@Body body: UploadUnAuthUserFavoritesRequest): Response<ResponseBody>*/
+
+
+
+    /*//TODO: - Authorization section
+    @POST("login/login")
+    suspend fun signIn(@Body body: LoginRequest): Response<UserDataModel>
+
+    @POST("login/registration")
+    suspend fun signUp(@Body body: RegistrationRequest): Response<ResponseBody>
+
+    @POST("login/send-code")
+    suspend fun verifySign(@Body body: CheckCodeRequest): Response<UserDataModel>
+
+    @POST("login/get-code")
+    suspend fun resetUser(@Body body: ResetUserRequest): Response<ResponseBody>
+
+    @POST("login/check-code")
+    suspend fun resetUserVerify(@Body body: ResetUserConfirmRequest): Response<Boolean>
+
+    @POST("login/reset-password")
+    suspend fun resetUserUpdatePassword(@Body body: ResetUserUpdatePasswordRequest): Response<UserDataModel>
+
+    @GET(value = "https://login.yandex.ru/info")
+    suspend fun yandexData(@Query("oauth_token") token: String): Response<YandexUserDataResponse>
+
+    @POST(value = "account/login-social-set")
+    suspend fun registerWithSocial(@Body body: RegisterWithSocialRequest): Response<UserDataModel>*/
+
 }

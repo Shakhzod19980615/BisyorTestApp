@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/bck_small_notif"
+    android:gravity="center"
+    android:paddingStart="9dp"
+    android:paddingTop="3dp"
+    android:paddingEnd="9dp"
+    android:paddingBottom="3dp"
+    android:textAlignment="center"
+    android:textColor="@color/white"
+    tools:text="@string/_3">
+
+</com.google.android.material.textview.MaterialTextView>
+</layout>
