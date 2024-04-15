@@ -20,4 +20,20 @@ interface AppService {
     suspend fun getAnnouncementDetails(
         @Query("id") itemId: Int
     ): AnnouncementItemDetailsDto
+
+    //TODO: - Favorites Section
+    /*@GET("favorites/favorites-list")
+    suspend fun getFavouriteItems(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): Response<AnnouncementListResponse>
+
+    @GET("favorites/favorites-list-id")
+    suspend fun getUserFavoriteIds(): Response<List<Int>>*/
+/*
+    @POST("favorites/change-favorites")
+    suspend fun likeItem(@Body body: ChangeFavoriteStatusRequest): Response<ChangeFavoriteStatusResponse>
+
+    @POST("favorites/favorites-set-list")
+    suspend fun saveUnAuthUserFavorites(@Body body: UploadUnAuthUserFavoritesRequest): Response<ResponseBody>*/
 }

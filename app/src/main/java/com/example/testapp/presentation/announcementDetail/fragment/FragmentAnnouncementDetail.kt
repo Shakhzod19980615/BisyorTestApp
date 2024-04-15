@@ -1,24 +1,20 @@
 package com.example.testapp.presentation.announcementDetail.fragment
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.view.animation.LinearInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresExtension
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -57,9 +53,11 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
         super.onViewCreated(view, savedInstanceState)
         initVm()
         initClickers()
+        configureContent()
     }
     private  fun initVm(){
         configureImages()
+        configureContent()
         itemId.let {
             announcementDetailViewModel.getAnnouncementDetails(it?:-1)
         }
@@ -192,94 +190,31 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
             }
         }
         binding.clickerExpand.setOnClickListener {
+            print(isDescExpanded);
             if(isDescExpanded){
-                animateMaxLines(binding.content, 7)
+                binding.content.maxLines = Int.MAX_VALUE
+                binding.clickerExpand.text = resources.getText(R.string.less)
                 binding.clickerExpand.setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
                     resources.getDrawable(R.drawable.vicon_expand_less),
                     null
                 )
-                binding.clickerExpand.text = resources.getText(R.string.less)
-               /* val animation: ObjectAnimator = ObjectAnimator.ofInt(
-                    binding.content,
-                    "maxLines",
-                    100
-                )
-                animation.duration = 500
-                animation.interpolator = LinearInterpolator()
-                animation.addUpdateListener {
-                    // Request layout during the animation
-                    binding.content.requestLayout()
-                }
-                animation.start()*/
             }else{
-                animateMaxLines(binding.content, 100)
+                binding.content.maxLines = 7
+                binding.clickerExpand.text = resources.getText(R.string.more)
                 binding.clickerExpand.setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
                     resources.getDrawable(R.drawable.vicon_more_bottom),
                     null
                 )
-                binding.clickerExpand.text = resources.getText(R.string.more)
-                /*val animation: ObjectAnimator = ObjectAnimator.ofInt(
-                    binding.content,
-                    "maxLines",
-                    7
-                )
-                animation.duration = 300
-                animation.interpolator = LinearInterpolator()
-                animation.addUpdateListener {
-                    // Request layout during the animation
-                    binding.content.requestLayout()
-                }
-                animation.start()*/
             }
             isDescExpanded = !isDescExpanded
         }
 
     }
-    private fun animateMaxLines(textView: TextView, targetMaxLines: Int) {
-        val initialMaxLines = textView.maxLines
-        val valueAnimator = ValueAnimator.ofInt(initialMaxLines, targetMaxLines)
-        valueAnimator.duration = 500 // Adjust duration as needed
-        valueAnimator.interpolator = LinearInterpolator()
-        textView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-            override fun onPreDraw(): Boolean {
-                // Remove the listener to avoid continuous callbacks
-                textView.viewTreeObserver.removeOnPreDrawListener(this)
 
-                // Handle layout changes before animation
-                textView.maxLines = initialMaxLines
-                textView.requestLayout()
-
-                // Start the animation
-                valueAnimator.addUpdateListener { animator ->
-                    val value = animator.animatedValue as Int
-                    textView.maxLines = value
-                    textView.requestLayout() // Request layout during the animation
-                }
-                valueAnimator.doOnEnd {
-                    textView.maxLines = targetMaxLines // Ensure final state is set
-                    textView.requestLayout() // Request layout after animation completes
-                }
-                valueAnimator.start()
-
-                return true
-            }
-        }
-        )
-    }
-        /*valueAnimator.addUpdateListener { animator ->
-            val value = animator.animatedValue as Int
-            textView.maxLines = value
-            textView.requestLayout() // Request layout during the animation
-        }
-        valueAnimator.doOnEnd {
-            textView.maxLines = targetMaxLines // Ensure final state is set
-            textView.requestLayout() // Request layout after animation completes
-        }
-        valueAnimator.start()*/
 
     @SuppressLint("SuspiciousIndentation")
     private  fun configureImages(){
@@ -322,7 +257,7 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
         dotContainer.removeAllViews()
         for (i in 0 until count) {
             val dot = ImageView(requireContext())
-            //val dot1: View =binding.root.findViewById(R.id.dot1)
+           // val dot1: View =binding.root.findViewById(R.id.dot1)
             dot.setImageResource(R.drawable.dot_indicator)  // Replace with your dot drawable
             dotContainer.addView(dot)
         }
