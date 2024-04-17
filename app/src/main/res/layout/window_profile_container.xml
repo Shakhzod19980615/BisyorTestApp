@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <data>
-        <variable
-            name="isLogined"
-            type="Boolean" />
-        <import type="android.view.View" />
-    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
-                android:visibility="@{isLogined ? View.VISIBLE : View.GONE}"
+                android:id="@+id/user_balance_view"
                 tools:visibility="visible">
                 <!--android:set_visible_or_gone="@{isLogined}"-->
                 <androidx.appcompat.widget.AppCompatImageView
@@ -106,7 +100,6 @@
                         android:id="@+id/text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/your_balance"
                         android:textSize="15sp"
                         android:visibility="visible" />
 
@@ -142,7 +135,6 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="24dp"
                     android:paddingBottom="6dp"
-                    android:text="@string/add_balance"
                     android:textAlignment="center"
                     android:textColor="#2196f3"
                     android:textSize="16sp" />
@@ -157,9 +149,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/avatar_ll"
                 android:layout_marginTop="56dp"
                 android:orientation="vertical"
-                android:visibility="@{!isLogined ? View.VISIBLE : View.GONE}"
                 tools:visibility="visible">
               <!--  android:set_visible_or_gone="@{!isLogined}"-->
                 <androidx.appcompat.widget.AppCompatImageView
@@ -175,11 +167,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/login_for_functions_tv"
                     android:layout_gravity="center"
                     android:layout_margin="24dp"
                     android:fontFamily="sans-serif"
                     android:padding="8dp"
-                    android:text="@string/login_for_functions"
                     android:textAlignment="center"
                     android:textColor="@color/chip_color5"
                     android:textSize="15sp" />
@@ -192,7 +184,6 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/log_in"
                     android:textColor="@color/buttonColor"
                     android:textSize="17sp" />
 
@@ -233,12 +224,12 @@
                 <TextView
                     style="@style/Bisyor.TitleText"
                     android:layout_width="wrap_content"
+                    android:id="@+id/profile_tv"
                     android:layout_height="32dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="@string/profile"
                     android:textSize="18sp" />
 
             </RelativeLayout>
@@ -264,9 +255,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:id="@+id/balance_ll"
                 android:background="?android:attr/colorBackground"
                 android:orientation="vertical"
-                android:visibility="@{isLogined ? View.VISIBLE : View.GONE}"
                 tools:visibility="visible">
                <!-- android:set_visible_or_gone="@{isLogined}"-->
                 <LinearLayout
@@ -290,11 +281,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/user_announcement_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="12dp"
                         android:fontFamily="sans-serif"
-                        android:text="@string/my_announcements"
                         android:textSize="18sp" />
 
                     <include
@@ -343,11 +334,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/user_stores_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="12dp"
                         android:fontFamily="sans-serif"
-                        android:text="@string/my_stores"
                         android:textSize="18sp" />
 
                     <include
@@ -407,11 +398,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/user_fav_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/favourites"
                         android:textSize="18sp" />
 
                     <include
@@ -450,11 +441,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/user_blog_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/blog"
                         android:textSize="18sp" />
 
                     <include
@@ -470,7 +461,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.7dp"
-                    android:visibility="@{isLogined ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/balance_view"
                     tools:visibility="visible" />
                <!-- android:set_visible_or_gone="@{isLogined}"-->
 
@@ -482,7 +473,6 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:orientation="horizontal"
-                    android:visibility="@{isLogined ? View.VISIBLE : View.GONE}"
                     tools:visibility="visible">
                     <!--android:set_visible_or_gone="@{isLogined}"-->
                     <androidx.appcompat.widget.AppCompatImageView
@@ -497,11 +487,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/user_balance_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/balance"
                         android:textSize="18sp" />
 
                     <TextView
@@ -554,11 +544,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/user_service_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/services"
                         android:textSize="18sp" />
 
                     <TextView
@@ -598,7 +588,6 @@
                     android:background="@drawable/custom_ripple"
                     android:clickable="true"
                     android:focusable="true"
-                    android:visibility="@{isLogined ? View.VISIBLE : View.GONE}"
                     android:orientation="horizontal">
                     <!--android:set_visible_or_gone="@{isLogined}"-->
                     <androidx.appcompat.widget.AppCompatImageView
@@ -613,11 +602,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/open_store_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="12dp"
                         android:fontFamily="sans-serif"
-                        android:text="@string/open_store"
                         android:textSize="18sp" />
 
 
@@ -674,11 +663,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/contacts_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/contacts"
                         android:textSize="18sp" />
 
                     <include
@@ -716,11 +705,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/about_app_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/about_app"
                         android:textSize="18sp" />
 
                     <include
@@ -745,9 +734,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="36dp"
+                android:id="@+id/btn_logout_ll"
                 android:background="?android:attr/colorBackground"
                 android:orientation="vertical"
-                android:visibility="@{isLogined ? View.VISIBLE : View.GONE}"
                 tools:visibility="visible">
               <!--  android:set_visible_or_gone="@{isLogined}"-->
                 <View
@@ -776,11 +765,11 @@
                         style="@style/Bisyor.TitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/logout_tv"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
-                        android:text="@string/logout"
                         android:textSize="18sp" />
 
                     <include
