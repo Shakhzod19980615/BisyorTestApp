@@ -3,9 +3,11 @@ import com.example.testapp.common.Constants
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.repository.announcement.AnnouncementItemRepositoryImpl
 import com.example.testapp.data.repository.announcementDetails.AnnouncementDetailsRepositoryImpl
+import com.example.testapp.data.repository.authoration.SignUpRepositoryImpl
 import com.example.testapp.data.repository.categoryTab.CategoryTabRepositoryImpl
 import com.example.testapp.domain.repository.announcement.AnnouncementItemRepository
 import com.example.testapp.domain.repository.announcementItemDetails.AnnouncementDetailsRepository
+import com.example.testapp.domain.repository.authoration.SignUpRepository
 import com.example.testapp.domain.repository.categoryTab.CategoryTabRepository
 import dagger.Module
 import dagger.Provides
@@ -48,7 +50,11 @@ object AppModule {
     fun provideAnnouncementDetailRepository(api: AppService): AnnouncementDetailsRepository{
         return AnnouncementDetailsRepositoryImpl(api)
     }
-
+    @Provides
+    @Singleton
+    fun provideSignUpRepository(api: AppService) : SignUpRepository {
+        return SignUpRepositoryImpl(api)
+    }
   /*  @Provides
     @Singleton
     fun provideCoinRepository(api: CoinPaprikaApi): CoinRepository {

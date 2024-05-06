@@ -2,8 +2,12 @@ package com.example.testapp.data.remote
 
 import com.example.testapp.data.remote.dto.announcementItemDetails.AnnouncementItemDetailsDto
 import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
+import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
+import com.example.testapp.data.request.RegistrationRequest
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface AppService {
@@ -37,7 +41,8 @@ interface AppService {
     @POST("favorites/favorites-set-list")
     suspend fun saveUnAuthUserFavorites(@Body body: UploadUnAuthUserFavoritesRequest): Response<ResponseBody>*/
 
-
+    @POST("login/registration")
+    suspend fun signUp(@Body body: RegistrationRequest):BasicResponseDto
 
     /*//TODO: - Authorization section
     @POST("login/login")
