@@ -1,6 +1,8 @@
 package com.example.testapp.domain.use_case.authoration
 
-class PasswordValidationUseCase {
+import javax.inject.Inject
+
+class PasswordValidationUseCase @Inject constructor() {
 
     fun isPasswordValid(password: String): Pair<Boolean, String?> {
         if (password.length < 6) {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresExtension
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.testapp.R
@@ -15,10 +16,11 @@ import com.example.testapp.presentation.home.viewModel.authoration.SignUpViewMod
 import kotlin.properties.Delegates
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class FragmentRegistration: Fragment(R.layout.window_registration){
     private  val signUpViewModel: SignUpViewModel by viewModels()
     private var binding : WindowRegistrationBinding by Delegates.notNull()
@@ -36,6 +38,7 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val builder = context?.let { AlertDialog.Builder(it) }
         binding.submitButton.setOnClickListener {
             val login = binding.edPhone.text.toString()
             val password = binding.passwordEd.text.toString()
@@ -50,7 +53,15 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                     val (isValid,message) = phoneValidationResult
                     if (!isValid ) {
                         // Display error message to the user
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        builder?.setMessage(message)
+                        builder?.setPositiveButton("OK") { dialog, which ->
+                            // Positive button clicked
+                            // You can handle button click event here
+                            dialog.dismiss() // Dismiss the dialog
+                        }
+                        val dialog = builder?.create()
+                        dialog?.show()
+                        //Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -60,7 +71,15 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                     val (isValid, message) = validationResult
                     if (!isValid) {
                         // Display error message to the user
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        builder?.setMessage(message)
+                        builder?.setPositiveButton("OK") { dialog, which ->
+                            // Positive button clicked
+                            // You can handle button click event here
+                            dialog.dismiss() // Dismiss the dialog
+                        }
+                        val dialog = builder?.create()
+                        dialog?.show()
+                        //Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

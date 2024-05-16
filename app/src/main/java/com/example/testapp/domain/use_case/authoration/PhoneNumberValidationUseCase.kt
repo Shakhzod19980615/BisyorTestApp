@@ -1,6 +1,8 @@
 package com.example.testapp.domain.use_case.authoration
 
-class PhoneNumberValidationUseCase {
+import javax.inject.Inject
+
+class PhoneNumberValidationUseCase @Inject constructor() {
 
     fun isPhoneNumberValid(phoneNumber: String): Pair<Boolean, String?> {
         // Remove any spaces or special characters from the phone number
