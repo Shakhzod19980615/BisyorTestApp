@@ -23,7 +23,8 @@ class AnnouncementListViewModel @Inject constructor(
     private val getAnnouncementListUseCase: GetAnnouncementListUseCase
 ): ViewModel() {
     private val _announcementItems = MutableStateFlow<Resource<List<AnnouncementItemModel>>>(Resource.Loading())
-    val announcementItems: StateFlow<Resource<List<AnnouncementItemModel>>> get() = _announcementItems.asStateFlow()
+    val announcementItems: StateFlow<Resource<List<AnnouncementItemModel>>> get()
+    = _announcementItems.asStateFlow()
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getAnnouncementList(categoryId: Int){

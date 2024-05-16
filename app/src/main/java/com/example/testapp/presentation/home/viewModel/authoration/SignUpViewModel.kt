@@ -13,11 +13,13 @@ import com.example.testapp.domain.use_case.authoration.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
+
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
@@ -26,7 +28,7 @@ class SignUpViewModel @Inject constructor(
 ): ViewModel(){
     private val _signUp = MutableStateFlow<Resource<BasicResponseModel>>(Resource.Loading())
     private val _phoneNumberValidation = MutableStateFlow<Boolean?>(null)
-    val phoneNumberValidation = _phoneNumberValidation.asStateFlow()
+    val phoneNumberValidation: StateFlow<Boolean?> get() = _phoneNumberValidation.asStateFlow()
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun signUp(login: String, password: String) {
