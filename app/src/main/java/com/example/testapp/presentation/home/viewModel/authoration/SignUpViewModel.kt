@@ -8,12 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
+import com.example.testapp.domain.use_case.authoration.PasswordValidationUseCase
 import com.example.testapp.domain.use_case.authoration.PhoneNumberValidationUseCase
 import com.example.testapp.domain.use_case.authoration.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,18 +28,30 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
        private val signUpUseCase: SignUpUseCase,
-        private val phoneNumberValidationUseCase: PhoneNumberValidationUseCase
+        private val phoneNumberValidationUseCase: PhoneNumberValidationUseCase,
+       private val passwordValidationUseCase: PasswordValidationUseCase
 ): ViewModel(){
     private val _signUp = MutableStateFlow<Resource<BasicResponseModel>>(Resource.Loading())
-    private val _phoneNumberValidation = MutableStateFlow<Boolean?>(null)
-    val phoneNumberValidation: StateFlow<Boolean?> get() = _phoneNumberValidation.asStateFlow()
+    private val _phoneNumberValidation = MutableSharedFlow<Pair<Boolean,String?>>(replay = 1)
+    val phoneNumberValidation: SharedFlow<Pair<Boolean, String?>> get() = _phoneNumberValidation.asSharedFlow()
+    private val _passwordValidation = MutableSharedFlow<Pair<Boolean, String?>>(replay = 1)
+    val passwordValidation: SharedFlow<Pair<Boolean, String?>> get() = _passwordValidation.asSharedFlow()
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun signUp(login: String, password: String) {
         val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(login)
-        if (!isPhoneNumberValid) {
+        // Communicate validation result to the view
+                _phoneNumberValidation.tryEmit(isPhoneNumberValid)
+
+        if (!isPhoneNumberValid.first) {
             // Communicate validation result to the view
-            _phoneNumberValidation.value = false
+            return
+        }
+        val passwordValidationResult = passwordValidationUseCase.isPasswordValid(password)
+        _passwordValidation.tryEmit(passwordValidationResult)
+
+        if (!passwordValidationResult.first) {
+            // Stop the signUp process if password is invalid
             return
         }
         val request = RegistrationRequest(login, password)

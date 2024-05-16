@@ -46,10 +46,21 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                 return@setOnClickListener
             }
             lifecycleScope.launch {
-                signUpViewModel.phoneNumberValidation.collect { isValid ->
-                    if (isValid == false) {
+                signUpViewModel.phoneNumberValidation.collect { phoneValidationResult ->
+                    val (isValid,message) = phoneValidationResult
+                    if (!isValid ) {
                         // Display error message to the user
-                        Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+            lifecycleScope.launch {
+                signUpViewModel.passwordValidation.collect { validationResult ->
+                    val (isValid, message) = validationResult
+                    if (!isValid) {
+                        // Display error message to the user
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
