@@ -384,5 +384,6 @@
     <string name="balance_paynet_id_text">Ваш ID</string>
     <string name="balance_paynet_id_help">Нужна помощь? Обратитесь в службу технической поддержки Paynet: (+998 71 202 07 07)</string>
     <string name="arrow_back">Arrow_back</string>
+    <string name="ok">Понятно</string>
 
 </resources>

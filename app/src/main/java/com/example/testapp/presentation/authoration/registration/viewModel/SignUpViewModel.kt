@@ -1,4 +1,4 @@
-package com.example.testapp.presentation.home.viewModel.authoration
+package com.example.testapp.presentation.authoration.registration.viewModel
 
 import android.net.http.HttpException
 import android.os.Build

@@ -1,17 +1,15 @@
 package com.example.testapp.presentation.authoration.login
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.testapp.R
 import com.example.testapp.databinding.WindowLoginBinding
-import com.example.testapp.presentation.authoration.registration.FragmentRegistration
+import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import kotlin.properties.Delegates
 
 class FragmentLogin : Fragment(R.layout.window_login) {
