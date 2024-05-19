@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_ripple_borderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="6dp"
+            android:src="@drawable/vicon_arrow_back" />
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/icon_back"
+            android:layout_marginTop="46dp"
+            android:fontFamily="sans-serif-medium"
+            android:src="@drawable/logo"
+            android:text="@string/sms_config"
+            style="@style/Bisyor.TitleText"
+            android:textSize="32sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@string/enter_verification"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/codeSegment"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
+        android:layout_marginTop="24dp"
+        style="@style/Bisyor.LayoutStyle"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/timer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:text="your can recall sms in 1:59"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/firstNumber"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/secondNumber"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:text="@={viewModel.firstNumber}"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1"
+            style="@style/Bisyor.TitleText"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/secondNumber"
+            app:layout_constraintBottom_toBottomOf="@id/firstNumber"
+            app:layout_constraintLeft_toRightOf="@id/firstNumber"
+            app:layout_constraintRight_toLeftOf="@id/thirdNumber"
+            app:layout_constraintTop_toTopOf="@id/firstNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:text="@={viewModel.secondNumber}"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText" />
+
+        <EditText
+            android:id="@+id/thirdNumber"
+            app:layout_constraintBottom_toBottomOf="@id/firstNumber"
+            app:layout_constraintLeft_toRightOf="@id/secondNumber"
+            app:layout_constraintRight_toLeftOf="@id/forthNumber"
+            app:layout_constraintTop_toTopOf="@id/firstNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:text="@={viewModel.thirdNumber}"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText" />
+
+        <EditText
+            android:id="@+id/forthNumber"
+            app:layout_constraintBottom_toBottomOf="@id/firstNumber"
+            app:layout_constraintLeft_toRightOf="@id/thirdNumber"
+            app:layout_constraintRight_toLeftOf="@id/fifthNumber"
+            app:layout_constraintTop_toTopOf="@id/firstNumber"
+            android:text="@={viewModel.forthNumber}"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText" />
+
+        <EditText
+            android:id="@+id/fifthNumber"
+            app:layout_constraintBottom_toBottomOf="@id/firstNumber"
+            app:layout_constraintLeft_toRightOf="@id/forthNumber"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/firstNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:text="@={viewModel.fifthNumber}"
+            android:inputType="number"
+            android:maxLength="1"
+            android:maxLines="1"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText" />
+
+        <View
+            android:id="@+id/edClicker"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="48dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/timer"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="48dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_weight="0.8">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:text="@string/enter"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
