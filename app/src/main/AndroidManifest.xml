@@ -16,7 +16,8 @@
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.Day"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

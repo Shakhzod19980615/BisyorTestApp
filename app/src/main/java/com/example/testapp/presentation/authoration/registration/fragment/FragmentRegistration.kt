@@ -47,7 +47,7 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
         val btnDialogOk: Button = dialogView.findViewById(R.id.btn_ok)
         val dialogMessage : TextView = dialogView.findViewById(R.id.text_title)
         binding.submitButton.setOnClickListener {
-            val login = binding.edPhone.text.toString()
+            val login = "+998"+ binding.edPhone.text.toString()
             val password = binding.passwordEd.text.toString()
             val confirmPassword = binding.passwordConfirmEd.text.toString()
 
@@ -67,6 +67,7 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                     alertDialog?.dismiss()  // Dismiss the dialog on button click
                 }
                 alertDialog?.show()
+                return@setOnClickListener
             }
             lifecycleScope.launch {
                 signUpViewModel.phoneNumberValidation.collect { phoneValidationResult ->

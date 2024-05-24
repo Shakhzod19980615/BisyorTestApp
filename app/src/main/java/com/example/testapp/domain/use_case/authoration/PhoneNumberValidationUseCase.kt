@@ -12,7 +12,7 @@ class PhoneNumberValidationUseCase @Inject constructor() {
             return Pair(false, "Phone number cannot be empty.")
         }
 
-        if (phoneNumber.length != 9) {
+        if (phoneNumber.length < 9) {
             return Pair(false, "Phone number must be 9 digits long.")
         }
          return Pair(true, null)

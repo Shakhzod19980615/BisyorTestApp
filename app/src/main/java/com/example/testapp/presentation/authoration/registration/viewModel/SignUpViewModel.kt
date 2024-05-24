@@ -57,14 +57,23 @@ class SignUpViewModel @Inject constructor(
         val request = RegistrationRequest(login, password)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                try {
+                val result = kotlin.runCatching {
+                    signUpUseCase.invoke(registrationRequest = request)
+                }
+                result.onSuccess {
+                    _signUp.value = Resource.Success(it)
+                }.onFailure {
+                    _signUp.value = Resource.Error(it.message ?: "An unexpected error occured", null)
+                }
+
+                /*try {
                     val response = signUpUseCase.invoke(registrationRequest = request)
                     _signUp.value = Resource.Success(response)
                 } catch (e: HttpException) {
                     (Resource.Error( "An unexpected error occured", null))
             }catch (e: IOException) {
                 (Resource.Error("Couldn't reach server. Check your internet connection.", null))
-            }
+            }*/
         }
     }
 }
