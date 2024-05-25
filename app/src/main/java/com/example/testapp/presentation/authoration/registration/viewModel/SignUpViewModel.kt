@@ -38,8 +38,8 @@ class SignUpViewModel @Inject constructor(
     val passwordValidation: SharedFlow<Pair<Boolean, String?>> get() = _passwordValidation.asSharedFlow()
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun signUp(login: String, password: String) {
-        val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(login)
+    fun signUp(login: String, password: String, phoneNumber: String) {
+        val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber)
         // Communicate validation result to the view
                 _phoneNumberValidation.tryEmit(isPhoneNumberValid)
 
