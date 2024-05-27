@@ -1,8 +1,11 @@
 package com.example.testapp.presentation.authoration.registration.viewModel
 
+import ApiResponseChecker
+import android.content.Context
 import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.Resource
@@ -25,20 +28,21 @@ import java.io.IOException
 import javax.inject.Inject
 
 
+
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
        private val signUpUseCase: SignUpUseCase,
         private val phoneNumberValidationUseCase: PhoneNumberValidationUseCase,
        private val passwordValidationUseCase: PasswordValidationUseCase
 ): ViewModel(){
-    private val _signUp = MutableStateFlow<Resource<BasicResponseModel>>(Resource.Loading())
+    val signUp = MutableStateFlow<Resource<BasicResponseModel>>(Resource.Loading())
     private val _phoneNumberValidation = MutableSharedFlow<Pair<Boolean,String?>>(replay = 1)
     val phoneNumberValidation: SharedFlow<Pair<Boolean, String?>> get() = _phoneNumberValidation.asSharedFlow()
     private val _passwordValidation = MutableSharedFlow<Pair<Boolean, String?>>(replay = 1)
     val passwordValidation: SharedFlow<Pair<Boolean, String?>> get() = _passwordValidation.asSharedFlow()
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun signUp(login: String, password: String, phoneNumber: String) {
+    fun signUp(login: String, password: String, phoneNumber: String, context: Context) {
         val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber)
         // Communicate validation result to the view
                 _phoneNumberValidation.tryEmit(isPhoneNumberValid)
@@ -57,13 +61,17 @@ class SignUpViewModel @Inject constructor(
         val request = RegistrationRequest(login, password)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val result = kotlin.runCatching {
+                kotlin.runCatching {
                     signUpUseCase.invoke(registrationRequest = request)
-                }
-                result.onSuccess {
-                    _signUp.value = Resource.Success(it)
+                }.onSuccess {
+                    if(ApiResponseChecker.checkApiResponse(it, context)){
+                        signUp.value = Resource.Success(it)
+                    }else {
+                        signUp.value = Resource.Error(it.message, null)
+                    }
+                   // _signUp.value = Resource.Success(it)
                 }.onFailure {
-                    _signUp.value = Resource.Error(it.message ?: "An unexpected error occured", null)
+                    signUp.value = Resource.Error(it.message ?: "An unexpected error occured", null)
                 }
 
                 /*try {
