@@ -1,13 +1,18 @@
 import androidx.appcompat.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.example.testapp.R
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
 
 object ApiResponseChecker {
-
+    private const val TAG = "ApiResponseChecker"
     fun checkApiResponse(response: BasicResponseModel, context: Context): Boolean {
+        Log.d(TAG, "API Response: $response")
+        Log.d(TAG, "Response Status: ${response.status}")
+        Log.d(TAG, "Response Name: ${response.name}")
+        Log.d(TAG, "Response Message: ${response.message}")
         return when (response.status) {
             200 -> {
                 if (response.name == "Ok") {
@@ -33,13 +38,6 @@ object ApiResponseChecker {
     }
 
     private fun showAlert(message: String, context: Context) {
-        /*val dialogView = layoutInflater.inflate(R.layout.dialog_universal_messaging, null)
-        val alertDialog  = AlertDialog.Builder(context)
-            .setView(dialogView)
-            ?.setCancelable(true)
-            ?.create()
-        val btnDialogOk: Button = dialogView.findViewById(R.id.btn_ok)
-        val dialogMessage : TextView = dialogView.findViewById(R.id.text_title)*/
         val alertDialog = AlertDialog.Builder(context)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }

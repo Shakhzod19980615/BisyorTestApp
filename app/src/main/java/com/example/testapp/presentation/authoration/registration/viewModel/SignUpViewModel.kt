@@ -40,10 +40,17 @@ class SignUpViewModel @Inject constructor(
     val phoneNumberValidation: SharedFlow<Pair<Boolean, String?>> get() = _phoneNumberValidation.asSharedFlow()
     private val _passwordValidation = MutableSharedFlow<Pair<Boolean, String?>>(replay = 1)
     val passwordValidation: SharedFlow<Pair<Boolean, String?>> get() = _passwordValidation.asSharedFlow()
-
+    fun validatePhoneNumber(phoneNumber: String) {
+        val result = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber)
+        _phoneNumberValidation.tryEmit(result)
+    }
+    fun validatePassword(password: String) {
+        val result = passwordValidationUseCase.isPasswordValid(password)
+        _passwordValidation.tryEmit(result)
+    }
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun signUp(login: String, password: String, phoneNumber: String, context: Context) {
-        val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber)
+    fun signUp(login: String, password: String, context: Context) {
+        /*val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber)
         // Communicate validation result to the view
                 _phoneNumberValidation.tryEmit(isPhoneNumberValid)
 
@@ -57,7 +64,7 @@ class SignUpViewModel @Inject constructor(
         if (!passwordValidationResult.first) {
             // Stop the signUp process if password is invalid
             return
-        }
+        }*/
         val request = RegistrationRequest(login, password)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
