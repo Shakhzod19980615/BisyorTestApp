@@ -27,6 +27,7 @@ object ApiResponseChecker {
             400, 422 -> {
                 // Handle client errors
                 showAlert(response.message,context)
+                Log.d("ApiResponseChecker", response.message)
                 false
             }
             else -> {
