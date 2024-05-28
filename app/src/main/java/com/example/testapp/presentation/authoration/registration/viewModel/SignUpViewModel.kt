@@ -50,21 +50,6 @@ class SignUpViewModel @Inject constructor(
     }
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun signUp(login: String, password: String, context: Context) {
-        /*val isPhoneNumberValid = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber)
-        // Communicate validation result to the view
-                _phoneNumberValidation.tryEmit(isPhoneNumberValid)
-
-        if (!isPhoneNumberValid.first) {
-            // Communicate validation result to the view
-            return
-        }
-        val passwordValidationResult = passwordValidationUseCase.isPasswordValid(password)
-        _passwordValidation.tryEmit(passwordValidationResult)
-
-        if (!passwordValidationResult.first) {
-            // Stop the signUp process if password is invalid
-            return
-        }*/
         val request = RegistrationRequest(login, password)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
@@ -81,14 +66,6 @@ class SignUpViewModel @Inject constructor(
                     signUp.value = Resource.Error(it.message ?: "An unexpected error occured", null)
                 }
 
-                /*try {
-                    val response = signUpUseCase.invoke(registrationRequest = request)
-                    _signUp.value = Resource.Success(response)
-                } catch (e: HttpException) {
-                    (Resource.Error( "An unexpected error occured", null))
-            }catch (e: IOException) {
-                (Resource.Error("Couldn't reach server. Check your internet connection.", null))
-            }*/
         }
     }
 }
