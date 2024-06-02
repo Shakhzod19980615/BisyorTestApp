@@ -82,10 +82,12 @@
             app:layout_constraintVertical_bias="0.3"
             android:layout_width="28dp"
             android:layout_height="56dp"
-            android:text="@={viewModel.firstNumber}"
             android:inputType="number"
-            android:maxLength="2"
+            android:maxLength="1"
             android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
             style="@style/Bisyor.TitleText"
             android:textAlignment="center" />
 
@@ -98,9 +100,11 @@
             android:layout_width="28dp"
             android:layout_height="56dp"
             android:inputType="number"
-            android:text="@={viewModel.secondNumber}"
-            android:maxLength="2"
+            android:maxLength="1"
             android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
             android:textAlignment="center"
             style="@style/Bisyor.TitleText" />
 
@@ -113,9 +117,11 @@
             android:layout_width="28dp"
             android:layout_height="56dp"
             android:inputType="number"
-            android:text="@={viewModel.thirdNumber}"
-            android:maxLength="2"
+            android:maxLength="1"
             android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
             android:textAlignment="center"
             style="@style/Bisyor.TitleText" />
 
@@ -125,12 +131,14 @@
             app:layout_constraintLeft_toRightOf="@id/thirdNumber"
             app:layout_constraintRight_toLeftOf="@id/fifthNumber"
             app:layout_constraintTop_toTopOf="@id/firstNumber"
-            android:text="@={viewModel.forthNumber}"
             android:layout_width="28dp"
             android:layout_height="56dp"
             android:inputType="number"
-            android:maxLength="2"
+            android:maxLength="1"
             android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
             android:textAlignment="center"
             style="@style/Bisyor.TitleText" />
 
@@ -142,14 +150,16 @@
             app:layout_constraintTop_toTopOf="@id/firstNumber"
             android:layout_width="28dp"
             android:layout_height="56dp"
-            android:text="@={viewModel.fifthNumber}"
             android:inputType="number"
             android:maxLength="1"
             android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
             android:textAlignment="center"
             style="@style/Bisyor.TitleText" />
 
-        <View
+        <!--<View
             android:id="@+id/edClicker"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="48dp"
@@ -161,7 +171,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="48dp"
             android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"/>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -174,6 +184,9 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submit_button"
+            android:backgroundTint="@null"
+            android:background="@color/buttonColor"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

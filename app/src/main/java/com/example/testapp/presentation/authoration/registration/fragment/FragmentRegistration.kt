@@ -44,6 +44,9 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.iconBack.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack()
+        }
         binding.submitButton.setOnClickListener {
             val login = "+998"+ binding.edPhone.text.toString()
             val password = binding.passwordEd.text.toString()

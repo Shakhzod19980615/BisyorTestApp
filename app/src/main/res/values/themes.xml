@@ -245,4 +245,9 @@
         <item name="android:background">?attr/colorSurface</item>
         <item name="background">?attr/colorSurface</item>
     </style>
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">@color/defaultTextColor</item>
+        <item name="boxStrokeColor">@color/ripple_color</item>
+    </style>
+
 </resources>

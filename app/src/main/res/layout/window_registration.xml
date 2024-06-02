@@ -123,6 +123,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:boxStrokeColor="@color/ripple_color"
+                            app:hintTextColor="@color/defaultTextColor"
                             android:layout_marginStart="12dp"
                             android:hint="@string/phone_number">
 
@@ -145,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:boxStrokeColor="@color/ripple_color"
+                        app:hintTextColor="@color/defaultTextColor"
                         android:hint="@string/password">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -164,6 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:boxStrokeColor="@color/ripple_color"
+                        app:hintTextColor="@color/defaultTextColor"
                         android:hint="@string/confirm_password">
 
                         <com.google.android.material.textfield.TextInputEditText
