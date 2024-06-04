@@ -31,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail) {
 

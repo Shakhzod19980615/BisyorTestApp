@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.testapp.R
 import com.example.testapp.databinding.WindowProfileContainerBinding
-import com.example.testapp.presentation.authoration.login.FragmentLogin
+import com.example.testapp.presentation.authoration.login.fragment.FragmentLogin
 import kotlin.properties.Delegates
 
 class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {

@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.testapp.databinding.ActivityMainBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
-import com.example.testapp.presentation.authoration.verificationCode.FragmentVerificationCode
+import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
 import com.example.testapp.presentation.home.fragment.FragmentHome
 import com.example.testapp.presentation.profile.FragmentProfileContainer
 import dagger.hilt.android.AndroidEntryPoint

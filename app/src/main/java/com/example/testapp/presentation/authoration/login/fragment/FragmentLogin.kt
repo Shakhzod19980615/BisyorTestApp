@@ -1,19 +1,23 @@
-package com.example.testapp.presentation.authoration.login
+package com.example.testapp.presentation.authoration.login.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import com.example.testapp.R
 import com.example.testapp.databinding.WindowLoginBinding
+import com.example.testapp.presentation.authoration.login.viewModel.LoginViewModel
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import kotlin.properties.Delegates
 
 class FragmentLogin : Fragment(R.layout.window_login) {
     private var binding : WindowLoginBinding by Delegates.notNull()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,5 +44,17 @@ class FragmentLogin : Fragment(R.layout.window_login) {
             }
         }
 
+    }
+    @SuppressLint("ResourceAsColor")
+    private fun isLoginValid():Boolean{
+       val login= binding.edLogin.text.toString()
+        if(login.isBlank()){
+            binding.loginTI.error = getString(R.string.warning_enter_phone_number)
+            binding.loginTI.boxStrokeColor = R.color.red
+            binding.loginTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
+            binding.loginTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.micon_profile_about)
+            return false
+        }
+        return true
     }
 }

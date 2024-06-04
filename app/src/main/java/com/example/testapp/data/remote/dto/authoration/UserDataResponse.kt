@@ -3,7 +3,7 @@ package com.example.testapp.data.remote.dto.authoration
 import com.example.testapp.domain.model.userDataModel.UserDataModel
 import com.google.gson.annotations.SerializedName
 
-data class VerifyCodeResponseDto(
+data class UserDataResponse(
     @SerializedName("access_token")
     val token: String,
     val userId:Int,
@@ -26,7 +26,7 @@ data class VerifyCodeResponseDto(
     val regionName:String,
     val messageCount:Int
 )
-fun VerifyCodeResponseDto.toVerifyCodeResponse() = UserDataModel(
+fun UserDataResponse.toVerifyCodeResponse() = UserDataModel(
     token = token,
     userId = userId,
     userName = userFIO,

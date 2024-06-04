@@ -20,9 +20,8 @@ import kotlin.properties.Delegates
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.common.Resource
 import com.example.testapp.presentation.authoration.registration.viewModel.SignUpViewModel
-import com.example.testapp.presentation.authoration.verificationCode.FragmentVerificationCode
+import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -59,7 +58,8 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                             is Resource.Success->{
                                 activity?.supportFragmentManager?.commit {
                                     replace(R.id.fragment_container_view_tag,
-                                        FragmentVerificationCode()).addToBackStack("goBack")
+                                        FragmentVerificationCode()
+                                    ).addToBackStack("goBack")
                                 }
                             }
                             is Resource.Error->{

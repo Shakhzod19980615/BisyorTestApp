@@ -5,14 +5,11 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.testapp.R
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
+import com.example.testapp.domain.model.userDataModel.UserDataModel
 
 object ApiResponseChecker {
     private const val TAG = "ApiResponseChecker"
     fun checkApiResponse(response: BasicResponseModel, context: Context): Boolean {
-        Log.d(TAG, "API Response: $response")
-        Log.d(TAG, "Response Status: ${response.status}")
-        Log.d(TAG, "Response Name: ${response.name}")
-        Log.d(TAG, "Response Message: ${response.message}")
         return when (response.status) {
             200 -> {
                 if (response.name == "Ok") {
