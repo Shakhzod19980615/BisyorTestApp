@@ -2,9 +2,13 @@ package com.example.testapp.data.remote
 
 import com.example.testapp.data.remote.dto.announcementItemDetails.AnnouncementItemDetailsDto
 import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
+import com.example.testapp.data.remote.dto.authoration.VerifyCodeResponseDto
 import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
 import com.example.testapp.data.request.RegistrationRequest
+import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
+import com.example.testapp.domain.model.userDataModel.UserDataModel
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -43,6 +47,8 @@ interface AppService {
 
     @POST("login/registration")
     suspend fun signUp(@Body body: RegistrationRequest):BasicResponseDto
+    @POST("login/send-code")
+    suspend fun verifySign(@Body body: VerificationCodeRequest): VerifyCodeResponseDto
 
     /*//TODO: - Authorization section
     @POST("login/login")

@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon_back"
@@ -35,7 +39,6 @@
             style="@style/Bisyor.TitleText"
             android:textSize="32sp" />
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,106 +51,100 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/codeSegment"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_width="match_parent"
         android:layout_height="114dp"
         android:layout_marginTop="24dp"
-        style="@style/Bisyor.LayoutStyle"
-        android:orientation="vertical"
-        android:visibility="visible">
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Bisyor.LayoutStyle">
 
         <TextView
             android:id="@+id/timer"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
             android:text="your can recall sms in 1:59"
             android:textAlignment="center"
             style="@style/Bisyor.TitleText"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <EditText
             android:id="@+id/firstNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:maxLength="1"
+            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/secondNumber"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3"
-            android:layout_width="28dp"
-            android:layout_height="56dp"
-            android:inputType="number"
-            android:maxLength="1"
-            android:maxLines="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            style="@style/Bisyor.TitleText"
-            android:textAlignment="center" />
+            app:layout_constraintVertical_bias="0.3" />
 
         <EditText
             android:id="@+id/secondNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:maxLength="1"
+            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText"
             app:layout_constraintBottom_toBottomOf="@id/firstNumber"
             app:layout_constraintLeft_toRightOf="@id/firstNumber"
             app:layout_constraintRight_toLeftOf="@id/thirdNumber"
-            app:layout_constraintTop_toTopOf="@id/firstNumber"
-            android:layout_width="28dp"
-            android:layout_height="56dp"
-            android:inputType="number"
-            android:maxLength="1"
-            android:maxLines="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            android:textAlignment="center"
-            style="@style/Bisyor.TitleText" />
+            app:layout_constraintTop_toTopOf="@id/firstNumber" />
 
         <EditText
             android:id="@+id/thirdNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:maxLength="1"
+            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText"
             app:layout_constraintBottom_toBottomOf="@id/firstNumber"
             app:layout_constraintLeft_toRightOf="@id/secondNumber"
             app:layout_constraintRight_toLeftOf="@id/forthNumber"
-            app:layout_constraintTop_toTopOf="@id/firstNumber"
-            android:layout_width="28dp"
-            android:layout_height="56dp"
-            android:inputType="number"
-            android:maxLength="1"
-            android:maxLines="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            android:textAlignment="center"
-            style="@style/Bisyor.TitleText" />
+            app:layout_constraintTop_toTopOf="@id/firstNumber" />
 
         <EditText
             android:id="@+id/forthNumber"
+            android:layout_width="28dp"
+            android:layout_height="56dp"
+            android:inputType="number"
+            android:maxLength="1"
+            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:textAlignment="center"
+            style="@style/Bisyor.TitleText"
             app:layout_constraintBottom_toBottomOf="@id/firstNumber"
             app:layout_constraintLeft_toRightOf="@id/thirdNumber"
             app:layout_constraintRight_toLeftOf="@id/fifthNumber"
-            app:layout_constraintTop_toTopOf="@id/firstNumber"
-            android:layout_width="28dp"
-            android:layout_height="56dp"
-            android:inputType="number"
-            android:maxLength="1"
-            android:maxLines="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            android:textAlignment="center"
-            style="@style/Bisyor.TitleText" />
+            app:layout_constraintTop_toTopOf="@id/firstNumber" />
 
         <EditText
             android:id="@+id/fifthNumber"
-            app:layout_constraintBottom_toBottomOf="@id/firstNumber"
-            app:layout_constraintLeft_toRightOf="@id/forthNumber"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/firstNumber"
             android:layout_width="28dp"
             android:layout_height="56dp"
             android:inputType="number"
@@ -157,44 +154,25 @@
             android:focusableInTouchMode="true"
             android:clickable="true"
             android:textAlignment="center"
-            style="@style/Bisyor.TitleText" />
-
-        <!--<View
-            android:id="@+id/edClicker"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="48dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@id/timer"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="48dp"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>-->
-
-
+            style="@style/Bisyor.TitleText"
+            app:layout_constraintBottom_toBottomOf="@id/firstNumber"
+            app:layout_constraintLeft_toRightOf="@id/forthNumber"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/firstNumber" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/submit_button"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:layout_weight="0.8">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/submit_button"
-            android:backgroundTint="@null"
-            android:background="@color/buttonColor"
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="16dp"
-            android:text="@string/enter"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/button_state_pressed"
+        android:backgroundTint="@null"
+        android:text="@string/enter"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
