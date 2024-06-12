@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.ApiResponse
+import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
@@ -20,12 +21,14 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class VerifyCodeViewModel @Inject constructor(
     private val verifyCodeUseCase: VerifyCodeUseCase,
-    private val confirmationCodeValidationUseCase: ConfirmationCodeValidationUseCase
+    private val confirmationCodeValidationUseCase: ConfirmationCodeValidationUseCase,
+    private val errorParser: ErrorParser
 ): ViewModel() {
     val verifyCode = MutableStateFlow<Resource<UserDataModel>>(Resource.Loading())
     private val _confirmationCodeValidation = MutableSharedFlow<Pair<Boolean, String?>>(replay = 1)
@@ -42,7 +45,15 @@ class VerifyCodeViewModel @Inject constructor(
                 }.onSuccess {
                     verifyCode.value = Resource.Success(it)
                 }.onFailure {
-                    verifyCode.value = Resource.Error(it.message.toString())
+                    val errorResponse = it as? Response<*>
+                    errorResponse?.let { response ->
+                        val parsedError = errorParser.parseError(response)
+                        parsedError?.let { error ->
+                            verifyCode.value = Resource.Error(error.message)
+                        } ?: run {
+                            verifyCode.value = Resource.Error("Unknown error")
+                        }
+                    } ?: run { verifyCode.value = Resource.Error(it.message.toString()) }
                 }
             }
         }

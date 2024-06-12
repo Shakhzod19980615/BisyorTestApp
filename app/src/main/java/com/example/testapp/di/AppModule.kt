@@ -1,5 +1,6 @@
 package com.example.testapp.di
 import com.example.testapp.common.Constants
+import com.example.testapp.common.ErrorParser
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.repository.announcement.AnnouncementItemRepositoryImpl
 import com.example.testapp.data.repository.announcementDetails.AnnouncementDetailsRepositoryImpl
@@ -68,6 +69,11 @@ object AppModule {
     @Singleton
     fun provideLoginRepository(api: AppService) : LoginRepository {
         return LoginRepositoryImpl(api)
+    }
+    @Provides
+    @Singleton
+    fun provideErrorParser(): ErrorParser {
+        return ErrorParser()
     }
   /*  @Provides
     @Singleton

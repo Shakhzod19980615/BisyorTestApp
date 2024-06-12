@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginRequestUseCase: LoginRequestUseCase
 ):ViewModel() {
-    val login = MutableStateFlow<Resource<UserDataModel>>(Resource.Loading())
+    val signIn = MutableStateFlow<Resource<UserDataModel>>(Resource.Loading())
 
     fun validateLogin(login: String):Boolean {
         return login.isNotEmpty()
@@ -23,15 +23,16 @@ class LoginViewModel @Inject constructor(
     fun validatePassword(password: String):Boolean {
         return password.isNotEmpty()
     }
-    fun signIn(loginRequest: LoginRequest) {
+    fun signIn(login: String, password: String,lang:String) {
+        val loginRequest = LoginRequest(lang,login, password)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 kotlin.runCatching {
                     loginRequestUseCase.invoke(loginRequest = loginRequest)
                 }.onSuccess {
-                    login.value = Resource.Success(it)
+                    signIn.value = Resource.Success(it)
                 }.onFailure {
-                    login.value = Resource.Error(it.message.toString())
+                    signIn.value = Resource.Error(it.message.toString())
                 }
             }
         }
