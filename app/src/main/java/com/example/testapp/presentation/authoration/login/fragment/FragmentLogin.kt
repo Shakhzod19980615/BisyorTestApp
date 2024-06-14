@@ -16,9 +16,11 @@ import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowLoginBinding
 import com.example.testapp.presentation.authoration.login.viewModel.LoginViewModel
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
+import com.example.testapp.presentation.home.fragment.FragmentHome
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
-
+@AndroidEntryPoint
 class FragmentLogin : Fragment(R.layout.window_login) {
     private var binding : WindowLoginBinding by Delegates.notNull()
     private val loginViewModel: LoginViewModel by viewModels()
@@ -58,7 +60,7 @@ class FragmentLogin : Fragment(R.layout.window_login) {
                             is Resource.Success->{
                                 activity?.supportFragmentManager?.commit {
                                     replace(R.id.fragment_container_view_tag,
-                                        FragmentLogin()
+                                        FragmentHome()
                                     ).addToBackStack("goBack")
                                 }
                             }

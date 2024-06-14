@@ -6,12 +6,13 @@ import com.example.testapp.common.Resource
 import com.example.testapp.data.request.login.LoginRequest
 import com.example.testapp.domain.model.userDataModel.UserDataModel
 import com.example.testapp.domain.use_case.authoration.LoginRequestUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+@HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRequestUseCase: LoginRequestUseCase
 ):ViewModel() {
