@@ -11,10 +11,9 @@ data class ErrorResponse(
     val code: Int,
     @SerialName("status")
     val status: Int,
-    @SerialName("previous")
-    val previous: PreviousError? = null
 )
 
+/*
 @Serializable
 data class PreviousError(
     @SerialName("name")
@@ -24,3 +23,4 @@ data class PreviousError(
     @SerialName("code")
     val code: Int
 )
+*/

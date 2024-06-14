@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -44,16 +45,22 @@ class VerifyCodeViewModel @Inject constructor(
                     verifyCodeUseCase.invoke(verificationCodeRequest = verificationCodeRequest)
                 }.onSuccess {
                     verifyCode.value = Resource.Success(it)
-                }.onFailure {
-                    val errorResponse = it as? Response<*>
-                    errorResponse?.let { response ->
-                        val parsedError = errorParser.parseError(response)
-                        parsedError?.let { error ->
-                            verifyCode.value = Resource.Error(error.message)
-                        } ?: run {
-                            verifyCode.value = Resource.Error("Unknown error")
+                }.onFailure {throwable->
+                    when (throwable) {
+                        is HttpException -> {
+                            val errorResponse: Response<*>? = throwable.response()
+                            if (errorResponse?.errorBody() != null) {
+                                val parsedError = errorParser.parseError(errorResponse)
+                                if (parsedError != null) {
+                                    verifyCode.value = Resource.Error(parsedError.message)
+                                } else {
+                                    verifyCode.value = Resource.Error("Unknown error")
+                                }
+                            } else {
+                                verifyCode.value = Resource.Error("Unknown error")
+                            }
                         }
-                    } ?: run { verifyCode.value = Resource.Error(it.message.toString()) }
+                    }
                 }
             }
         }
