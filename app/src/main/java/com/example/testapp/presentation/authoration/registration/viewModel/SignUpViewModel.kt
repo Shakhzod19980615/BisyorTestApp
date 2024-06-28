@@ -1,11 +1,11 @@
 package com.example.testapp.presentation.authoration.registration.viewModel
 
-import ApiResponseChecker
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
@@ -20,7 +20,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
+import retrofit2.HttpException
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -29,7 +30,8 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
        private val signUpUseCase: SignUpUseCase,
         private val phoneNumberValidationUseCase: PhoneNumberValidationUseCase,
-       private val passwordValidationUseCase: PasswordValidationUseCase
+       private val passwordValidationUseCase: PasswordValidationUseCase,
+       private val errorParser: ErrorParser
 ): ViewModel(){
     val signUp = MutableStateFlow<Resource<BasicResponseModel>>(Resource.Loading())
     private val _phoneNumberValidation = MutableSharedFlow<Pair<Boolean,String?>>(replay = 1)
@@ -52,14 +54,25 @@ class SignUpViewModel @Inject constructor(
                 kotlin.runCatching {
                     signUpUseCase.invoke(registrationRequest = request)
                 }.onSuccess {
-                    if(ApiResponseChecker.checkApiResponse(it, context)){
-                        signUp.value = Resource.Success(it)
-                    }else {
-                        signUp.value = Resource.Error(it.message, null)
-                    }
+                    signUp.value = Resource.Success(it)
                    // _signUp.value = Resource.Success(it)
-                }.onFailure {
-                    signUp.value = Resource.Error(it.message ?: "An unexpected error occured", null)
+                }.onFailure { throwable->
+                    when (throwable) {
+                        is HttpException -> {
+                            val errorResponse: Response<*>? = throwable.response()
+                            if (errorResponse?.errorBody() != null) {
+                                val parsedError = errorParser.parseError(errorResponse)
+                                if (parsedError != null) {
+                                    signUp.value = Resource.Error(parsedError.message)
+                                } else {
+                                    signUp.value = Resource.Error("Unknown error")
+                                }
+                            } else {
+                                signUp.value = Resource.Error("Unknown error")
+                            }
+                        }
+                    }
+
                 }
 
         }

@@ -42,6 +42,8 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="6dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="5dp"
                     android:src="@drawable/vicon_arrow_back" />
 
                 <TextView

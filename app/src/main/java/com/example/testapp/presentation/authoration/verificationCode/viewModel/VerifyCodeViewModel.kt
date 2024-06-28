@@ -1,15 +1,11 @@
 package com.example.testapp.presentation.authoration.verificationCode.viewModel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testapp.common.ApiResponse
 import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
-import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
 import com.example.testapp.domain.model.userDataModel.UserDataModel
 import com.example.testapp.domain.use_case.authoration.ConfirmationCodeValidationUseCase
 import com.example.testapp.domain.use_case.authoration.VerifyCodeUseCase

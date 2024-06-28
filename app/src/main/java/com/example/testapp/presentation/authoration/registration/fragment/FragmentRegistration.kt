@@ -57,6 +57,8 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                         when(signUpResult){
                             is Resource.Success->{
                                 activity?.supportFragmentManager?.commit {
+                                    setReorderingAllowed(true)
+                                    addToBackStack(null)
                                     replace(R.id.fragment_container_view_tag,
                                         FragmentVerificationCode()
                                     ).addToBackStack("goBack")

@@ -18,8 +18,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import uz.demo.dana.di.authInterceptor.AuthInterceptor
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -31,13 +34,24 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
+            .client(provideOkhttp())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): AppService {
         return retrofit.create(AppService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideOkhttp(): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+        okHttpClient.writeTimeout(5, TimeUnit.MINUTES).readTimeout(5, TimeUnit.MINUTES)
+            .addInterceptor(AuthInterceptor())
+        return okHttpClient.build()
+
     }
     @Provides
     @Singleton

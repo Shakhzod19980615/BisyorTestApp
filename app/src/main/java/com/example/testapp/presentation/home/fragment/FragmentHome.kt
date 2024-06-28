@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresExtension
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -34,6 +38,8 @@ class FragmentHome: Fragment(R.layout.window_home) {
     private val viewModelTab: CategoryTabViewModel by viewModels()
     private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
     private var binding : WindowHomeBinding by Delegates.notNull()
+    private lateinit var shimmerLayout: LinearLayout
+    private lateinit var contentLayout: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +47,8 @@ class FragmentHome: Fragment(R.layout.window_home) {
         savedInstanceState: Bundle?
     ): View {
         binding = WindowHomeBinding.inflate(inflater)
+        shimmerLayout = binding.root.findViewById(R.id.shimmer_layout)
+        contentLayout = binding.root.findViewById(R.id.list)
         return binding.root
 
     }
@@ -78,12 +86,11 @@ class FragmentHome: Fragment(R.layout.window_home) {
                         viewModelAnnouncement.getAnnouncementList(categoryId = firstCategoryId)
                     }
                     is Resource.Error -> {
-                        (Resource.Error("Couldn't reach server. Check your internet connection.", null))
-                        Toast.makeText(context, "An unexpected error occured", Toast.LENGTH_SHORT).show()
+                       showAlertDialog(resource.message)
                     }
                     is Resource.Loading -> {
-                        (Resource.Loading("Loading"))
-                        Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+                        contentLayout.visibility = View.GONE
+                        shimmerLayout.visibility = View.VISIBLE
                     }
 
                     else -> {}
@@ -93,11 +100,9 @@ class FragmentHome: Fragment(R.layout.window_home) {
     }
 
     private fun getAnnoucementList(){
-        val announcementRecyclerView = view?.findViewById<RecyclerView>(R.id.list)
-        announcementRecyclerView?.apply {
-            layoutManager = GridLayoutManager(requireContext(),2)
+        val announcementRecyclerView = binding.list
+        announcementRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        }
         val announcementAdapter = AnnouncementListAdapter(layoutInflater,
             onItemClicked = {itemId->
                // replaceFragment(FragmentAnnouncementDetail())
@@ -107,43 +112,52 @@ class FragmentHome: Fragment(R.layout.window_home) {
                         args = bundleOf("itemId" to itemId)
                     ).addToBackStack("replacement")
                 }
-               /* activity?.supportFragmentManager?.beginTransaction()?.apply {
-                    replace(R.id.fragment_container_view_tag, FragmentAnnouncementDetail().apply {
-                        arguments = bundleOf("itemId" to itemId)
-                    })
-                    addToBackStack("replacement")
-                    commit()
-                }*/
-                /*val fragment = FragmentAnnouncementDetail()
-                fragment.arguments = bundleOf("itemId" to itemId)
-
-                activity?.supportFragmentManager?.beginTransaction()?.apply {
-                    replace(R.id.fragment_container_view_tag, fragment)
-                    addToBackStack("replacement")
-                    commit()
-                }*/
             }
         )
-        announcementRecyclerView?.adapter = announcementAdapter
+        announcementRecyclerView.adapter = announcementAdapter
         lifecycleScope.launch {
             viewModelAnnouncement.announcementItems.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
+                        toggleShimmer(false)
                         announcementAdapter.setAnnouncementItems(resource.data)
                     }
                     is Resource.Error -> {
-                        (Resource.Error("Couldn't reach server. Check your internet connection.", null))
-                        Toast.makeText(context, "An unexpected error occured", Toast.LENGTH_SHORT).show()
+                        toggleShimmer(false)
+                        showAlertDialog(resource.message)
                     }
                     is Resource.Loading -> {
-                        (Resource.Loading("Loading"))
-                        Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+                        toggleShimmer(true)
                     }
 
                 }
             }
         }
 
+    }
+    private fun showAlertDialog(message: String) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_universal_messaging, null)
+        val alertDialog  = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            ?.setCancelable(true)
+            ?.create()
+        val btnDialogOk: Button = dialogView.findViewById(R.id.btn_ok)
+        val dialogMessage : TextView = dialogView.findViewById(R.id.text_title)
+        dialogMessage.text = message
+        btnDialogOk.setOnClickListener {
+            // Handle button click
+            alertDialog?.dismiss()  // Dismiss the dialog on button click
+        }
+        alertDialog?.show()
+    }
+    private fun toggleShimmer(isLoading: Boolean) {
+        if (isLoading) {
+            shimmerLayout.visibility = View.VISIBLE
+            contentLayout.visibility = View.GONE
+        } else {
+            shimmerLayout.visibility = View.GONE
+            contentLayout.visibility = View.VISIBLE
+        }
     }
     private fun replaceFragment(fragment: Fragment){
         activity?.supportFragmentManager?.commit {

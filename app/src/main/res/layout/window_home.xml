@@ -81,6 +81,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/shimmer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <include layout="@layout/home_shimmer" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list"
@@ -91,7 +99,7 @@
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="2"
                     tools:itemCount="4"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
              <!--   tools:listitem="@layout/item_product_grid"-->
 
 <!--                <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->

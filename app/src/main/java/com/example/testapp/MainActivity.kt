@@ -7,8 +7,10 @@ import androidx.fragment.app.commit
 import com.example.testapp.databinding.ActivityMainBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
+import com.example.testapp.presentation.creatingItem.FragmentCreateAnnouncement
 import com.example.testapp.presentation.home.fragment.FragmentHome
 import com.example.testapp.presentation.profile.FragmentProfileContainer
+import com.example.testapp.presentation.searching.FragmentSearching
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,8 +29,8 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.itemIconTintList = null
             when (it.itemId) {
                 R.id.home -> replaceFragment(FragmentHome())
-                R.id.search -> replaceFragment(FragmentAnnouncementDetail())
-                R.id.create_item -> replaceFragment(FragmentAnnouncementDetail())
+                R.id.search -> replaceFragment(FragmentSearching())
+                R.id.create_item -> replaceFragment(FragmentCreateAnnouncement())
                 R.id.chat -> replaceFragment(FragmentVerificationCode())
                 R.id.profile -> replaceFragment(FragmentProfileContainer())
                 else -> Unit
