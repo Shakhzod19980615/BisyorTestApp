@@ -124,18 +124,16 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/phoneTi"
                             app:boxStrokeColor="@color/ripple_color"
                             app:hintTextColor="@color/defaultTextColor"
-                            android:layout_marginStart="12dp"
-                            android:hint="@string/phone_number">
+                            android:layout_marginStart="12dp">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/ed_phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:imeOptions="actionNext"
-                                android:backgroundTint="@null"
-                                android:background="@color/white"
                                 android:inputType="phone"
                                 android:maxLength="9" />
 
@@ -149,15 +147,13 @@
                         android:layout_marginTop="8dp"
                         app:boxStrokeColor="@color/ripple_color"
                         app:hintTextColor="@color/defaultTextColor"
-                        android:hint="@string/password">
+                        android:id="@+id/password_TI">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password_ed"
                             set_clear_parent_error="@{``}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@null"
-                            android:background="@color/white"
                             android:imeOptions="actionNext"
                             android:inputType="textPassword" />
 
@@ -167,17 +163,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        app:boxStrokeColor="@color/ripple_color"
-                        app:hintTextColor="@color/defaultTextColor"
-                        android:hint="@string/confirm_password">
+                        android:id="@+id/password_confirm_Ti">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password_confirm_ed"
                             set_clear_parent_error="@{``}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@null"
-                            android:background="@color/white"
                             android:imeOptions="actionGo"
                             android:inputType="textPassword" />
 
@@ -288,6 +280,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/checkBoxText"
                     android:text="@string/approve_privacy_policy"
                     android:textSize="15sp" />
 

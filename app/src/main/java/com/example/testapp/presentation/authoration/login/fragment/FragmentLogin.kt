@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextWatcher
 import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +29,7 @@ import com.example.testapp.databinding.WindowLoginBinding
 import com.example.testapp.presentation.authoration.login.viewModel.LoginViewModel
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import com.example.testapp.presentation.home.fragment.FragmentHome
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
@@ -58,11 +61,74 @@ class FragmentLogin : Fragment(R.layout.window_login) {
         binding.loginTI.boxStrokeColor = R.color.ripple_color
         binding.loginTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.colorSecondaryDark)
         binding.loginTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.vicon_user_avatar)
+        binding.passwordTI.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+
         binding.navigationSignup.setOnClickListener {
             activity?.supportFragmentManager?.commit {
                 replace(R.id.fragment_container_view_tag, FragmentRegistration()).addToBackStack("goBack")
             }
         }
+        binding.edLogin.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    p0?.let {
+                        if (it.isNotEmpty()) {
+                            binding.loginTI.error = null
+                            binding.loginTI.boxStrokeColor = R.color.ripple_color
+                            binding.loginTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.colorSecondaryDark)
+                            binding.loginTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.vicon_user_avatar)
+                        }else{
+                            binding.loginTI.error = getString(R.string.enter_login)
+                            binding.loginTI.boxStrokeColor = R.color.red
+                            binding.loginTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
+                            binding.loginTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.micon_profile_about)
+                        }
+
+                    }
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                }
+            }
+        )
+        binding.edPassword.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    p0?.let {
+                        if (it.isNotEmpty()) {
+                            binding.passwordTI.error = null
+                            binding.passwordTI.boxStrokeColor = R.color.ripple_color
+                            binding.passwordTI.hintTextColor = ContextCompat.getColorStateList(
+                                requireContext(),
+                                R.color.colorSecondaryDark
+                            )
+                            binding.passwordTI.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+                           // binding.loginTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.vicon_user_avatar)
+
+                        } else {
+                            binding.passwordTI.error = getString(R.string.enter_password)
+                            binding.passwordTI.boxStrokeColor = R.color.red
+                            binding.passwordTI.hintTextColor =
+                                ContextCompat.getColorStateList(requireContext(), R.color.red)
+                            binding.passwordTI.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+                            /*binding.passwordTI.endIconDrawable = ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.micon_profile_about
+                            )*/
+                        }
+
+                    }
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                }
+            })
         binding.submitButton.setOnClickListener {
             val login = binding.edLogin.text.toString()
             val password = binding.edPassword.text.toString()
@@ -180,26 +246,11 @@ class FragmentLogin : Fragment(R.layout.window_login) {
                     binding.passwordTI.error = getString(R.string.warning_enter_password)
                     binding.passwordTI.boxStrokeColor = R.color.red
                     binding.passwordTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
-                    binding.passwordTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.micon_profile_about)
+                    //binding.passwordTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.micon_profile_about)
                     false
                 }
             }
         }
         return isValid
-        /*if(password.isBlank()){
-            binding.passwordTI.error = getString(R.string.warning_enter_password)
-            binding.passwordTI.boxStrokeColor = R.color.red
-            binding.passwordTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
-            binding.passwordTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.micon_profile_about)
-            return false
-        }
-        if (password.length < 6) {
-            binding.passwordTI.error = getString(R.string.warning_enter_password)
-            binding.passwordTI.boxStrokeColor = R.color.red
-            binding.passwordTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
-            binding.passwordTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.micon_profile_about)
-            return false
-        }
-        return true*/
     }
 }
