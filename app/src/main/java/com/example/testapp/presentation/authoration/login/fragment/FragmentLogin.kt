@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -26,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowLoginBinding
+import com.example.testapp.presentation.authoration.forgotPassword.resetUser.fragment.FragmentResetUser
 import com.example.testapp.presentation.authoration.login.viewModel.LoginViewModel
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import com.example.testapp.presentation.home.fragment.FragmentHome
@@ -62,7 +62,11 @@ class FragmentLogin : Fragment(R.layout.window_login) {
         binding.loginTI.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.colorSecondaryDark)
         binding.loginTI.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.vicon_user_avatar)
         binding.passwordTI.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
-
+        binding.navigationReset.setOnClickListener {
+            activity?.supportFragmentManager?.commit {
+                replace(R.id.fragment_container_view_tag, FragmentResetUser()).addToBackStack("goBack")
+            }
+        }
         binding.navigationSignup.setOnClickListener {
             activity?.supportFragmentManager?.commit {
                 replace(R.id.fragment_container_view_tag, FragmentRegistration()).addToBackStack("goBack")

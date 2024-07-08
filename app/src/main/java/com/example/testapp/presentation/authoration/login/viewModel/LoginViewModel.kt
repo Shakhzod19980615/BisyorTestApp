@@ -10,7 +10,6 @@ import com.example.testapp.domain.model.userDataModel.UserDataModel
 import com.example.testapp.domain.use_case.authoration.LoginPhoneValidationUseCase
 import com.example.testapp.domain.use_case.authoration.LoginRequestUseCase
 import com.example.testapp.domain.use_case.authoration.PasswordValidationUseCase
-import com.example.testapp.domain.use_case.authoration.PhoneNumberValidationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
