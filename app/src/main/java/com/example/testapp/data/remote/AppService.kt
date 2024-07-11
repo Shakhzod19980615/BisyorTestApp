@@ -8,6 +8,7 @@ import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.data.request.login.LoginRequest
 import com.example.testapp.data.request.resetPassword.ResetUserRequest
+import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
 import com.example.testapp.domain.model.userDataModel.UserDataModel
 import okhttp3.ResponseBody
@@ -56,6 +57,9 @@ interface AppService {
     suspend fun signIn(@Body body: LoginRequest): UserDataResponse
     @POST("login/get-code")
     suspend fun resetUser(@Body body: ResetUserRequest): BasicResponseDto
+
+    @POST("login/check-code")
+    suspend fun resetUserVerify(@Body body: ResetUserConfirmRequest): Response<Boolean>
 
     /*//TODO: - Authorization section
     @POST("login/login")

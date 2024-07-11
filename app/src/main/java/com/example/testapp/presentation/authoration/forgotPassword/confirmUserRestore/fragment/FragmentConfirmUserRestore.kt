@@ -1,4 +1,4 @@
-package com.example.testapp.presentation.authoration.verificationCode.fragment
+package com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -17,20 +17,22 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
 import com.example.testapp.databinding.WindowConfrimationCodeBinding
+import com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.viewModel.ConfirmUserRestoreVM
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
-import com.example.testapp.presentation.authoration.verificationCode.viewModel.VerifyCodeViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-@AndroidEntryPoint
-class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
-    private  val verificationCodeViewModel: VerifyCodeViewModel by viewModels()
+class FragmentConfirmUserRestore: Fragment(R.layout.window_confrimation_code) {
+    private val confirmUserRestoreVM: ConfirmUserRestoreVM by viewModels()
     private var binding : WindowConfrimationCodeBinding by Delegates.notNull()
     private val codeEditors: MutableList<EditText> = ArrayList()
     private var currentPosition = 0
+    private val login : String? by lazy {
+        arguments?.getString("login")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,11 +52,10 @@ class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
         configureEditors()
         binding.submitButton.setOnClickListener {
             val code  = getCodeFromEditors()
-            val login = "+998900278575"
             if (validateInput()){
-                verificationCodeViewModel.verifyCode(VerificationCodeRequest(login, code))
+                confirmUserRestoreVM.restoreUserConfirm(ResetUserConfirmRequest(login!!, code))
                 lifecycleScope.launch {
-                    verificationCodeViewModel.verifyCode.collect{verifyCodeResult->
+                    confirmUserRestoreVM.confirmRestoreUser.collect{ verifyCodeResult->
                         when(verifyCodeResult){
                             is Resource.Success->{
                                 activity?.supportFragmentManager?.commit {
@@ -77,6 +78,8 @@ class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
             }
         }
     }
+
+
     private fun configureEditors(){
         codeEditors.add(binding.firstNumber)
         codeEditors.add(binding.secondNumber)
@@ -85,7 +88,7 @@ class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
         codeEditors.add(binding.fifthNumber)
 
         for (i in codeEditors.indices){
-            codeEditors[i].addTextChangedListener(object:TextWatcher{
+            codeEditors[i].addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

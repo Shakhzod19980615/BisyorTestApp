@@ -1,6 +1,5 @@
 package com.example.testapp.presentation.authoration.verificationCode.viewModel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.ErrorParser
@@ -13,8 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -29,12 +26,7 @@ class VerifyCodeViewModel @Inject constructor(
 ): ViewModel() {
     val verifyCode = MutableStateFlow<Resource<UserDataModel>>(Resource.Loading())
     private val _confirmationCodeValidation = MutableSharedFlow<Pair<Boolean, String?>>(replay = 1)
-    val confirmationCodeValidation: SharedFlow<Pair<Boolean, String?>> get() = _confirmationCodeValidation.asSharedFlow()
-    fun validateConfirmationCode(confirmationCode: String) {
-        val result = confirmationCodeValidationUseCase.isConfirmationCodeValid(confirmationCode)
-        _confirmationCodeValidation.tryEmit(result)
-    }
-    fun verifyCode(verificationCodeRequest: VerificationCodeRequest, context: Context) {
+    fun verifyCode(verificationCodeRequest: VerificationCodeRequest) {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 kotlin.runCatching {
