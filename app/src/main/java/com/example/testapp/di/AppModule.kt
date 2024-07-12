@@ -5,6 +5,7 @@ import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.repository.announcement.AnnouncementItemRepositoryImpl
 import com.example.testapp.data.repository.announcementDetails.AnnouncementDetailsRepositoryImpl
 import com.example.testapp.data.repository.authoration.LoginRepositoryImpl
+import com.example.testapp.data.repository.authoration.ResetUserConfirmRepositoryImpl
 import com.example.testapp.data.repository.authoration.ResetUserRepositoryImpl
 import com.example.testapp.data.repository.authoration.SignUpRepositoryImpl
 import com.example.testapp.data.repository.authoration.VerifyCodeRepositoryImpl
@@ -12,6 +13,7 @@ import com.example.testapp.data.repository.categoryTab.CategoryTabRepositoryImpl
 import com.example.testapp.domain.repository.announcement.AnnouncementItemRepository
 import com.example.testapp.domain.repository.announcementItemDetails.AnnouncementDetailsRepository
 import com.example.testapp.domain.repository.authoration.LoginRepository
+import com.example.testapp.domain.repository.authoration.ResetUserConfirmRepository
 import com.example.testapp.domain.repository.authoration.ResetUserRepository
 import com.example.testapp.domain.repository.authoration.SignUpRepository
 import com.example.testapp.domain.repository.authoration.VerifyCodeRepository
@@ -90,6 +92,11 @@ object AppModule {
     @Singleton
     fun provideResetUserRepository(api: AppService) : ResetUserRepository {
         return ResetUserRepositoryImpl(api)
+    }
+    @Provides
+    @Singleton
+    fun provideConfirmUserRestoreRepository(api: AppService) :ResetUserConfirmRepository {
+        return ResetUserConfirmRepositoryImpl(api)
     }
     @Provides
     @Singleton

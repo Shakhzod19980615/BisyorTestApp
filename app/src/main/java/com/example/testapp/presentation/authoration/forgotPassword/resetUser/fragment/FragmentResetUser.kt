@@ -27,10 +27,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowResetUserBinding
-import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.fragment.FragmentConfirmUserRestore
 import com.example.testapp.presentation.authoration.forgotPassword.resetUser.viewModel.ResetUserViewModel
-import com.example.testapp.presentation.home.fragment.FragmentHome
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates

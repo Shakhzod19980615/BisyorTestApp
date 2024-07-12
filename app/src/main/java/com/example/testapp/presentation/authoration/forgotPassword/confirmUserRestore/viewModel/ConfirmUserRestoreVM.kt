@@ -2,6 +2,7 @@ package com.example.testapp.presentation.authoration.forgotPassword.confirmUserR
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testapp.R
 import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
@@ -9,6 +10,7 @@ import com.example.testapp.domain.use_case.authoration.ResetUserConfirmUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -21,14 +23,21 @@ class ConfirmUserRestoreVM @Inject constructor(
     private val errorParser: ErrorParser
 ): ViewModel() {
     val confirmRestoreUser = MutableStateFlow<Resource<Boolean>>(Resource.Loading())
+    //val confirmRestoreUser: StateFlow<Resource<Boolean>> get() = _confirmRestoreUser
 
     fun restoreUserConfirm(restoreConfirmRequest: ResetUserConfirmRequest){
         viewModelScope.launch {
+            confirmRestoreUser.value = Resource.Loading()
             withContext(Dispatchers.IO){
                 kotlin.runCatching {
                     resetUserConfirmUseCase.invoke(restoreConfirmRequest)
-                }.onSuccess {
-                    confirmRestoreUser.value = Resource.Success(it)
+                }.onSuccess {succes->
+                    if (succes){
+                        confirmRestoreUser.value = Resource.Success(true)
+                    }else{
+                        confirmRestoreUser.value = Resource.Error("Неверный код")
+                    }
+
                 }.onFailure {throwable->
                     when (throwable) {
                         is HttpException -> {

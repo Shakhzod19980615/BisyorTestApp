@@ -28,13 +28,7 @@ class ResetUserViewModel @Inject constructor(
     private val phoneNumberValidationUseCase: LoginPhoneValidationUseCase
 ): ViewModel() {
     val resetUser = MutableStateFlow<Resource<BasicResponseModel>>(Resource.Loading())
-    private val _phoneNumberValidation = MutableSharedFlow<Pair<Boolean,String?>>(replay = 1)
-    val phoneNumberValidation: SharedFlow<Pair<Boolean, String?>> get() = _phoneNumberValidation.asSharedFlow()
 
-    fun validatePhoneNumber(phoneNumber: String, context: Context) {
-        val result = phoneNumberValidationUseCase.isPhoneNumberValid(phoneNumber, context)
-        _phoneNumberValidation.tryEmit(result)
-    }
     fun resetUser(login: String) {
         val resetUserRequest = ResetUserRequest(login)
         viewModelScope.launch {

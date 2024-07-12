@@ -1,8 +1,14 @@
 package com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.fragment
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +17,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -20,11 +28,13 @@ import com.example.testapp.common.Resource
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
 import com.example.testapp.databinding.WindowConfrimationCodeBinding
+import com.example.testapp.presentation.authoration.forgotPassword.confirmRestoreUserPassword.ConfirmRestoreUserPassword
 import com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.viewModel.ConfirmUserRestoreVM
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
-
+@AndroidEntryPoint
 class FragmentConfirmUserRestore: Fragment(R.layout.window_confrimation_code) {
     private val confirmUserRestoreVM: ConfirmUserRestoreVM by viewModels()
     private var binding : WindowConfrimationCodeBinding by Delegates.notNull()
@@ -50,6 +60,8 @@ class FragmentConfirmUserRestore: Fragment(R.layout.window_confrimation_code) {
         }
         binding.firstNumber.requestFocus()
         configureEditors()
+        binding.submitButton.text = getString(R.string.enter)
+
         binding.submitButton.setOnClickListener {
             val code  = getCodeFromEditors()
             if (validateInput()){
@@ -58,21 +70,26 @@ class FragmentConfirmUserRestore: Fragment(R.layout.window_confrimation_code) {
                     confirmUserRestoreVM.confirmRestoreUser.collect{ verifyCodeResult->
                         when(verifyCodeResult){
                             is Resource.Success->{
-                                activity?.supportFragmentManager?.commit {
-                                    setReorderingAllowed(true)
-                                    addToBackStack(null)
-                                    replace(R.id.fragment_container_view_tag, FragmentRegistration())
+                                if (verifyCodeResult.data){
+                                    Toast.makeText(requireContext(), "${verifyCodeResult.data}", Toast.LENGTH_SHORT).show()
+                                    activity?.supportFragmentManager?.commit {
+                                        replace(R.id.fragment_container_view_tag, ConfirmRestoreUserPassword())
+                                    }
+                                }else{
+                                    showAlertDialog(verifyCodeResult.data.toString())
                                 }
+
                             }
                             is Resource.Error->{
                                 showAlertDialog(verifyCodeResult.message)
                             }
 
-                            is Resource.Loading -> Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            is Resource.Loading ->
+                                simulateLoading()
                         }
                     }
                 }
-                activity?.supportFragmentManager?.popBackStack()
+               // activity?.supportFragmentManager?.popBackStack()
             }else{
                 showAlertDialog(getString(R.string.alert_mismatch_code))
             }
@@ -124,6 +141,36 @@ class FragmentConfirmUserRestore: Fragment(R.layout.window_confrimation_code) {
             codeBuilder.append(editor.text.toString())
         }
         return codeBuilder.toString()
+    }
+    private fun simulateLoading() {
+        // Show loading indicator
+        showLoadingInButton(true)
+
+        // Simulate a delay to represent loading time
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Hide loading indicator
+            showLoadingInButton(false)
+        }, 3000) // 3 seconds delay
+    }
+    private fun showLoadingInButton(isLoading: Boolean) {
+        if (isLoading) {
+            val progressBarDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.circular_progress)
+            progressBarDrawable?.let { drawable ->
+                val wrappedDrawable: Drawable = DrawableCompat.wrap(drawable)
+                DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext(), R.color.white))
+                wrappedDrawable.setBounds(0, 0, 60, 60)
+
+                val spannableString = SpannableString("  Loading...")
+                val imageSpan = ImageSpan(wrappedDrawable, ImageSpan.ALIGN_BOTTOM)
+                spannableString.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                binding.submitButton.text = spannableString
+                binding.submitButton.isEnabled = false
+            }
+        } else {
+            binding.submitButton.text = "Submit"
+            binding.submitButton.isEnabled = true
+        }
     }
     private fun showAlertDialog(message: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_universal_messaging, null)

@@ -48,6 +48,7 @@ class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
         }
         binding.firstNumber.requestFocus()
         configureEditors()
+        binding.submitButton.text = getString(R.string.enter)
         binding.submitButton.setOnClickListener {
             val code  = getCodeFromEditors()
             val login = "+998900278575"

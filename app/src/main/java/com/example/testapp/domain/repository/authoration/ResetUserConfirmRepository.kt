@@ -4,6 +4,5 @@ import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirm
 import retrofit2.Response
 
 interface ResetUserConfirmRepository {
-
-    suspend fun resetUserConfirm(resetUserConfirmRequest: ResetUserConfirmRequest):Response<Boolean>
+    suspend fun     resetUserConfirm(resetUserConfirmRequest: ResetUserConfirmRequest):Result<Boolean>
 }
