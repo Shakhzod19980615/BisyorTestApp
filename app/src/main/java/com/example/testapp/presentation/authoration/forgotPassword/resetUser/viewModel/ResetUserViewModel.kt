@@ -1,20 +1,16 @@
 package com.example.testapp.presentation.authoration.forgotPassword.resetUser.viewModel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
-import com.example.testapp.data.request.resetPassword.ResetUserRequest
+import com.example.testapp.data.request.resetUser.ResetUserRequest
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
 import com.example.testapp.domain.use_case.authoration.LoginPhoneValidationUseCase
 import com.example.testapp.domain.use_case.authoration.ResetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

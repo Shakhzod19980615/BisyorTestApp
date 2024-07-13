@@ -7,11 +7,10 @@ import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.data.request.login.LoginRequest
-import com.example.testapp.data.request.resetPassword.ResetUserRequest
+import com.example.testapp.data.request.resetPassword.ResetUserUpdatePasswordRequest
+import com.example.testapp.data.request.resetUser.ResetUserRequest
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
-import com.example.testapp.domain.model.userDataModel.UserDataModel
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -60,6 +59,9 @@ interface AppService {
 
     @POST("login/check-code")
     suspend fun resetUserVerify(@Body body: ResetUserConfirmRequest): Response<Boolean>
+    @POST("login/reset-password")
+    suspend fun resetUserUpdatePassword(@Body body: ResetUserUpdatePasswordRequest): UserDataResponse
+
 
     /*//TODO: - Authorization section
     @POST("login/login")

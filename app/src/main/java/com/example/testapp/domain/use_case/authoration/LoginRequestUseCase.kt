@@ -1,6 +1,6 @@
 package com.example.testapp.domain.use_case.authoration
 
-import com.example.testapp.data.remote.dto.authoration.toVerifyCodeResponse
+import com.example.testapp.data.remote.dto.authoration.toUserDataModel
 import com.example.testapp.data.request.login.LoginRequest
 import com.example.testapp.domain.model.userDataModel.UserDataModel
 import com.example.testapp.domain.repository.authoration.LoginRepository
@@ -11,6 +11,6 @@ class LoginRequestUseCase @Inject constructor(
 ) {
 
     suspend fun invoke(loginRequest: LoginRequest): UserDataModel {
-        return loginRepository.signIn(loginRequest = loginRequest).toVerifyCodeResponse()
+        return loginRepository.signIn(loginRequest = loginRequest).toUserDataModel()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.testapp.data.request.resetPassword
+package com.example.testapp.data.request.resetUser
 
 import kotlinx.serialization.SerialName
 

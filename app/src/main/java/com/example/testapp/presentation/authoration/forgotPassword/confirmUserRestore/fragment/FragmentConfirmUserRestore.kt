@@ -19,8 +19,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.R
@@ -71,10 +73,15 @@ class FragmentConfirmUserRestore: Fragment(R.layout.window_confrimation_code) {
                         when(verifyCodeResult){
                             is Resource.Success->{
                                 if (verifyCodeResult.data){
-                                    Toast.makeText(requireContext(), "${verifyCodeResult.data}", Toast.LENGTH_SHORT).show()
+                                   // Toast.makeText(requireContext(), "${verifyCodeResult.data}", Toast.LENGTH_SHORT).show()
                                     activity?.supportFragmentManager?.commit {
-                                        replace(R.id.fragment_container_view_tag, ConfirmRestoreUserPassword())
+                                        //replace(R.id.fragment_container_view_tag, ConfirmRestoreUserPassword())
+                                        replace<ConfirmRestoreUserPassword>(
+                                            containerViewId= R.id.fragment_container_view_tag,
+                                            args = bundleOf("login" to login,"code" to code)
+                                        ).addToBackStack("replacement")
                                     }
+
                                 }else{
                                     showAlertDialog(verifyCodeResult.data.toString())
                                 }

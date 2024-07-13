@@ -1,7 +1,7 @@
 package com.example.testapp.domain.use_case.authoration
 
 import com.example.testapp.data.remote.dto.basicResponse.toBasicResponse
-import com.example.testapp.data.request.resetPassword.ResetUserRequest
+import com.example.testapp.data.request.resetUser.ResetUserRequest
 import com.example.testapp.domain.model.basicResponseModel.BasicResponseModel
 import com.example.testapp.domain.repository.authoration.ResetUserRepository
 import javax.inject.Inject

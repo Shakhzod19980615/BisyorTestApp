@@ -26,7 +26,7 @@ data class UserDataResponse(
     val regionName:String,
     val messageCount:Int
 )
-fun UserDataResponse.toVerifyCodeResponse() = UserDataModel(
+fun UserDataResponse.toUserDataModel() = UserDataModel(
     token = token,
     userId = userId,
     userName = userFIO,

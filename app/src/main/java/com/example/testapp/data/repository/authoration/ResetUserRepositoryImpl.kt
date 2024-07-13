@@ -2,7 +2,7 @@ package com.example.testapp.data.repository.authoration
 
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
-import com.example.testapp.data.request.resetPassword.ResetUserRequest
+import com.example.testapp.data.request.resetUser.ResetUserRequest
 import com.example.testapp.domain.repository.authoration.ResetUserRepository
 import javax.inject.Inject
 

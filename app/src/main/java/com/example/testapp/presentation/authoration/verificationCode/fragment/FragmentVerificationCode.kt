@@ -31,6 +31,9 @@ class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
     private var binding : WindowConfrimationCodeBinding by Delegates.notNull()
     private val codeEditors: MutableList<EditText> = ArrayList()
     private var currentPosition = 0
+    private val login : String? by lazy {
+        arguments?.getString("login")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,9 +54,9 @@ class FragmentVerificationCode : Fragment(R.layout.window_confrimation_code){
         binding.submitButton.text = getString(R.string.enter)
         binding.submitButton.setOnClickListener {
             val code  = getCodeFromEditors()
-            val login = "+998900278575"
+            //val login = "+998900278575"
             if (validateInput()){
-                verificationCodeViewModel.verifyCode(VerificationCodeRequest(login, code))
+                verificationCodeViewModel.verifyCode(VerificationCodeRequest(login!!, code))
                 lifecycleScope.launch {
                     verificationCodeViewModel.verifyCode.collect{verifyCodeResult->
                         when(verifyCodeResult){

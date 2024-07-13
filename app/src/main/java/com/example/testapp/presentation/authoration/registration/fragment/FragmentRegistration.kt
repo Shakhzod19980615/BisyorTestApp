@@ -14,8 +14,10 @@ import android.widget.Toast
 import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import com.example.testapp.R
 import com.example.testapp.databinding.WindowRegistrationBinding
@@ -23,6 +25,7 @@ import kotlin.properties.Delegates
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.R.color
 import com.example.testapp.common.Resource
+import com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.fragment.FragmentConfirmUserRestore
 import com.example.testapp.presentation.authoration.registration.viewModel.SignUpViewModel
 import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
 import com.google.android.material.textfield.TextInputLayout
@@ -163,9 +166,10 @@ class FragmentRegistration: Fragment(R.layout.window_registration){
                                 activity?.supportFragmentManager?.commit {
                                     setReorderingAllowed(true)
                                     addToBackStack(null)
-                                    replace(R.id.fragment_container_view_tag,
-                                        FragmentVerificationCode()
-                                    ).addToBackStack("goBack")
+                                    replace<FragmentVerificationCode>(
+                                        containerViewId= R.id.fragment_container_view_tag,
+                                        args = bundleOf("login" to login)
+                                    ).addToBackStack("replacement")
                                 }
                             }
                             is Resource.Error->{
