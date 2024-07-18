@@ -7,6 +7,7 @@ import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.data.request.login.LoginRequest
+import com.example.testapp.data.request.login.RegisterWithSocialRequest
 import com.example.testapp.data.request.resetPassword.ResetUserUpdatePasswordRequest
 import com.example.testapp.data.request.resetUser.ResetUserRequest
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
@@ -61,7 +62,8 @@ interface AppService {
     suspend fun resetUserVerify(@Body body: ResetUserConfirmRequest): Response<Boolean>
     @POST("login/reset-password")
     suspend fun resetUserUpdatePassword(@Body body: ResetUserUpdatePasswordRequest): UserDataResponse
-
+    @POST(value = "account/login-social-set")
+    suspend fun registerWithSocial(@Body body: RegisterWithSocialRequest): UserDataResponse
 
     /*//TODO: - Authorization section
     @POST("login/login")

@@ -1,6 +1,7 @@
 package com.example.testapp.presentation.authoration.login.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -29,6 +30,12 @@ import com.example.testapp.presentation.authoration.forgotPassword.resetUser.fra
 import com.example.testapp.presentation.authoration.login.viewModel.LoginViewModel
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import com.example.testapp.presentation.home.fragment.FragmentHome
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,7 +44,8 @@ import kotlin.properties.Delegates
 class FragmentLogin : Fragment(R.layout.window_login) {
     private var binding : WindowLoginBinding by Delegates.notNull()
     private val loginViewModel: LoginViewModel by viewModels()
-
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +58,13 @@ class FragmentLogin : Fragment(R.layout.window_login) {
     @SuppressLint("ResourceAsColor", "RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestProfile()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+
         binding.enterDesTv.text = getString(R.string.enter_descr)
         binding.loginTI.hint = getString(R.string.enter_login)
         binding.passwordTI.hint = getString(R.string.enter_password)
@@ -160,8 +175,59 @@ class FragmentLogin : Fragment(R.layout.window_login) {
                 }
             }
         }
+        binding.clickerGoogle.setOnClickListener {
+            //loginViewModel.registerWithSocial()
+            signInWithGoogle()
+        }
 
     }
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            val id = account.id
+            val name = account?.displayName
+            val email = account?.email
+            if (id != null) {
+                sendUserDetailsToServer(id,name, email,"")
+            }
+
+        } catch (e: ApiException) {
+            showAlertDialog("Sign-in failed: ${e.message}")
+        }
+    }
+    private fun sendUserDetailsToServer(id: String, name: String?, email: String?,phone:String) {
+        loginViewModel.registerWithSocial(id, name, email,phone)
+        lifecycleScope.launch {
+            loginViewModel.registerWithSocial.collect { loginWithGoogle ->
+                when (loginWithGoogle) {
+                    is Resource.Success -> {
+                        activity?.supportFragmentManager?.commit {
+                            replace(R.id.fragment_container_view_tag, FragmentHome()).addToBackStack("goBack")
+                        }
+                    }
+                    is Resource.Error -> {
+                        showAlertDialog(loginWithGoogle.message)
+                    }
+                    is Resource.Loading -> {
+                        simulateLoading()
+                    }
+                }
+            }
+        }
+    }
+
     private fun simulateLoading() {
         // Show loading indicator
         showLoadingInButton(true)

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.login.LoginRequest
+import com.example.testapp.data.request.login.RegisterWithSocialRequest
 import com.example.testapp.domain.model.userDataModel.UserDataModel
 import com.example.testapp.domain.use_case.authoration.LoginPhoneValidationUseCase
 import com.example.testapp.domain.use_case.authoration.LoginRequestUseCase
@@ -29,6 +30,7 @@ class LoginViewModel @Inject constructor(
     private val errorParser: ErrorParser
 ):ViewModel() {
     val signIn = MutableStateFlow<Resource<UserDataModel>>(Resource.Loading())
+    val registerWithSocial = MutableStateFlow<Resource<UserDataModel>>(Resource.Loading())
     private val _phoneNumberValidation = MutableSharedFlow<Pair<Boolean,String?>>(replay = 1)
     val phoneNumberValidation: SharedFlow<Pair<Boolean, String?>> get() = _phoneNumberValidation.asSharedFlow()
     private val _passwordValidation = MutableSharedFlow<Pair<Boolean, String?>>(replay = 1)
@@ -51,6 +53,35 @@ class LoginViewModel @Inject constructor(
                 }.onSuccess {
                     signIn.value = Resource.Success(it)
                 }.onFailure {throwable->
+                    when (throwable) {
+                        is HttpException -> {
+                            val errorResponse: Response<*>? = throwable.response()
+                            if (errorResponse?.errorBody() != null) {
+                                val parsedError = errorParser.parseError(errorResponse)
+                                if (parsedError != null) {
+                                    signIn.value = Resource.Error(parsedError.message)
+                                } else {
+                                    signIn.value = Resource.Error("Unknown error")
+                                }
+                            } else {
+                                signIn.value = Resource.Error("Unknown error")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun registerWithSocial(id:String, username:String?, email:String?, phone:String?) {
+        val registerWithSocialRequest = RegisterWithSocialRequest(id, "1", username, email, phone)
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    loginRequestUseCase.registerWithSocial(registerWithSocialRequest = registerWithSocialRequest)
+                }.onSuccess {
+                    signIn.value = Resource.Success(it)
+                }.onFailure { throwable ->
                     when (throwable) {
                         is HttpException -> {
                             val errorResponse: Response<*>? = throwable.response()
