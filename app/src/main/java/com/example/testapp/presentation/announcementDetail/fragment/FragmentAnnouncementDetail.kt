@@ -191,8 +191,8 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
             }
         }
         binding.clickerExpand.setOnClickListener {
-            print(isDescExpanded);
-            if(isDescExpanded){
+           // print(isDescExpanded);
+            if(announcementDetailViewModel.isExpandedText.value){
                 binding.content.maxLines = Int.MAX_VALUE
                 binding.clickerExpand.text = resources.getText(R.string.less)
                 binding.clickerExpand.setCompoundDrawablesWithIntrinsicBounds(
@@ -211,7 +211,8 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
                     null
                 )
             }
-            isDescExpanded = !isDescExpanded
+            announcementDetailViewModel.setActiveSegment(!announcementDetailViewModel.isExpandedText.value)
+           // isDescExpanded = !isDescExpanded
         }
 
     }

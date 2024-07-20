@@ -267,6 +267,15 @@
         <item name="colorAccent">@color/buttonColor</item>
         <item name="colorPrimary">@color/buttonColor</item>
     </style>
+    <style name="Bisyor.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingStart">16dp</item>
+    </style>
+    <style name="Bisyor.LineStyle" parent="">
+        <item name="android:background">@color/shimmercolor</item>
+        <item name="background">@color/shimmercolor</item>
+    </style>
     <style name="Bisyor.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="theme">@style/Theme.Bisyor.TextButton</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>

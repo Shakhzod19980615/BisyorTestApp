@@ -20,7 +20,14 @@ class AnnouncementDetailViewModel @Inject constructor(
 ): ViewModel() {
     private val _announcementDetail = MutableStateFlow<Resource<AnnouncementItemDetailsModel>>(Resource.Loading())
     val announcementDetail: StateFlow<Resource<AnnouncementItemDetailsModel>> = _announcementDetail.asStateFlow()
+    private val _isExpandedText = MutableStateFlow(true) // Initial state
+    val isExpandedText: StateFlow<Boolean> get() = _isExpandedText.asStateFlow()
 
+    fun setActiveSegment(isActive: Boolean) {
+        viewModelScope.launch {
+            _isExpandedText.emit(isActive)
+        }
+    }
     fun getAnnouncementDetails(itemId: Int?){
         viewModelScope.launch {
             try {
