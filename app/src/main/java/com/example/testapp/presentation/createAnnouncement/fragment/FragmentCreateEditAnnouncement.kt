@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -38,8 +40,10 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         viewModel.addImages(uris)
     }
+    private val handler = Handler(Looper.getMainLooper())
 
-    override fun onCreateView(
+    // Runnable to hide the delete icon
+        override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,12 +62,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
                 binding.clickerStore.isVisible = !isUserActive
             }
         }
-        lifecycleScope.launch {
-            viewModel.selectedImages.collect { images ->
-                imagesAdapter.submitList(images)
-                binding.clickerPickImage.isVisible = images.size < 8
-            }
-        }
+
         binding.textUser.setOnClickListener {
             viewModel.setActiveSegment(true)
         }
@@ -85,12 +84,19 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         }
     }
     private fun setupRecyclerView() {
-        imagesAdapter = CreateAnnouncementAdapter()
+        imagesAdapter = CreateAnnouncementAdapter ()
         binding.listImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = imagesAdapter
         }
+        lifecycleScope.launch {
+            viewModel.selectedImages.collect { images ->
+                imagesAdapter.submitList(images)
+                binding.clickerPickImage.isVisible = images.size < 8
+            }
+        }
     }
+
     private fun setActiveSegment(isUserActive: Boolean) {
         if (isUserActive) {
             binding.textUser.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))

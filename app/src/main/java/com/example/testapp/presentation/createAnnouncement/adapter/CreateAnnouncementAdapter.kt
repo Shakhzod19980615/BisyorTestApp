@@ -1,6 +1,8 @@
 package com.example.testapp.presentation.createAnnouncement.adapter
 
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,28 +15,39 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testapp.R
+import com.example.testapp.databinding.ItemAddProductImageBinding
 
-class CreateAnnouncementAdapter()
+class CreateAnnouncementAdapter(
+)
     : ListAdapter<CreateAnnouncementImage, CreateAnnouncementAdapter.ImageViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_add_product_image,
-            parent, false)
-        return ImageViewHolder(view)
+        val binding = ItemAddProductImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImageViewHolder(binding)
     }
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-    class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.img)
-        private val progressBar: ProgressBar = view.findViewById(R.id.progress_bar)
-        private val uploadingLayout: RelativeLayout = view.findViewById(R.id.uploading_layout)
-        private val failedView: View = view.findViewById(R.id.reupdate_image)
-        private val deleteView: ImageView = view.findViewById(R.id.delete)
-
+    inner class ImageViewHolder(
+        private val binding: ItemAddProductImageBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        private val handler = Handler(Looper.getMainLooper())
         fun bind(imageItem: CreateAnnouncementImage) {
-            imageView.setImageURI(imageItem.uri)
-            uploadingLayout.isVisible = imageItem.uploadState == UploadState.UPLOADING
-            failedView.isVisible = imageItem.uploadState == UploadState.FAILED
+            binding.img.setImageURI(imageItem.uri)
+            binding.uploadingLayout.isVisible = imageItem.uploadState == UploadState.UPLOADING
+            binding.reupdateImage.isVisible = imageItem.uploadState == UploadState.FAILED
+
+            binding.img.setOnClickListener {
+                showDeleteIcon()
+            }
+        }
+        private fun showDeleteIcon() {
+            binding.delete.isVisible = true
+            handler.removeCallbacks(hideDeleteIconRunnable)
+            handler.postDelayed(hideDeleteIconRunnable, 4000) // Adjust the delay as needed (5000ms = 5 seconds)
+        }
+
+        private val hideDeleteIconRunnable = Runnable {
+            binding.delete.isVisible = false
         }
     }
     class DiffCallback : DiffUtil.ItemCallback<CreateAnnouncementImage>() {
