@@ -13,11 +13,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.testapp.R
 import com.example.testapp.databinding.ItemAddProductImageBinding
 
 class CreateAnnouncementAdapter(
+    private val images: MutableList<CreateAnnouncementImage>,
+    private val onDeleteClick: (CreateAnnouncementImage) -> Unit
 )
     : ListAdapter<CreateAnnouncementImage, CreateAnnouncementAdapter.ImageViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -38,6 +38,10 @@ class CreateAnnouncementAdapter(
 
             binding.img.setOnClickListener {
                 showDeleteIcon()
+            }
+            binding.delete.setOnClickListener {
+                val image = images[adapterPosition]
+                onDeleteClick(image)
             }
         }
         private fun showDeleteIcon() {

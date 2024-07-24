@@ -34,6 +34,13 @@ class CreateEditAnnouncementVM @Inject constructor(): ViewModel() {
             }
         }
     }
+    fun removeImage(image: CreateAnnouncementImage) {
+        _selectedImages.update { currentImages ->
+            currentImages.toMutableList().apply {
+                remove(image)
+            }
+        }
+    }
     fun setActiveSegment(isActive: Boolean) {
         viewModelScope.launch {
             _isUserActive.emit(isActive)

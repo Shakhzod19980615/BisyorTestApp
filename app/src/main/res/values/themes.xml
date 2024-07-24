@@ -249,19 +249,12 @@
         <item name="hintTextColor">@color/defaultTextColor</item>
         <item name="boxStrokeColor">@color/ripple_color</item>
     </style>
-    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="titleTextAppearance">@style/MyToolbarTitleAppearance</item>
-        <item name="subtitleTextAppearance">@style/MyToolbarSubtitleAppearance</item>
-    </style>
+
 
 
     <style name="MyToolbarTitleAppearance" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-    <style name="MyToolbarSubtitleAppearance" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">sans-serif</item>
     </style>
     <style name="Theme.Bisyor.TextButton" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorAccent">@color/buttonColor</item>
@@ -276,6 +269,11 @@
         <item name="android:background">@color/shimmercolor</item>
         <item name="background">@color/shimmercolor</item>
     </style>
+    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar" tools:ignore="DuplicateDefinition">
+        <item name="titleTextAppearance">@style/MyToolbarTitleAppearance</item>
+    </style>
+
+
     <style name="Bisyor.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="theme">@style/Theme.Bisyor.TextButton</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
