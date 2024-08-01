@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class CategoryPickerAdapter(
 
     private val layoutInflater: LayoutInflater,
-    private val onItemClick: (CategoryTabItemModel) -> Unit
+    private val onItemClick: (Int) -> Unit
 ): RecyclerView.Adapter<CategoryPickerAdapter.ViewHolder>() {
     private val category:MutableList<CategoryTabItemModel> = mutableListOf()
     override fun onCreateViewHolder(
@@ -48,7 +48,7 @@ class CategoryPickerAdapter(
             binding.categoryName.text = categoryItem.title
             Glide.with(binding.root).load(categoryItem.icon).into(binding.imgHome)
             binding.root.setOnClickListener {
-                onItemClick(categoryItem)
+                onItemClick(categoryItem.categoryId)
             }
         }
     }

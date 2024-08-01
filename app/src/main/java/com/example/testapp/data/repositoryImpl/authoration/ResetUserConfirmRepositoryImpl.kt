@@ -1,9 +1,8 @@
-package com.example.testapp.data.repository.authoration
+package com.example.testapp.data.repositoryImpl.authoration
 
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
 import com.example.testapp.domain.repository.authoration.ResetUserConfirmRepository
-import retrofit2.Response
 import javax.inject.Inject
 
 class ResetUserConfirmRepositoryImpl @Inject constructor(

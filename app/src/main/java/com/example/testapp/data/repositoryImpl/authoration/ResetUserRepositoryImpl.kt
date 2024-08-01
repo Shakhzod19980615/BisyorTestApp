@@ -1,4 +1,4 @@
-package com.example.testapp.data.repository.authoration
+package com.example.testapp.data.repositoryImpl.authoration
 
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto

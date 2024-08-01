@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testapp.domain.use_case.activeCategoryUseCase.ActiveCategoryUseCase
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementImage
 import com.example.testapp.presentation.createAnnouncement.adapter.UploadState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateEditAnnouncementVM @Inject constructor(): ViewModel() {
+class CreateEditAnnouncementVM @Inject constructor(
+
+): ViewModel() {
 
     private val _isUserActive = MutableStateFlow(true) // Initial state
     val isUserActive: StateFlow<Boolean> get() = _isUserActive.asStateFlow()
@@ -46,4 +49,6 @@ class CreateEditAnnouncementVM @Inject constructor(): ViewModel() {
             _isUserActive.emit(isActive)
         }
     }
+
+
 }

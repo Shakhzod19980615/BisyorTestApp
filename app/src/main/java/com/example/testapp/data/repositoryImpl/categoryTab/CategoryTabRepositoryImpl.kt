@@ -1,4 +1,4 @@
-package com.example.testapp.data.repository.categoryTab
+package com.example.testapp.data.repositoryImpl.categoryTab
 
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem

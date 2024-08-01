@@ -55,11 +55,11 @@ class FragmentCategoryPicker: Fragment(R.layout.window_category_picker) {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     private fun getCategoryList() {
         val categoryRecyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
-        val categoryPickerAdapter = CategoryPickerAdapter(layoutInflater){categoryModel->
+        val categoryPickerAdapter = CategoryPickerAdapter(layoutInflater){categoryId->
             parentFragmentManager.commit {
                 replace<FragmentSubCategories>(
                     containerViewId = R.id.fragment_container_view_tag,
-                    args = bundleOf("itemId" to categoryModel.categoryId)
+                    args = bundleOf("categoryId" to categoryId)
                 ).addToBackStack("FragmentCreateEditAnnouncement")
             }
         }

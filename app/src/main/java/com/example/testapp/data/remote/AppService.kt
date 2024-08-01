@@ -5,6 +5,7 @@ import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
 import com.example.testapp.data.remote.dto.authoration.UserDataResponse
 import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
+import com.example.testapp.data.remote.dto.searchCategory.CategoryResponseDto
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.data.request.login.LoginRequest
 import com.example.testapp.data.request.login.RegisterWithSocialRequest
@@ -64,6 +65,13 @@ interface AppService {
     suspend fun resetUserUpdatePassword(@Body body: ResetUserUpdatePasswordRequest): UserDataResponse
     @POST(value = "account/login-social-set")
     suspend fun registerWithSocial(@Body body: RegisterWithSocialRequest): UserDataResponse
+
+    //Search Section
+    @GET("items/child-categories")
+    suspend fun getActiveInsideCategories(
+        @Query("lang") lang: String,
+        @Query("category_id") categoryId: Int?
+    ): List<CategoryResponseDto>
 
     /*//TODO: - Authorization section
     @POST("login/login")

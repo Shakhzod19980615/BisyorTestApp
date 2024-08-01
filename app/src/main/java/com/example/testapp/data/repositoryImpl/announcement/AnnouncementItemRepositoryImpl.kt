@@ -1,4 +1,4 @@
-package com.example.testapp.data.repository.announcement
+package com.example.testapp.data.repositoryImpl.announcement
 
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
