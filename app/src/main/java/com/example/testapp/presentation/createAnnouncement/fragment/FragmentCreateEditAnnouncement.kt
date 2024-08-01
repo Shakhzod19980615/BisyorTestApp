@@ -1,28 +1,27 @@
 package com.example.testapp.presentation.createAnnouncement.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapp.R
 import com.example.testapp.databinding.WindowCreateEditAnnouncementBinding
+import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementAdapter
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementImage
 import com.example.testapp.presentation.createAnnouncement.adapter.UploadState
@@ -40,8 +39,6 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         viewModel.addImages(uris)
     }
-    private val handler = Handler(Looper.getMainLooper())
-
     // Runnable to hide the delete icon
         override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +50,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
@@ -62,7 +60,14 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
                 binding.clickerStore.isVisible = !isUserActive
             }
         }
-
+        binding.clickerCategory.setOnClickListener {
+            activity?.supportFragmentManager?.commit {
+                replace<FragmentCategoryPicker>(
+                    containerViewId= R.id.fragment_container_view_tag,
+                ).addToBackStack("replacement")
+            }
+        }
+        binding.clickerPickImage.isVisible = viewModel.selectedImages.value.size < 8
         binding.textUser.setOnClickListener {
             viewModel.setActiveSegment(true)
         }
@@ -75,6 +80,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         binding.clickerPickImage.setOnClickListener {
             pickImages()
         }
+
     }
     private fun pickImages() {
         if (viewModel.selectedImages.value.size < 9) {
@@ -84,7 +90,12 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         }
     }
     private fun setupRecyclerView() {
-        imagesAdapter = CreateAnnouncementAdapter ()
+        imagesAdapter = CreateAnnouncementAdapter (
+            images = selectedImages,
+            onDeleteClick = { image ->
+                viewModel.removeImage(image)
+            }
+        )
         binding.listImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = imagesAdapter
@@ -92,6 +103,8 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         lifecycleScope.launch {
             viewModel.selectedImages.collect { images ->
                 imagesAdapter.submitList(images)
+                selectedImages.clear()
+                selectedImages.addAll(images)
                 binding.clickerPickImage.isVisible = images.size < 8
             }
         }
