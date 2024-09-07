@@ -42,8 +42,9 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .client(provideOkhttp())
-            .addConverterFactory(GsonConverterFactory.create())
+            .client(provideOkhttp())// set HTTP client that Retrofit will use to make requests
+            .addConverterFactory(GsonConverterFactory.create())//to specify how Retrofit should convert
+            // JSON responses from the server into Java/Kotlin objects
             .build()
     }
 
@@ -51,12 +52,14 @@ object AppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): AppService {
         return retrofit.create(AppService::class.java)
+        // will generate the necessary code to make network requests based on AppService interface.
     }
     @Singleton
     @Provides
     fun provideOkhttp(): OkHttpClient {
-        val okHttpClient = OkHttpClient.Builder()
+        val okHttpClient = OkHttpClient.Builder()//build an OkHttp client which is a powerful HTTP client
         okHttpClient.writeTimeout(5, TimeUnit.MINUTES).readTimeout(5, TimeUnit.MINUTES)
+            //set write timeouts for POST and read timeouts for GET
             .addInterceptor(AuthInterceptor())
         return okHttpClient.build()
 

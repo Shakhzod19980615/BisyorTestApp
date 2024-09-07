@@ -11,6 +11,6 @@ class ResetUpdatePasswordUseCase @Inject constructor(
 ) {
 
     suspend fun invoke(resetUserUpdatePasswordRequest: ResetUserUpdatePasswordRequest): UserDataModel {
-        return resetUpdatePasswordRepository.updatePassword(resetUserUpdatePasswordRequest = resetUserUpdatePasswordRequest).toUserDataModel()
+        return resetUpdatePasswordRepository.updatePassword(resetUserUpdatePasswordRequest = resetUserUpdatePasswordRequest)
     }
 }

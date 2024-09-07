@@ -11,7 +11,8 @@ class AuthInterceptor :Interceptor {
         val requestBuilder = chain.request().newBuilder()
 
         mySetting.getToken()?.let {
-            requestBuilder.addHeader("Authorization","Bearer $it")
+            requestBuilder.addHeader("Authorization","Bearer $it")//is used to modify request before sending
+            // it adds a bearer token in the header to every request
         }
         return chain.proceed(requestBuilder.build())
     }

@@ -15,7 +15,7 @@ data class UserDataModel(
     val bonusBalance: Int?=null,
     val userBirthday: String?=null,
     val itemCount: Int?=null,
-    val storeItemCount: Int,
+    val storeItemCount: Int = 0,
     val districtId: Int?=null,
     val districtName: String?=null,
     val regionId: Int?=null,

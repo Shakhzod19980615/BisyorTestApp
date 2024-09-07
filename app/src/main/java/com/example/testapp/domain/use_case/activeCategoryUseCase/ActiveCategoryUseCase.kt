@@ -10,6 +10,7 @@ class ActiveCategoryUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
     suspend fun invoke(categoryId: Int,lang:String):List<CategoryModel>{
-        return repository.getActiveSubCategories(categoryId = categoryId, lang = lang).map { it.toCategoryModel() }
+        return repository.getActiveSubCategories(categoryId = categoryId, lang = lang)
+
     }
 }

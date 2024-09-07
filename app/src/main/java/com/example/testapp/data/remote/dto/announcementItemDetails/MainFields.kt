@@ -34,7 +34,7 @@ data class MainFields(
     val ownerType: Int,
     val ownerTypeName: String,
     val price: String?,
-    val priceSearch: Int,
+    val priceSearch: Double,
     @SerializedName("price_ex")
     val price_ex: Int,
     val recommend: String,

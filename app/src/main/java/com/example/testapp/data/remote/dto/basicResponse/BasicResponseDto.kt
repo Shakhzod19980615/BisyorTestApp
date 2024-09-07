@@ -8,7 +8,7 @@ data class BasicResponseDto(
     val code: Int,
     val status: Int
 )
-fun BasicResponseDto.toBasicResponse() = BasicResponseModel(
+fun BasicResponseDto.toBasicResponseModel() = BasicResponseModel(
     code = code,
     message = message,
     name = name,

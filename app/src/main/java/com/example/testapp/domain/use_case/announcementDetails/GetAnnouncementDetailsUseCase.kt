@@ -9,6 +9,6 @@ class GetAnnouncementDetailsUseCase @Inject constructor(
     private val repository: AnnouncementDetailsRepository
 ) {
     suspend fun invoke(itemId: Int?): AnnouncementItemDetailsModel {
-        return repository.getAnnouncementDetails(itemId = itemId?:-1).toAnnouncmentItemDetails()
+        return repository.getAnnouncementDetails(itemId = itemId?:-1)
     }
 }

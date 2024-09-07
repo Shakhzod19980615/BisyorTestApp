@@ -10,6 +10,11 @@ class GetAnnouncementListUseCase @Inject constructor(
     private val repository: AnnouncementItemRepository
 ) {
     suspend fun invoke(categoryId: Int): List<AnnouncementItemModel> {
-        return repository.getAnnouncementList(categoryId).items.map { it.toAnnouncementItem() }
+        return try {
+            repository.getAnnouncementList(categoryId)
+        }catch (e: Exception){
+            emptyList()
+        }
+
     }
 }

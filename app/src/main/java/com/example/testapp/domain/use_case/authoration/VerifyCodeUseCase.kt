@@ -11,6 +11,6 @@ class VerifyCodeUseCase @Inject constructor(
     private val repository: VerifyCodeRepository
 ) {
     suspend fun invoke(verificationCodeRequest: VerificationCodeRequest): UserDataModel {
-        return repository.verifyCode(verificationCodeRequest = verificationCodeRequest).toUserDataModel()
+        return repository.verifyCode(verificationCodeRequest = verificationCodeRequest)
     }
 }

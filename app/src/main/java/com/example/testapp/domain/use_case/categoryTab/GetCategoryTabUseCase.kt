@@ -9,6 +9,6 @@ class GetCategoryTabUseCase @Inject constructor(
     private val repository: CategoryTabRepository
 ) {
      suspend fun invoke():List<CategoryTabItemModel>{
-        return repository.getAllMainCategories().map { it.toCategoryTabItem() }
-    }
+        return repository.getAllMainCategories()
+     }
 }

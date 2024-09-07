@@ -49,7 +49,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 kotlin.runCatching {
-                    loginRequestUseCase.invoke(loginRequest = loginRequest)
+                    loginRequestUseCase.signIn(loginRequest = loginRequest)
                 }.onSuccess {
                     signIn.value = Resource.Success(it)
                 }.onFailure {throwable->

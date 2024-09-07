@@ -11,12 +11,12 @@ class LoginRequestUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
 
-    suspend fun invoke(loginRequest: LoginRequest): UserDataModel {
-        return loginRepository.signIn(loginRequest = loginRequest).toUserDataModel()
+    suspend fun signIn(loginRequest: LoginRequest): UserDataModel {
+        return loginRepository.signIn(loginRequest = loginRequest)
     }
 
     suspend fun registerWithSocial(registerWithSocialRequest: RegisterWithSocialRequest): UserDataModel {
         return loginRepository.registerWithSocial(registerWithSocialRequest = registerWithSocialRequest)
-            .toUserDataModel()
+
     }
 }
