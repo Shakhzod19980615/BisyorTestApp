@@ -2,6 +2,7 @@ package com.example.testapp.presentation.createAnnouncement.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.databinding.ItemCategoryBinding
@@ -9,6 +10,7 @@ import com.example.testapp.domain.model.categoryModel.CategoryModel
 
 class SubCategoryAdapter(
     private val layoutInflater: LayoutInflater,
+    private val onItemClick: (CategoryModel) -> Unit
 ): RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder>() {
 
     private val subCategoryList : MutableList<CategoryModel> = mutableListOf()
@@ -38,6 +40,13 @@ class SubCategoryAdapter(
     ): RecyclerView.ViewHolder(binding.root){
         fun bind(categoryItem: CategoryModel){
             binding.subCategoryName.text = categoryItem.title
+            if (categoryItem.hasChild){
+                binding.iconMore.visibility = View.VISIBLE
+                binding.root.setOnClickListener {
+                    onItemClick(categoryItem)
+                }
+            }
+
         }
     }
 }

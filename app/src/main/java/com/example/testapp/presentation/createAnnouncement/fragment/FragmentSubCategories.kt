@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.R
 import com.example.testapp.common.Resource
-import com.example.testapp.databinding.WindowCategoryPickerBinding
 import com.example.testapp.databinding.WindowSubCategoriesBinding
 import com.example.testapp.presentation.createAnnouncement.adapter.SubCategoryAdapter
 import com.example.testapp.presentation.createAnnouncement.viewModel.FragmentSubCategoryVM
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
@@ -29,7 +30,7 @@ import kotlin.properties.Delegates
 class FragmentSubCategories: Fragment(R.layout.window_sub_categories) {
     private var binding: WindowSubCategoriesBinding by Delegates.notNull()
     private val viewModel: FragmentSubCategoryVM by viewModels()
-    private val categoryId : Int? by lazy {
+    private val subCategoryId : Int? by lazy {
         arguments?.getInt("categoryId")
     }
     override fun onCreateView(
@@ -60,12 +61,23 @@ class FragmentSubCategories: Fragment(R.layout.window_sub_categories) {
                 requireContext(), LinearLayoutManager.VERTICAL, false
             )
         }
-        val subCategoryAdapter = SubCategoryAdapter(layoutInflater)
+        val subCategoryAdapter = SubCategoryAdapter(layoutInflater){categoryItem->
+                if (categoryItem.hasChild){
+                    parentFragmentManager.commit {
+                        replace<FragmentSubCategories>(
+                            containerViewId = R.id.fragment_container_view_tag,
+                            args = bundleOf("categoryId" to categoryItem.categoryId)
+                        ).addToBackStack("FragmentCreateEditAnnouncement")
+                    }
+                }
 
-       categoryId?.let { viewModel.getSubCategories(categoryId = it,"uz") }
+        }
+
+        subCategoryId?.let { viewModel.getSubCategories(categoryId = it,"uz") }
 
         subCategoryRecyclerView?.adapter = subCategoryAdapter
         lifecycleScope.launch {
+            //subCategoryId?.let { viewModel.getSubCategories(categoryId = it,"uz") }
             viewModel.subCategories.collect {resource ->
                 when (resource) {
                     is Resource.Success -> {

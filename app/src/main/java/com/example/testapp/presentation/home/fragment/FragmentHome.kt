@@ -1,5 +1,6 @@
 package com.example.testapp.presentation.home.fragment
 
+import AlertDialogHelper
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -86,7 +87,8 @@ class FragmentHome: Fragment(R.layout.window_home) {
                         viewModelAnnouncement.getAnnouncementList(categoryId = firstCategoryId)
                     }
                     is Resource.Error -> {
-                       showAlertDialog(resource.message)
+                        context?.let { AlertDialogHelper.showAlertDialog(it,resource.message) }
+                       //showAlertDialog(resource.message)
                     }
                     is Resource.Loading -> {
                         contentLayout.visibility = View.GONE
@@ -157,12 +159,6 @@ class FragmentHome: Fragment(R.layout.window_home) {
         } else {
             shimmerLayout.visibility = View.GONE
             contentLayout.visibility = View.VISIBLE
-        }
-    }
-    private fun replaceFragment(fragment: Fragment){
-        activity?.supportFragmentManager?.commit {
-            replace(R.id.fragment_container_view_tag,
-                fragment)
         }
     }
 }

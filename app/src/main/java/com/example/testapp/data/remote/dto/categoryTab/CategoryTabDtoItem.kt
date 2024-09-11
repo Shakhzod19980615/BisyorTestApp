@@ -1,6 +1,6 @@
 package com.example.testapp.data.remote.dto.categoryTab
 
-import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
+import com.example.testapp.domain.model.categoryModel.CategoryModel
 
 data class CategoryDtoItem(
     val addr: Int,
@@ -9,8 +9,8 @@ data class CategoryDtoItem(
     val keyword: String,
     val title: String
 )
-fun CategoryDtoItem.toCategoryTabItem() = CategoryTabItemModel(
-    addr = addr,
+fun CategoryDtoItem.toCategoryTabItem() = CategoryModel(
+    hasChild = addr==1,
     categoryId = categoryId,
     icon = icon,
     keyword = keyword,

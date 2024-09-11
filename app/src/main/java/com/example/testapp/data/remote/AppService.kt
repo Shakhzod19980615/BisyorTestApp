@@ -71,7 +71,7 @@ interface AppService {
     suspend fun getActiveInsideCategories(
         @Query("lang") lang: String,
         @Query("category_id") categoryId: Int?
-    ): List<CategoryResponseDto>
+    ): List<CategoryDtoItem>
 
     /*//TODO: - Authorization section
     @POST("login/login")

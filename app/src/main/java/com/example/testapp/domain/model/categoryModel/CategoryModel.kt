@@ -4,7 +4,9 @@ data class CategoryModel(
     val id: Int = -1,
     val title: String = "",
     val categoryId: Int = 0,
-    val itemCount: Int = 0,
-    val hasChild : Boolean = false,
+    val itemsCount: Int = 0,
+    val icon: String = "",
+    val keyword: String = "",
+    val hasChild: Boolean = false,
     val storeCategoryId: Int? = null
 )

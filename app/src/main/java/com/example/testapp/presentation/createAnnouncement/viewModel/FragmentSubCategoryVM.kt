@@ -21,7 +21,7 @@ class FragmentSubCategoryVM @Inject constructor(
 ): ViewModel() {
     private val _subCategories = MutableStateFlow<Resource<List<CategoryModel>>>(Resource.Loading())
     val subCategories: StateFlow<Resource<List<CategoryModel>>> get() = _subCategories
-    fun getSubCategories(categoryId: Int,lang:String) {
+     fun getSubCategories(categoryId: Int,lang:String) {
         _subCategories.value = Resource.Loading()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

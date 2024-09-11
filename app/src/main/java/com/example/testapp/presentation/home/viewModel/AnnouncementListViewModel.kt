@@ -35,7 +35,7 @@ class AnnouncementListViewModel @Inject constructor(
     fun getAnnouncementList(categoryId: Int){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                kotlin.runCatching {
+                kotlin.runCatching {//handle exceptions
                     getAnnouncementListUseCase.invoke(categoryId)
                 }.onSuccess {
                     _announcementItems.value = Resource.Success(it)

@@ -6,7 +6,7 @@ data class CategoryResponseDto (
     val id: Int = -1,
     val title: String = "",
     val categoryId: Int = 0,
-    val itemCount: Int = 0,
+    val itemsCount: Int = 0,
     val hasChild : Boolean = false,
     val storeCategoryId: Int? = null
 )
@@ -15,7 +15,7 @@ fun CategoryResponseDto.toCategoryModel() = CategoryModel(
     id = id,
     title = title,
     categoryId = categoryId,
-    itemCount = itemCount,
+    itemsCount = itemsCount,
     hasChild = hasChild,
     storeCategoryId = storeCategoryId
 )

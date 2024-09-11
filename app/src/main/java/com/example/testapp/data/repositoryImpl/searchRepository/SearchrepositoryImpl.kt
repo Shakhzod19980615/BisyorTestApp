@@ -1,6 +1,7 @@
 package com.example.testapp.data.repositoryImpl.searchRepository
 
 import com.example.testapp.data.remote.AppService
+import com.example.testapp.data.remote.dto.categoryTab.toCategoryTabItem
 import com.example.testapp.data.remote.dto.searchCategory.CategoryResponseDto
 import com.example.testapp.data.remote.dto.searchCategory.toCategoryModel
 import com.example.testapp.domain.model.categoryModel.CategoryModel
@@ -13,7 +14,7 @@ class SearchRepositoryImpl @Inject constructor(
     override suspend fun getActiveSubCategories(categoryId: Int,lang:String): List<CategoryModel> {
         return try {
             api.getActiveInsideCategories(categoryId = categoryId, lang = lang)
-                .map { it.toCategoryModel() }
+                .map { it.toCategoryTabItem() }
         }catch (e:Exception){
             emptyList()
         }

@@ -6,6 +6,7 @@ import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.Resource
+import com.example.testapp.domain.model.categoryModel.CategoryModel
 import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
 import com.example.testapp.domain.use_case.categoryTab.GetCategoryTabUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,8 +24,8 @@ class CategoryTabViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoryTabUseCase
 ) : ViewModel() {
 
-    private val _categoryItems = MutableStateFlow<Resource<List<CategoryTabItemModel>>>(Resource.Loading())
-    val categoryItems: StateFlow<Resource<List<CategoryTabItemModel>>> get() = _categoryItems.asStateFlow()
+    private val _categoryItems = MutableStateFlow<Resource<List<CategoryModel>>>(Resource.Loading())
+    val categoryItems: StateFlow<Resource<List<CategoryModel>>> get() = _categoryItems.asStateFlow()
 
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)

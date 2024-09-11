@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testapp.R
 import com.example.testapp.databinding.ItemTabBinding
+import com.example.testapp.domain.model.categoryModel.CategoryModel
 import com.example.testapp.domain.model.categoryTab.CategoryTabItemModel
 
 class CategoryTabAdapter(
     private val layoutInflater: LayoutInflater,
     val onTabClicked: (Int) -> Unit
 ): RecyclerView.Adapter<CategoryTabAdapter.CategoryViewHolder>() {
-    private val categoryList : MutableList<CategoryTabItemModel> = mutableListOf()
+    private val categoryList : MutableList<CategoryModel> = mutableListOf()
     private var selectedCategoryIndex = 0
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -40,7 +41,7 @@ class CategoryTabAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setCategoryItems(categoryList: List<CategoryTabItemModel>){
+    fun setCategoryItems(categoryList: List<CategoryModel>){
         this.categoryList.clear()
         this.categoryList.addAll(categoryList)
         notifyDataSetChanged()
@@ -50,7 +51,7 @@ inner class CategoryViewHolder(
     private val binding: ItemTabBinding,
 ): RecyclerView.ViewHolder(binding.root){
     @SuppressLint("ResourceAsColor")
-    fun bind(categoryItem: CategoryTabItemModel){
+    fun bind(categoryItem: CategoryModel){
         binding.name.text = categoryItem.title
         Glide.with(binding.root).load(categoryItem.icon).into(binding.image)
         updateTextColor()
