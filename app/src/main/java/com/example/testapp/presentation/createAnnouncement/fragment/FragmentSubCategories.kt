@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
@@ -44,8 +45,8 @@ class FragmentSubCategories: Fragment(R.layout.window_sub_categories) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-
+        binding.toolbar.setOnClickListener {
+            parentFragmentManager.popBackStack("FragmentCreateEditAnnouncement", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
         binding.backTitle.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
@@ -67,6 +68,13 @@ class FragmentSubCategories: Fragment(R.layout.window_sub_categories) {
                         replace<FragmentSubCategories>(
                             containerViewId = R.id.fragment_container_view_tag,
                             args = bundleOf("categoryId" to categoryItem.categoryId)
+                        ).addToBackStack("FragmentCreateEditAnnouncement")
+                    }
+                }else{
+                    parentFragmentManager.commit {
+                        replace<FragmentCreateEditAnnouncement>(
+                            containerViewId = R.id.fragment_container_view_tag,
+                            args = bundleOf("categoryName" to categoryItem.title)
                         ).addToBackStack("FragmentCreateEditAnnouncement")
                     }
                 }

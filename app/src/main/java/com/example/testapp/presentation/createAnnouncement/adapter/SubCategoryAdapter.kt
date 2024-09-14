@@ -42,9 +42,9 @@ class SubCategoryAdapter(
             binding.subCategoryName.text = categoryItem.title
             if (categoryItem.hasChild){
                 binding.iconMore.visibility = View.VISIBLE
-                binding.root.setOnClickListener {
-                    onItemClick(categoryItem)
-                }
+            }
+            binding.root.setOnClickListener {
+                onItemClick(categoryItem)
             }
 
         }

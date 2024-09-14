@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
@@ -26,6 +28,7 @@ import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnounc
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementImage
 import com.example.testapp.presentation.createAnnouncement.adapter.UploadState
 import com.example.testapp.presentation.createAnnouncement.viewModel.CreateEditAnnouncementVM
+import com.example.testapp.presentation.home.fragment.FragmentHome
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
@@ -38,6 +41,9 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
     private lateinit var imagesAdapter: CreateAnnouncementAdapter
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         viewModel.addImages(uris)
+    }
+    private val categoryTitle : String? by lazy {
+        arguments?.getString("categoryName")
     }
     // Runnable to hide the delete icon
         override fun onCreateView(
@@ -53,6 +59,16 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    parentFragmentManager.commit {
+                        replace<FragmentHome>(R.id.fragment_container_view_tag)
+                    }
+                }
+
+            })
         setupRecyclerView()
         lifecycleScope.launch {
             viewModel.isUserActive.collect { isUserActive ->
@@ -67,6 +83,10 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
                 ).addToBackStack("replacement")
             }
         }
+        if(categoryTitle != null) {
+            binding.textCategory.setText(categoryTitle.toString())
+        }
+        //binding.textCategory.setText(categoryTitle.toString())
         binding.clickerPickImage.isVisible = viewModel.selectedImages.value.size < 8
         binding.textUser.setOnClickListener {
             viewModel.setActiveSegment(true)
@@ -82,6 +102,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         }
 
     }
+
     private fun pickImages() {
         if (viewModel.selectedImages.value.size < 9) {
             imagePickerLauncher.launch("image/*")
