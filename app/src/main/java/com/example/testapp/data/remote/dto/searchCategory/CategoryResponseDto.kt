@@ -3,19 +3,19 @@ package com.example.testapp.data.remote.dto.searchCategory
 import com.example.testapp.domain.model.categoryModel.CategoryModel
 
 data class CategoryResponseDto (
-    val id: Int = -1,
+    val storeCategoryId: Int? = null,
     val title: String = "",
     val categoryId: Int = 0,
     val itemsCount: Int = 0,
-    val hasChild : Boolean = false,
-    val storeCategoryId: Int? = null
+    val addr: Int? = null,
+
 )
 
 fun CategoryResponseDto.toCategoryModel() = CategoryModel(
-    id = id,
-    title = title,
+    id = categoryId,
     categoryId = categoryId,
-    itemsCount = itemsCount,
-    hasChild = hasChild,
+    title = title,
+    itemsCount = itemsCount?:0,
+    hasChild = addr == 1,
     storeCategoryId = storeCategoryId
 )

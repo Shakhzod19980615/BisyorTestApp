@@ -26,12 +26,14 @@
         android:layout_toStartOf="@id/count"
         android:fontFamily="sans-serif"
         android:letterSpacing="-0.02"
-        android:singleLine="true"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:visibility="visible"
         android:textSize="17sp" />
 
     <TextView
         android:id="@+id/count"
-        android:layout_width="wrap_content"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/icon_more"

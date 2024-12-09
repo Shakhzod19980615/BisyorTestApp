@@ -2,15 +2,6 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <data>-->
-
-<!--        <import type="android.view.View" />-->
-
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="uz.bisyor.android.ui.home.mvvm.FragmentHomeVM" />-->
-<!--    </data>-->
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
@@ -100,23 +91,6 @@
                     app:spanCount="2"
                     tools:itemCount="4"
                     tools:visibility="gone" />
-             <!--   tools:listitem="@layout/item_product_grid"-->
-
-<!--                <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->
-<!--                    android:id="@+id/shimmer"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:visibility="visible"-->
-<!--                    android:background="?android:attr/colorBackground"-->
-<!--                    app:shimmer_demo_angle="20"-->
-<!--                    app:shimmer_demo_child_count="1"-->
-<!--                    app:shimmer_demo_grid_child_count="1"-->
-<!--                    app:shimmer_demo_layout="@layout/home_shimmer"-->
-<!--                    app:shimmer_demo_layout_manager_type="linear_vertical"-->
-<!--                    app:shimmer_demo_shimmer_color="@color/white"-->
-<!--                    tools:listitem="@layout/home_shimmer"-->
-<!--                    tools:visibility="visible"-->
-<!--                    tools:ignore="MissingClass" />-->
             </RelativeLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

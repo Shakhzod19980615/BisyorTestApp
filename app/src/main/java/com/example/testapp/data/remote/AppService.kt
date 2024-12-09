@@ -5,8 +5,10 @@ import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
 import com.example.testapp.data.remote.dto.authoration.UserDataResponse
 import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
+import com.example.testapp.data.remote.dto.createAnnouncement.AnnouncementDynamicResponse
 import com.example.testapp.data.remote.dto.searchCategory.CategoryResponseDto
 import com.example.testapp.data.request.RegistrationRequest
+import com.example.testapp.data.request.createAnnouncement.AnnouncementPropertiesRequest
 import com.example.testapp.data.request.login.LoginRequest
 import com.example.testapp.data.request.login.RegisterWithSocialRequest
 import com.example.testapp.data.request.resetPassword.ResetUserUpdatePasswordRequest
@@ -71,8 +73,26 @@ interface AppService {
     suspend fun getActiveInsideCategories(
         @Query("lang") lang: String,
         @Query("category_id") categoryId: Int?
-    ): List<CategoryDtoItem>
+    ): List<CategoryResponseDto>
+    @POST("items/get-item-fields")
+    suspend fun getDynamicItemsByCategoryId(@Body body: AnnouncementPropertiesRequest):
+           List<AnnouncementDynamicResponse>
 
+    @GET("search/category-items")
+    suspend fun getItemsByCategory(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int,
+        @Query("cat_id") categoryId: Int,
+        @Query("sorting") sorting: String? = null
+    ): AnnouncementListDto
+
+    @GET("search/global-search-items")
+    suspend fun getItemsByQuery(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int,
+        @Query("text") query: String,
+        @Query("sorting") sorting: String? = null
+    ): AnnouncementListDto
     /*//TODO: - Authorization section
     @POST("login/login")
     suspend fun signIn(@Body body: LoginRequest): Response<UserDataModel>

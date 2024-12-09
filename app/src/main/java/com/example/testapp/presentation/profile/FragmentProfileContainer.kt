@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.testapp.R
+import com.example.testapp.common.MySettings
 import com.example.testapp.databinding.WindowProfileContainerBinding
 import com.example.testapp.presentation.authoration.login.fragment.FragmentLogin
 import kotlin.properties.Delegates
@@ -34,7 +35,7 @@ class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
                     replace(R.id.fragment_container_view_tag, FragmentLogin()).addToBackStack("goBack")
                 }
             }
-            if(isLogined){
+            if(MySettings.getToken()!!.isNotEmpty()){
                 binding.avatarLl.visibility = View.GONE
                 binding.balanceLl.visibility = View.VISIBLE
                 binding.balanceView.visibility = View.VISIBLE
@@ -42,6 +43,9 @@ class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
                 binding.clickerNewStore.visibility = View.VISIBLE
                 binding.btnLogoutLl.visibility = View.VISIBLE
                 binding.userBalanceView.visibility = View.VISIBLE
+                binding.clickerFillBalance.text = getString(R.string.add_balance)
+                binding.logoutTv.text = getString(R.string.logout)
+                binding.text.text = getString(R.string.your_balance)
             }else{
                 binding.avatarLl.visibility = View.VISIBLE
                 binding.balanceLl.visibility = View.GONE
@@ -50,9 +54,11 @@ class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
                 binding.clickerNewStore.visibility = View.GONE
                 binding.btnLogoutLl.visibility = View.GONE
                 binding.userBalanceView.visibility = View.GONE
+                binding.text.text = getString(R.string.your_balance)
+
             }
-            binding.text.text = getString(R.string.your_balance)
-            binding.clickerFillBalance.text = getString(R.string.add_balance)
+            /*binding.text.text = getString(R.string.your_balance)
+            binding.clickerFillBalance.text = getString(R.string.add_balance)*/
             binding.loginForFunctionsTv.text = getString(R.string.login_for_functions)
             binding.buttonLogin.text = getString(R.string.log_in)
             binding.profileTv.text = getString(R.string.profile)
@@ -65,6 +71,6 @@ class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
             binding.openStoreTv.text = getString(R.string.open_store)
             binding.contactsTv.text =getString(R.string.contacts)
             binding.aboutAppTv.text = getString(R.string.about_app)
-            binding.logoutTv.text = getString(R.string.logout)
+
     }
 }

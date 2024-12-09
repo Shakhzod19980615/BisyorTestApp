@@ -11,6 +11,7 @@ import com.example.testapp.data.repositoryImpl.authoration.ResetUserRepositoryIm
 import com.example.testapp.data.repositoryImpl.authoration.SignUpRepositoryImpl
 import com.example.testapp.data.repositoryImpl.authoration.VerifyCodeRepositoryImpl
 import com.example.testapp.data.repositoryImpl.categoryTab.CategoryTabRepositoryImpl
+import com.example.testapp.data.repositoryImpl.createAnnouncement.CreateAnnouncementRepositoryImpl
 import com.example.testapp.data.repositoryImpl.searchRepository.SearchRepositoryImpl
 import com.example.testapp.domain.repository.announcement.AnnouncementItemRepository
 import com.example.testapp.domain.repository.announcementItemDetails.AnnouncementDetailsRepository
@@ -21,6 +22,7 @@ import com.example.testapp.domain.repository.authoration.ResetUserRepository
 import com.example.testapp.domain.repository.authoration.SignUpRepository
 import com.example.testapp.domain.repository.authoration.VerifyCodeRepository
 import com.example.testapp.domain.repository.categoryTab.CategoryTabRepository
+import com.example.testapp.domain.repository.createAnnouncement.CreateAnnouncementRepository
 import com.example.testapp.domain.repository.searchRepository.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -114,6 +116,11 @@ object AppModule {
     @Singleton
     fun provideSearchRepository(api: AppService):SearchRepository{
         return SearchRepositoryImpl(api)
+    }
+    @Provides
+    @Singleton
+    fun provideAnnouncementRepository(api: AppService): CreateAnnouncementRepository {
+        return CreateAnnouncementRepositoryImpl(api)
     }
     @Provides
     @Singleton

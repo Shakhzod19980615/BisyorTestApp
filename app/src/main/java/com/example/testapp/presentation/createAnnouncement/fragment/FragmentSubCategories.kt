@@ -62,7 +62,9 @@ class FragmentSubCategories: Fragment(R.layout.window_sub_categories) {
                 requireContext(), LinearLayoutManager.VERTICAL, false
             )
         }
-        val subCategoryAdapter = SubCategoryAdapter(layoutInflater){categoryItem->
+        val subCategoryAdapter = SubCategoryAdapter(
+            layoutInflater = layoutInflater,
+            onItemClick ={categoryItem->
                 if (categoryItem.hasChild){
                     parentFragmentManager.commit {
                         replace<FragmentSubCategories>(
@@ -74,12 +76,13 @@ class FragmentSubCategories: Fragment(R.layout.window_sub_categories) {
                     parentFragmentManager.commit {
                         replace<FragmentCreateEditAnnouncement>(
                             containerViewId = R.id.fragment_container_view_tag,
-                            args = bundleOf("categoryName" to categoryItem.title)
+                            args = bundleOf("categoryName" to categoryItem.title,
+                                "categoryId" to categoryItem.categoryId,"fieldId" to categoryItem.id)
                         ).addToBackStack("FragmentCreateEditAnnouncement")
                     }
                 }
+        }, showCount = false)
 
-        }
 
         subCategoryId?.let { viewModel.getSubCategories(categoryId = it,"uz") }
 

@@ -47,6 +47,7 @@ class CategoryPickerAdapter(
         @SuppressLint("ResourceAsColor")
         fun bind(categoryItem: CategoryModel) {
             binding.categoryName.text = categoryItem.title
+            binding.count.text = categoryItem.itemsCount.toString()
             Glide.with(binding.root).load(categoryItem.icon).into(binding.imgHome)
             binding.root.setOnClickListener {
                 onItemClick(categoryItem.categoryId)

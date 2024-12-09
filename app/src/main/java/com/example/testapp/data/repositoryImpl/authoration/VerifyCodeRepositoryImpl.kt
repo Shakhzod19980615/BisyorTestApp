@@ -1,5 +1,6 @@
 package com.example.testapp.data.repositoryImpl.authoration
 
+import com.example.testapp.common.MySettings
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.remote.dto.authoration.UserDataResponse
 import com.example.testapp.data.remote.dto.authoration.toUserDataModel
@@ -14,7 +15,10 @@ class VerifyCodeRepositoryImpl @Inject constructor(
     override suspend fun verifyCode(verificationCodeRequest: VerificationCodeRequest): UserDataModel {
 
         return try {
-            api.verifySign(body = verificationCodeRequest).toUserDataModel()
+            val result = api.verifySign(body = verificationCodeRequest)
+            MySettings.setToken(result.token)
+            result.toUserDataModel()
+
         }catch (e:Exception){
             UserDataModel()
         }

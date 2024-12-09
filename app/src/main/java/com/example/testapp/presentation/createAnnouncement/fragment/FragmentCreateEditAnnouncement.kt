@@ -1,9 +1,8 @@
 package com.example.testapp.presentation.createAnnouncement.fragment
 
+import DynamicPropertiesAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -22,11 +20,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapp.R
+import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowCreateEditAnnouncementBinding
-import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementAdapter
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementImage
-import com.example.testapp.presentation.createAnnouncement.adapter.UploadState
 import com.example.testapp.presentation.createAnnouncement.viewModel.CreateEditAnnouncementVM
 import com.example.testapp.presentation.home.fragment.FragmentHome
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,11 +36,18 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
     private val viewModel: CreateEditAnnouncementVM by viewModels()
     private val selectedImages = mutableListOf<CreateAnnouncementImage>()
     private lateinit var imagesAdapter: CreateAnnouncementAdapter
+    private lateinit var dynamicPropertiesAdapter: DynamicPropertiesAdapter
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         viewModel.addImages(uris)
     }
     private val categoryTitle : String? by lazy {
         arguments?.getString("categoryName")
+    }
+    private val categoryId : Int? by lazy {
+        arguments?.getInt("categoryId")
+    }
+    private val fieldId : Int? by lazy {
+        arguments?.getInt("fieldId")
     }
     // Runnable to hide the delete icon
         override fun onCreateView(
@@ -69,7 +73,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
                 }
 
             })
-        setupRecyclerView()
+        setupImagesRecyclerView()
         lifecycleScope.launch {
             viewModel.isUserActive.collect { isUserActive ->
                 setActiveSegment(isUserActive)
@@ -85,6 +89,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         }
         if(categoryTitle != null) {
             binding.textCategory.setText(categoryTitle.toString())
+            setUpDynamicFields()
         }
         //binding.textCategory.setText(categoryTitle.toString())
         binding.clickerPickImage.isVisible = viewModel.selectedImages.value.size < 8
@@ -102,7 +107,32 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         }
 
     }
-
+    private fun setUpDynamicFields(){
+        dynamicPropertiesAdapter = DynamicPropertiesAdapter(
+            context = requireContext(),
+        )
+        categoryId?.let { fieldId?.let { it1 -> viewModel.getItemFields(it, it1) } }
+        if (categoryTitle != null) {
+            binding.dynamicList.apply {
+                adapter = dynamicPropertiesAdapter
+                layoutManager = LinearLayoutManager(requireContext(),
+                    LinearLayoutManager.HORIZONTAL,false)
+            }
+            lifecycleScope.launch {
+                viewModel.dynamicProperties.collect { resource ->
+                    when(resource) {
+                        is Resource.Success -> {
+                            dynamicPropertiesAdapter.updateDynamicProperties(resource.data)
+                        }
+                        is Resource.Error -> {
+                            context?.let { AlertDialogHelper.showAlertDialog(it,resource.message) }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
     private fun pickImages() {
         if (viewModel.selectedImages.value.size < 9) {
             imagePickerLauncher.launch("image/*")
@@ -110,7 +140,7 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
             Toast.makeText(requireContext(), "You can only upload up to 8 images", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun setupRecyclerView() {
+    private fun setupImagesRecyclerView() {
         imagesAdapter = CreateAnnouncementAdapter (
             images = selectedImages,
             onDeleteClick = { image ->

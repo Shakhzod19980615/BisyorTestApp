@@ -9,7 +9,7 @@ import com.example.testapp.presentation.authoration.forgotPassword.confirmRestor
 import com.example.testapp.presentation.createAnnouncement.fragment.FragmentCreateEditAnnouncement
 import com.example.testapp.presentation.home.fragment.FragmentHome
 import com.example.testapp.presentation.profile.FragmentProfileContainer
-import com.example.testapp.presentation.searching.FragmentSearching
+import com.example.testapp.presentation.searching.FragmentSearchContainer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.itemIconTintList = null
             when (it.itemId) {
                 R.id.home -> replaceFragment(FragmentHome())
-                R.id.search -> replaceFragment(FragmentSearching())
+                R.id.search -> replaceFragment(FragmentSearchContainer())
                 R.id.create_item -> replaceFragment(FragmentCreateEditAnnouncement())
                 R.id.chat -> replaceFragment(ConfirmRestoreUserPassword())
                 R.id.profile -> replaceFragment(FragmentProfileContainer())
