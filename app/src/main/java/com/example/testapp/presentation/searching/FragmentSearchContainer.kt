@@ -11,9 +11,6 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -27,17 +24,12 @@ import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowSearchContainerBinding
 import com.example.testapp.presentation.createAnnouncement.adapter.CategoryPickerAdapter
 import com.example.testapp.presentation.createAnnouncement.adapter.SubCategoryAdapter
-import com.example.testapp.presentation.createAnnouncement.fragment.FragmentCreateEditAnnouncement
-import com.example.testapp.presentation.createAnnouncement.fragment.FragmentSubCategories
-import com.example.testapp.presentation.createAnnouncement.viewModel.CreateEditAnnouncementVM
 import com.example.testapp.presentation.createAnnouncement.viewModel.FragmentSubCategoryVM
 import com.example.testapp.presentation.home.viewModel.CategoryTabViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class FragmentSearchContainer : Fragment(R.layout.window_search_container)   {
     private var binding : WindowSearchContainerBinding by Delegates.notNull()
@@ -63,14 +55,14 @@ class FragmentSearchContainer : Fragment(R.layout.window_search_container)   {
         initSearchViewClickers()
     }
     private fun initSearchViewClickers(){
-        binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).isFocusable = false
+       /* binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).isFocusable = false
         binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).setOnClickListener {
             parentFragmentManager.commit {
                 replace<FragmentSearchDialog>(
                     containerViewId = R.id.fragment_container_view_tag
                 ).addToBackStack("FragmentSearchDialog")
             }
-        }
+        }*/
         binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 parentFragmentManager.commit {

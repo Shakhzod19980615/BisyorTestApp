@@ -1,5 +1,6 @@
 package com.example.testapp.data.remote
 
+import ChatListResponse
 import com.example.testapp.data.remote.dto.announcementItemDetails.AnnouncementItemDetailsDto
 import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
 import com.example.testapp.data.remote.dto.authoration.UserDataResponse
@@ -77,7 +78,11 @@ interface AppService {
     @POST("items/get-item-fields")
     suspend fun getDynamicItemsByCategoryId(@Body body: AnnouncementPropertiesRequest):
            List<AnnouncementDynamicResponse>
-
+    @GET("items/child-category-list")
+    suspend fun getAllInsideCategories(
+        @Query("lang") lang: String,
+        @Query("category_id") categoryId: Int?
+    ):List<CategoryResponseDto>
     @GET("search/category-items")
     suspend fun getItemsByCategory(
         @Query("lang") lang: String,
@@ -93,6 +98,33 @@ interface AppService {
         @Query("text") query: String,
         @Query("sorting") sorting: String? = null
     ): AnnouncementListDto
+
+
+    //TODO: - MESSAGING SECTION
+    @GET("chats/chats-all-list")
+    suspend fun getAllChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): ChatListResponse
+
+    @GET("chats/admin-users-list")
+    suspend fun getAdminChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ):ChatListResponse
+
+    @GET("items-chats/shops-users-list")
+    suspend fun getStoreChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): ChatListResponse
+
+    @GET("items-chats/items-users-list")
+    suspend fun getAllAnnouncementChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): ChatListResponse
+
     /*//TODO: - Authorization section
     @POST("login/login")
     suspend fun signIn(@Body body: LoginRequest): Response<UserDataModel>

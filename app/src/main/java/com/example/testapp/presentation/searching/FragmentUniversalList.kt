@@ -1,5 +1,6 @@
 package com.example.testapp.presentation.searching
 
+import UniversalListAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -18,12 +20,14 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowUniversalListBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.createAnnouncement.viewModel.FragmentSubCategoryVM
 import com.example.testapp.presentation.home.adapter.AnnouncementListAdapter
+import com.example.testapp.presentation.searching.viewModel.FragmentUniversalListVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
@@ -31,12 +35,16 @@ import kotlin.properties.Delegates
 class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
     private var binding : WindowUniversalListBinding by Delegates.notNull()
     private val viewModel: FragmentSubCategoryVM by viewModels()
+    private lateinit var universalListAdapter: UniversalListAdapter
+
     private val categoryId : Int? by lazy {
         arguments?.getInt("categoryId")
     }
     private val query : String? by lazy {
         arguments?.getString("query")
     }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +58,10 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+        universalListAdapter.updateStyle(FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic)
+        updateLayoutManager(FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic)
+        binding.listTypeSwitcher.setImageResource(R.drawable.vicon_item_type_mosaic)
         binding.iconBack.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
@@ -62,9 +74,33 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
         }
         initSearchViewClickers()
 
-
+        binding.listTypeSwitcher.setOnClickListener {
+            showPopupMenu(it)
+        }
+        binding.listPropertyFilter.setOnClickListener {
+            activity?.supportFragmentManager?.commit {
+                replace<FragmentFilter>(
+                    containerViewId= R.id.fragment_container_view_tag,
+                ).addToBackStack("replacement")
+            }
+        }
 
     }
+   private fun initAdapter(){
+        universalListAdapter = UniversalListAdapter(layoutInflater,
+           FragmentUniversalListVM.ItemRepresentationStyle.styleGallery,
+           onItemClicked = {itemId->
+               activity?.supportFragmentManager?.commit {
+                   replace<FragmentAnnouncementDetail>(
+                       containerViewId= R.id.fragment_container_view_tag,
+                       args = bundleOf("itemId" to itemId)
+                   ).addToBackStack("replacement")
+               }
+           },
+
+           )
+   }
+
     private fun initSearchViewClickers(){
         binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).isFocusable = false
         binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).setOnClickListener {
@@ -77,30 +113,69 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
         }
 
     }
+    private fun showPopupMenu(anchor:View){
+        val popupMenu = PopupMenu(requireContext(), anchor)
+        popupMenu.inflate(R.menu.popup_item_style)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.style_gallery -> {
+                    universalListAdapter.updateStyle(FragmentUniversalListVM.ItemRepresentationStyle.styleGallery)
+                    updateLayoutManager(FragmentUniversalListVM.ItemRepresentationStyle.styleGallery)
+                    binding.listTypeSwitcher.setImageResource(R.drawable.vicon_item_type_gallery)
+                    true
+                }
+                R.id.style_mozaik -> {
+                    universalListAdapter.updateStyle(FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic)
+                    updateLayoutManager(FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic)
+                    binding.listTypeSwitcher.setImageResource(R.drawable.vicon_item_type_mosaic)
+                    true
+                }
+                R.id.style_list -> {
+                    universalListAdapter.updateStyle(FragmentUniversalListVM.ItemRepresentationStyle.styleList)
+                    updateLayoutManager(FragmentUniversalListVM.ItemRepresentationStyle.styleList)
+                    binding.listTypeSwitcher.setImageResource(R.drawable.vicon_item_type_list)
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+    @SuppressLint("NotifyDataSetChanged", "WrongConstant")
+    private fun updateLayoutManager(style: FragmentUniversalListVM.ItemRepresentationStyle) {
+        val recyclerView = binding.list
+
+        when (style) {
+            FragmentUniversalListVM.ItemRepresentationStyle.styleGallery,
+            FragmentUniversalListVM.ItemRepresentationStyle.styleList -> {
+                // Use LinearLayoutManager for gallery and list styles
+                val orientation =  LinearLayoutManager.VERTICAL
+                recyclerView.layoutManager = LinearLayoutManager(requireContext(), orientation, false)
+            }
+
+            FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic -> {
+                // Use GridLayoutManager for mosaic style
+                recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // Default span count for mosaic
+            }
+        }
+
+        // Notify adapter of layout updates
+        universalListAdapter.notifyDataSetChanged()
+    }
+
     @SuppressLint("SetTextI18n")
     private fun getAnnoucementList(){
         val announcementRecyclerView = binding.list
-        announcementRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-
-        val announcementAdapter = AnnouncementListAdapter(layoutInflater,
-            onItemClicked = {itemId->
-                // replaceFragment(FragmentAnnouncementDetail())
-                activity?.supportFragmentManager?.commit {
-                    replace<FragmentAnnouncementDetail>(
-                        containerViewId= R.id.fragment_container_view_tag,
-                        args = bundleOf("itemId" to itemId)
-                    ).addToBackStack("replacement")
-                }
-            }
-        )
         categoryId?.let { viewModel.getItemsByCategory(categoryId = it, offset = 0, lang = "ru") }
-        announcementRecyclerView.adapter = announcementAdapter
+        announcementRecyclerView.adapter = universalListAdapter
         lifecycleScope.launch {
             viewModel.getItemsByCategroy.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         //toggleShimmer(false)
-                        announcementAdapter.setAnnouncementItems(resource.data)
+                       // announcementAdapter.setAnnouncementItems(resource.data)
+                        universalListAdapter.updateAnnouncements(resource.data)
                         binding.totalCount.text = resource.data.size.toString()+ " обявлений"
                         binding.sortText.text = "Самые новые"
 
@@ -120,28 +195,15 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
     }
     @SuppressLint("SetTextI18n")
     private fun getItemsByQuery(){
-        val announcementRecyclerView = binding.list
-        announcementRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-
-        val announcementAdapter = AnnouncementListAdapter(layoutInflater,
-            onItemClicked = {itemId->
-                // replaceFragment(FragmentAnnouncementDetail())
-                activity?.supportFragmentManager?.commit {
-                    replace<FragmentAnnouncementDetail>(
-                        containerViewId= R.id.fragment_container_view_tag,
-                        args = bundleOf("itemId" to itemId)
-                    ).addToBackStack("replacement")
-                }
-            }
-        )
+         val announcementRecyclerView = binding.list
         query?.let { viewModel.getItemsByQuery(query = it, offset = 0, lang = "ru", sorting = null) }
-        announcementRecyclerView.adapter = announcementAdapter
+        announcementRecyclerView.adapter = universalListAdapter
         lifecycleScope.launch {
             viewModel.getItemsByQuery.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         //toggleShimmer(false)
-                        announcementAdapter.setAnnouncementItems(resource.data)
+                        universalListAdapter.updateAnnouncements(resource.data)
                         binding.totalCount.text = resource.data.size.toString()+ " обявлений"
                         binding.sortText.text = "Самые новые"
 
