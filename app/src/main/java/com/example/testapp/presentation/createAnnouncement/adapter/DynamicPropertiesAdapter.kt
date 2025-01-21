@@ -23,6 +23,7 @@ import com.example.testapp.domain.model.createAnnouncement.AnnouncementDynamicPr
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.JsonObject
+import uz.bisyor.corelib.common.extension.showSelectorDialog
 
 class DynamicPropertiesAdapter(
     private val context: Context,
@@ -81,7 +82,7 @@ class DynamicPropertiesAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateDynamicProperties(
         properties: List<AnnouncementDynamicPropertyModel>,
-       // models:List<FilterDynamicProperty>
+        //models:List<FilterDynamicProperty>
     ) {
         items.clear()
         items.addAll(properties)
@@ -231,11 +232,16 @@ class DynamicPropertiesAdapter(
                 model.lastSelectedValue = which.toString()
             }
             .show()
-        /*context.showSelectorDialog(charSequenceList, model.title) { d, which ->
-            d.dismiss()
-            tv.text = charSequenceList[which]
-            model.lastSelectedValue = which.toString()
+        /*context.showSelectorDialog(charSequenceList, model.title) { dialog, which ->
+            dialog.dismiss()  // Dismiss the dialog
+            tv.text = charSequenceList[which]  // Set the text of tv to the selected item
+            model.lastSelectedValue = which.toString()  // Update the last selected value
         }*/
+
+
+
+
+
     }
     fun callMultipleSelectableDialog(model: AnnouncementDynamicPropertyModel, tv: TextView) {
         val charSequenceList: Array<String> =

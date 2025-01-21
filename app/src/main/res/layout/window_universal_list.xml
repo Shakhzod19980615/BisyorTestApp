@@ -157,7 +157,7 @@
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="2"
                     tools:ignore="NotSibling"
-                    tools:listitem="@layout/item_product_grid" />
+                    />
         <!--<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

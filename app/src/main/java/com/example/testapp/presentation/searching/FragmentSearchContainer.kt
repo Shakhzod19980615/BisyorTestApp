@@ -19,8 +19,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testapp.BaseFragment
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.databinding.WindowSearchContainerBinding
 import com.example.testapp.presentation.createAnnouncement.adapter.CategoryPickerAdapter
 import com.example.testapp.presentation.createAnnouncement.adapter.SubCategoryAdapter
@@ -31,7 +33,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class FragmentSearchContainer : Fragment(R.layout.window_search_container)   {
+class FragmentSearchContainer : BaseFragment()   {
     private var binding : WindowSearchContainerBinding by Delegates.notNull()
     private val viewModelTab: CategoryTabViewModel by viewModels()
     private val viewModel: FragmentSubCategoryVM by viewModels()
@@ -51,8 +53,21 @@ class FragmentSearchContainer : Fragment(R.layout.window_search_container)   {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getCategoryList()
+        if(NetworkUtil.isInternetAvailable(requireContext())){
+            getCategoryList()
+        }
         initSearchViewClickers()
+    }
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override fun onNetworkRestored() {
+        super.onNetworkRestored()
+        getCategoryList()
+    }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        NetworkUtil.showNoInternetToast(requireView())
     }
     private fun initSearchViewClickers(){
        /* binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).isFocusable = false

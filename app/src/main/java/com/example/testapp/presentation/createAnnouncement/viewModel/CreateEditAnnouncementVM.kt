@@ -1,6 +1,7 @@
 package com.example.testapp.presentation.createAnnouncement.viewModel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.ErrorParser
@@ -65,13 +66,17 @@ class CreateEditAnnouncementVM @Inject constructor(
                   createAnnouncementUseCase.getAnnouncementDynamicProperties(request)
               }.onSuccess {
                   _dynamicProperties.value = Resource.Success(it)
+                  Log.d("SuccessDebug", "Response: $it")
               }.onFailure{throwable ->
+                  Log.e("ErrorDebug", "Error occurred: ${throwable.message}", throwable)
                   when (throwable) {
                       is retrofit2.HttpException -> {
                           val errorResponse: Response<*>? = throwable.response()
                           if (errorResponse?.errorBody() != null) {
                               val parsedError = errorParser.parseError(errorResponse)
+                              Log.e("HttpErrorDebug", "Response Code: ${errorResponse?.code()}")
                               if (parsedError != null) {
+                                  Log.e("ParsedErrorDebug", "Parsed Error: ${parsedError.message}")
                                   _dynamicProperties.value = Resource.Error(parsedError.message)
                               } else {
                                   _dynamicProperties.value = Resource.Error("Unknown error")

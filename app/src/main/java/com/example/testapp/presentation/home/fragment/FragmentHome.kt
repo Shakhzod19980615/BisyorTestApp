@@ -21,9 +21,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testapp.BaseFragment
 
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.common.util.MyUtil
+import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.databinding.WindowHomeBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.home.adapter.AnnouncementListAdapter
@@ -35,12 +38,13 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class FragmentHome: Fragment(R.layout.window_home) {
+class FragmentHome: BaseFragment() {
     private val viewModelTab: CategoryTabViewModel by viewModels()
     private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
     private var binding : WindowHomeBinding by Delegates.notNull()
     private lateinit var shimmerLayout: LinearLayout
     private lateinit var contentLayout: RecyclerView
+    private lateinit var announcementAdapter: AnnouncementListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,15 +58,30 @@ class FragmentHome: Fragment(R.layout.window_home) {
 
     }
 
+
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getCategoryList()
-        getAnnoucementList()
+       // getCategoryList()
+       if (NetworkUtil.isInternetAvailable(requireContext())){
+           getCategoryList()
 
+       }
+        getAnnouncementList()
+        observeFavouriteList()
     }
 
-    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+
+    override fun onNetworkRestored() {
+        super.onNetworkRestored()
+        getCategoryList()
+    }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        NetworkUtil.showNoInternetToast(requireView())
+    }
+
     private fun getCategoryList(){
         val categoryRecyclerView = view?.findViewById<RecyclerView>(R.id.list_tab_categories)
         categoryRecyclerView?.apply {
@@ -101,21 +120,25 @@ class FragmentHome: Fragment(R.layout.window_home) {
         }
     }
 
-    private fun getAnnoucementList(){
+    private fun getAnnouncementList(){
         val announcementRecyclerView = binding.list
         announcementRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        val announcementAdapter = AnnouncementListAdapter(layoutInflater,
+         announcementAdapter = AnnouncementListAdapter(layoutInflater,
             onItemClicked = {itemId->
                // replaceFragment(FragmentAnnouncementDetail())
                 activity?.supportFragmentManager?.commit {
                     replace<FragmentAnnouncementDetail>(
                         containerViewId= R.id.fragment_container_view_tag,
                         args = bundleOf("itemId" to itemId)
-                    ).addToBackStack("replacement")
+                    ).addToBackStack("FragmentHome")
                 }
-            }
-        )
+            },
+             onFavouriteClicked = { itemId ->
+                 viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
+             }
+
+         )
         announcementRecyclerView.adapter = announcementAdapter
         lifecycleScope.launch {
             viewModelAnnouncement.announcementItems.collect { resource ->
@@ -136,6 +159,14 @@ class FragmentHome: Fragment(R.layout.window_home) {
             }
         }
 
+
+    }
+    private fun observeFavouriteList() {
+        lifecycleScope.launch {
+            viewModelAnnouncement.currentFavourites.collect { favouriteList ->
+                announcementAdapter.updateFavouriteList(favouriteList)
+            }
+        }
     }
     private fun showAlertDialog(message: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_universal_messaging, null)

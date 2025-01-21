@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -28,11 +27,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
-import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
 import com.example.testapp.databinding.WindowConfrimationCodeBinding
-import com.example.testapp.presentation.authoration.forgotPassword.confirmRestoreUserPassword.ConfirmRestoreUserPassword
+import com.example.testapp.presentation.authoration.forgotPassword.confirmRestoreUserPassword.fragment.ConfirmRestoreUserPassword
 import com.example.testapp.presentation.authoration.forgotPassword.confirmUserRestore.viewModel.ConfirmUserRestoreVM
-import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates

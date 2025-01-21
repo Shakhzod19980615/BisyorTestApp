@@ -3,39 +3,39 @@ package com.example.testapp.presentation.searching
 import UniversalListAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.testapp.BaseFragment
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.databinding.WindowUniversalListBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.createAnnouncement.viewModel.FragmentSubCategoryVM
-import com.example.testapp.presentation.home.adapter.AnnouncementListAdapter
+import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
 import com.example.testapp.presentation.searching.viewModel.FragmentUniversalListVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 @AndroidEntryPoint
-class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
+class FragmentUniversalList(): BaseFragment() {
     private var binding : WindowUniversalListBinding by Delegates.notNull()
     private val viewModel: FragmentSubCategoryVM by viewModels()
     private lateinit var universalListAdapter: UniversalListAdapter
+    private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
 
     private val categoryId : Int? by lazy {
         arguments?.getInt("categoryId")
@@ -59,11 +59,15 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        observeFavouriteList()
         universalListAdapter.updateStyle(FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic)
         updateLayoutManager(FragmentUniversalListVM.ItemRepresentationStyle.styleMosaic)
         binding.listTypeSwitcher.setImageResource(R.drawable.vicon_item_type_mosaic)
         binding.iconBack.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
+        }
+        if (NetworkUtil.isInternetAvailable(requireContext())){
+            getAnnoucementList()
         }
         if (categoryId != null) {
             getAnnoucementList()
@@ -86,6 +90,16 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
         }
 
     }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        NetworkUtil.showNoInternetToast(requireView())
+    }
+
+    override fun onNetworkRestored() {
+        super.onNetworkRestored()
+        getAnnoucementList()
+    }
    private fun initAdapter(){
         universalListAdapter = UniversalListAdapter(layoutInflater,
            FragmentUniversalListVM.ItemRepresentationStyle.styleGallery,
@@ -97,10 +111,18 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
                    ).addToBackStack("replacement")
                }
            },
-
+            onFavouriteClicked = { itemId ->
+                viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
+            }
            )
    }
-
+    private fun observeFavouriteList() {
+        lifecycleScope.launch {
+            viewModelAnnouncement.currentFavourites.collect { favouriteList ->
+                universalListAdapter.updateFavouriteList(favouriteList)
+            }
+        }
+    }
     private fun initSearchViewClickers(){
         binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).isFocusable = false
         binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text).setOnClickListener {
@@ -175,7 +197,7 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
                     is Resource.Success -> {
                         //toggleShimmer(false)
                        // announcementAdapter.setAnnouncementItems(resource.data)
-                        universalListAdapter.updateAnnouncements(resource.data)
+                        universalListAdapter.setAnnouncements(resource.data)
                         binding.totalCount.text = resource.data.size.toString()+ " обявлений"
                         binding.sortText.text = "Самые новые"
 
@@ -203,7 +225,7 @@ class FragmentUniversalList(): Fragment(R.layout.window_universal_list) {
                 when (resource) {
                     is Resource.Success -> {
                         //toggleShimmer(false)
-                        universalListAdapter.updateAnnouncements(resource.data)
+                        universalListAdapter.setAnnouncements(resource.data)
                         binding.totalCount.text = resource.data.size.toString()+ " обявлений"
                         binding.sortText.text = "Самые новые"
 

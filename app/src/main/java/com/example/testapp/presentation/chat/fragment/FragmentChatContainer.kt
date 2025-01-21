@@ -15,8 +15,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testapp.BaseFragment
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.data.request.chat.ChatRequest
 import com.example.testapp.databinding.WindowChatContainerBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
@@ -28,7 +30,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class FragmentChatContainer: Fragment(R.layout.window_chat_container) {
+class FragmentChatContainer: BaseFragment() {
     private var binding : WindowChatContainerBinding by Delegates.notNull()
     private val viewModel: FragmentChatContainerVM by viewModels()
     private lateinit var tabLayout: TabLayout
@@ -49,11 +51,11 @@ class FragmentChatContainer: Fragment(R.layout.window_chat_container) {
         tabLayout = view.findViewById(R.id.tab_layout)
         recyclerView = view.findViewById(R.id.list_message)
         adapter = UserChatsAdapter(layoutInflater,
-            onItemClicked = {itemId->
+            onItemClicked = {chatId->
                 activity?.supportFragmentManager?.commit {
                     replace<FragmentMessanger>(
                         containerViewId= R.id.fragment_container_view_tag,
-                        args = bundleOf("itemId" to itemId)
+                        args = bundleOf("chatId" to chatId)
                     ).addToBackStack("replacement")
                 }
 
@@ -84,6 +86,15 @@ class FragmentChatContainer: Fragment(R.layout.window_chat_container) {
 
     }
 
+    override fun onNetworkRestored() {
+        super.onNetworkRestored()
+        getChatItemList(1)
+    }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        NetworkUtil.showNoInternetToast(requireView())
+    }
     private fun getChatItemList(tabIndex: Int){
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val request = ChatRequest("ru", 0)
@@ -95,14 +106,14 @@ class FragmentChatContainer: Fragment(R.layout.window_chat_container) {
                         adapter.setItems(resource.data)
                     }
                     is Resource.Error->{
-                        showAlertDialog(resource.message.toString())
+                        showAlertDialog(resource.message)
                     }
                     is Resource.Loading->{
 
                     }
                 }
 
-            }
+             }
         }
     }
     private fun showAlertDialog(message: String) {

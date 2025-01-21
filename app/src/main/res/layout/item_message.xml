@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messageLL"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
+            style="@style/CardView.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/custom_ripple"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="12dp"
+            tools:cardElevation="1dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:id="@+id/textLL"
+                android:minHeight="42dp"
+                android:minWidth="75dp"
+                android:orientation="vertical"
+                android:gravity="start"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/messege_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_gravity="end"
+                    tools:text="salom" />
+                <TextView
+                    android:id="@+id/messege_time"
+                    style="@style/Bisyor.TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="4dp"
+                    android:textSize="10sp"
+                    tools:text="11:55"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+      <!--  <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateLL"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp">
+
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/read_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                tools:src="@drawable/vicon_done_one"
+                android:visibility="visible"
+                android:tint="@color/buttonColor" />
+
+
+        </LinearLayout>-->
+
+
+    </LinearLayout>
+
+</layout>

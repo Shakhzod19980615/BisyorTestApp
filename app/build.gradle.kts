@@ -115,7 +115,7 @@ dependencies {
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
     //indicator
     implementation ("me.relex:circleindicator:2.1.6")
-
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     //SocialLogin
     implementation ("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.gms:google-services:4.4.2")

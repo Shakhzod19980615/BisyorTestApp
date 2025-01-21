@@ -5,33 +5,34 @@ import com.example.testapp.domain.model.createAnnouncement.AnnouncementDynamicPr
 import com.example.testapp.domain.model.createAnnouncement.CurrencyModel
 
 data class AnnouncementDynamicResponse(
-    val name: String,
-    val title: String,
+    val name: String?,
+    val title: String?,
     val value: Any? = null,
-    val type: Int,
+    val type: Int?,
     val typeName: String? = null,
-    val required:Int,
+    val required:Int? = null,
     val variants:Map<String,String>,
     val districtName: String? = null,
     val categoryName: String? = null,
     val shopName: String? = null,
     val maxCount: Int? = null,
-    val currencyList:CurrencyResponse
+    val currencyList:CurrencyResponse?=null
 )
-
-fun AnnouncementDynamicResponse.toAnnouncementDynamicPropertyModel() = AnnouncementDynamicPropertyModel(
-    name = name,
-    title = title,
+/*
+fun AnnouncementDynamicResponse.toAnnouncementDynamicPropertyModel() =
+    AnnouncementDynamicPropertyModel(
+    name = name?:"",
+    title = title?:"",
     value = value,
     isRequired = required==1,
-    intType = type,
-    variants = variants.toList(),
+    intType = type?:0,
+    variants = variants.map { Pair(it.key, it.value) },
     typeName = typeName,
     districtName = districtName,
     categoryName = categoryName,
     shopName = shopName,
     maxCount = maxCount,
-    currencyModel = currencyList.toCurrencyModel(),
+    currencyModel = currencyList?.toCurrencyModel() ?: CurrencyModel(0),
     lastSelectedValue= this.value.let {
         if (type == 1 || type == 2 || type == 10) {
             when (it) {
@@ -69,5 +70,57 @@ fun AnnouncementDynamicResponse.toAnnouncementDynamicPropertyModel() = Announcem
             null
     }
 
-)
+)*/
+fun AnnouncementDynamicResponse.toAnnouncementDynamicPropertyModel() =
+    AnnouncementDynamicPropertyModel(
+        name = name ?: "",
+        title = title ?: "",
+        value = value,
+        isRequired = required == 1,
+        intType = type ?: 0,
+        variants = variants?.map { Pair(it.key, it.value) },
+        typeName = typeName,
+        districtName = districtName,
+        categoryName = categoryName,
+        shopName = shopName,
+        maxCount = maxCount,
+        currencyModel = currencyList?.toCurrencyModel() ?: CurrencyModel(0),
+
+        // Mapping `lastSelectedValue`
+        lastSelectedValue = when (type) {
+            1, 2, 10 -> {
+                when (val v = value) {
+                    is Int -> v.toString()
+                    is Double -> v.toString()
+                    is String -> v
+                    else -> ""
+                }
+            }
+            4, 5 -> value as? String ?: ""
+            6, 8, 11 -> {
+                val key = (value as? Double)?.toInt()?.toString() ?: ""
+                val charSequenceList: Array<String> = MyUtil.pairListKeys(variants?.toList() ?: emptyList())
+                val result = charSequenceList.indexOf(key).toString()
+                if (result != "-1") result else ""
+            }
+            else -> ""
+        },
+
+        // Mapping `lastSelectedValueArray`
+        lastSelectedValueArray = when (type) {
+            9 -> {
+                if (value is Map<*, *>) {
+                    val keys = value.keys
+                    val charSequenceList: Array<String> = MyUtil.pairListValues(variants?.toList() ?: emptyList())
+                    val lastValue = mutableListOf<Int>()
+                    charSequenceList.forEachIndexed { index, s ->
+                        if (keys.contains(s)) lastValue.add(index)
+                    }
+                    lastValue.ifEmpty { null }
+                } else null
+            }
+            else -> null
+        }
+    )
+
 fun CurrencyResponse.toCurrencyModel() = CurrencyModel(currency = value)

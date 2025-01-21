@@ -19,8 +19,10 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.testapp.BaseFragment
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.databinding.WindowCreateEditAnnouncementBinding
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementAdapter
 import com.example.testapp.presentation.createAnnouncement.adapter.CreateAnnouncementImage
@@ -31,7 +33,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_announcement) {
+class FragmentCreateEditAnnouncement: BaseFragment() {
     private var binding:WindowCreateEditAnnouncementBinding by Delegates.notNull()
     private val viewModel: CreateEditAnnouncementVM by viewModels()
     private val selectedImages = mutableListOf<CreateAnnouncementImage>()
@@ -81,11 +83,14 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
             }
         }
         binding.clickerCategory.setOnClickListener {
-            activity?.supportFragmentManager?.commit {
-                replace<FragmentCategoryPicker>(
-                    containerViewId= R.id.fragment_container_view_tag,
-                ).addToBackStack("replacement")
+            if (NetworkUtil.isInternetAvailable(requireContext())){
+                activity?.supportFragmentManager?.commit {
+                    replace<FragmentCategoryPicker>(
+                        containerViewId= R.id.fragment_container_view_tag,
+                    ).addToBackStack("replacement")
+                }
             }
+
         }
         if(categoryTitle != null) {
             binding.textCategory.setText(categoryTitle.toString())
@@ -107,11 +112,18 @@ class FragmentCreateEditAnnouncement: Fragment(R.layout.window_create_edit_annou
         }
 
     }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        NetworkUtil.showNoInternetToast(requireView())
+    }
+
     private fun setUpDynamicFields(){
         dynamicPropertiesAdapter = DynamicPropertiesAdapter(
             context = requireContext(),
         )
-        categoryId?.let { fieldId?.let { it1 -> viewModel.getItemFields(it, it1) } }
+        categoryId?.let { fieldId?.let { it1 ->
+            viewModel.getItemFields(it, it1) } }
         if (categoryTitle != null) {
             binding.dynamicList.apply {
                 adapter = dynamicPropertiesAdapter

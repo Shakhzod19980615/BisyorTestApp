@@ -13,11 +13,12 @@ import com.example.testapp.presentation.searching.viewModel.FragmentUniversalLis
 class UniversalListAdapter(
     private val layoutInflater: LayoutInflater,
     private var itemRepresentationStyle: FragmentUniversalListVM.ItemRepresentationStyle,
-    private val onItemClicked: (itemId:Int) -> Unit
+    private val onItemClicked: (itemId:Int) -> Unit,
+    private val onFavouriteClicked: (itemId: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val announcementList: MutableList<AnnouncementItemModel> = mutableListOf()
-    private var isFavorite = false
+    private var favouriteList: List<Int> = emptyList()
     companion object {
         private const val VIEW_TYPE_GALLERY = 1
         private const val VIEW_TYPE_MOSAIC = 2
@@ -50,7 +51,9 @@ class UniversalListAdapter(
         }
     }
 
-    override fun getItemCount(): Int = announcementList.size
+    override fun getItemCount(): Int {
+        return announcementList.size
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val announcementItem = announcementList[position]
@@ -68,12 +71,16 @@ class UniversalListAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateAnnouncements(newAnnouncements: List<AnnouncementItemModel>) {
+    fun setAnnouncements(newAnnouncements: List<AnnouncementItemModel>) {
         announcementList.clear()
         announcementList.addAll(newAnnouncements)
         notifyDataSetChanged()
     }
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateFavouriteList(favouriteList: List<Int>) {
+        this.favouriteList = favouriteList
+        notifyDataSetChanged()
+    }
     // ViewHolders for different styles
 
     inner class GalleryViewHolder(
@@ -83,12 +90,14 @@ class UniversalListAdapter(
             binding.title.text = announcementItem.title
             binding.price.text = announcementItem.price
             Glide.with(binding.root).load(announcementItem.img_m).into(binding.img)
+            val isFavorite = favouriteList.contains(announcementItem.id)
+            binding.starButton.setImageResource(
+                if (isFavorite) R.drawable.vicon_favorite_active
+                else R.drawable.vicon_favorite_inactive
+            )
             binding.starButton.setOnClickListener {
-                val item = announcementList[adapterPosition]
                 //onItemClicked(item.id)
-                if(isFavorite) binding.starButton.setImageResource(R.drawable.vicon_favorite_active)
-                else binding.starButton.setImageResource(R.drawable.vicon_favorite_inactive)
-                isFavorite = !isFavorite
+                onFavouriteClicked(announcementItem.id)
             }
             binding.baseLay.setOnClickListener {
                 val item = announcementList[adapterPosition]
@@ -106,12 +115,14 @@ class UniversalListAdapter(
             binding.price.text = announcementItem.price
             Glide.with(binding.root).load(announcementItem.img_m).into(binding.img)
             // Add specific mosaic layout binding logic if required
+            val isFavorite = favouriteList.contains(announcementItem.id)
+            binding.starButton.setImageResource(
+                if (isFavorite) R.drawable.vicon_favorite_active
+                else R.drawable.vicon_favorite_inactive
+            )
             binding.starButton.setOnClickListener {
-                val item = announcementList[adapterPosition]
                 //onItemClicked(item.id)
-                if(isFavorite) binding.starButton.setImageResource(R.drawable.vicon_favorite_active)
-                else binding.starButton.setImageResource(R.drawable.vicon_favorite_inactive)
-                isFavorite = !isFavorite
+                onFavouriteClicked(announcementItem.id)
             }
             binding.baseLay.setOnClickListener {
                 val item = announcementList[adapterPosition]
@@ -128,12 +139,14 @@ class UniversalListAdapter(
             binding.price.text = announcementItem.price
             Glide.with(binding.root).load(announcementItem.img_m).into(binding.img)
             // Add specific list layout binding logic if required
+            val isFavorite = favouriteList.contains(announcementItem.id)
+            binding.starButton.setImageResource(
+                if (isFavorite) R.drawable.vicon_favorite_active
+                else R.drawable.vicon_favorite_inactive
+            )
             binding.starButton.setOnClickListener {
-                val item = announcementList[adapterPosition]
                 //onItemClicked(item.id)
-                if(isFavorite) binding.starButton.setImageResource(R.drawable.vicon_favorite_active)
-                else binding.starButton.setImageResource(R.drawable.vicon_favorite_inactive)
-                isFavorite = !isFavorite
+                onFavouriteClicked(announcementItem.id)
             }
             binding.baseLay.setOnClickListener {
                 val item = announcementList[adapterPosition]

@@ -1,5 +1,6 @@
 package com.example.testapp.common.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
@@ -25,6 +26,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
+import com.example.testapp.R
 import java.io.File
 import java.io.FileInputStream
 import java.text.SimpleDateFormat
@@ -32,19 +34,97 @@ import java.util.*
 
 object MyUtil {
 
-   /* fun formatDateAfter(month: Int): String? {
+    /*@SuppressLint("SimpleDateFormat")
+    fun formatDateAfter(month: Int, context: Context): String {
 
         //making date of 1 month after today 00:00 time
         val calendar: Calendar = GregorianCalendar()
         calendar.add(Calendar.MONTH, month)
         val thatDate = calendar.time
-        val months = getLocalizedArray(App.application, R.array.months)
+        val months = context.resources.getStringArray(R.array.months)
         return (SimpleDateFormat("d ").format(thatDate)
                 + months[calendar[Calendar.MONTH]]
                 + SimpleDateFormat(" yyyy ").format(thatDate)
-                + getLocalizedString(App.application, R.string.text_year)
+                + context.resources.getString(R.string.text_year)
                 + SimpleDateFormat(", HH:mm").format(thatDate))
     }*/
+    fun formatDateFulLocalized(context: Context, dateString: String, inputFormat: String): String {
+        // Get the localized month names from resources
+        val months = context.resources.getStringArray(R.array.months)
+
+        // Create a SimpleDateFormat for the input date format
+        val inputDateFormat = SimpleDateFormat(inputFormat, Locale.getDefault())
+
+        return try {
+            // Parse the date string into a Date object
+            val date = inputDateFormat.parse(dateString)
+
+            if (date != null) {
+                // Create a Calendar instance from the parsed date
+                val calendar = Calendar.getInstance()
+                calendar.time = date
+
+                // Format date using localized month names
+                "${calendar[Calendar.DAY_OF_MONTH]} " +
+                        "${months[calendar[Calendar.MONTH]]} " +
+                        SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
+            } else {
+                "Invalid Date"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "Invalid Date"
+        }
+    }
+    fun formatTimeLocalized(context: Context, dateString: String, inputFormat: String): String {
+        return try {
+            // Create a SimpleDateFormat for the input date format
+            val inputDateFormat = SimpleDateFormat(inputFormat, Locale.getDefault())
+
+            // Parse the date string
+            val date = inputDateFormat.parse(dateString)
+
+            // If parsing succeeds, extract the time
+            if (date != null) {
+                SimpleDateFormat("HH:mm", Locale.getDefault()).format(date) // Format only time
+            } else {
+                "Invalid Time"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "Invalid Time"
+        }
+    }
+
+    fun formatDateLocalized(context: Context, dateString: String, inputFormat: String): String {
+        return try {
+            // Get the localized month names from resources
+            val months = context.resources.getStringArray(R.array.months)
+
+            // Create a SimpleDateFormat for the input date format
+            val inputDateFormat = SimpleDateFormat(inputFormat, Locale.getDefault())
+
+            // Parse the date string
+            val date = inputDateFormat.parse(dateString)
+
+            // If parsing succeeds, extract the date
+            if (date != null) {
+                // Create a Calendar instance from the parsed date
+                val calendar = Calendar.getInstance()
+                calendar.time = date
+
+                // Format date using localized month names
+                "${calendar[Calendar.DAY_OF_MONTH]} ${months[calendar[Calendar.MONTH]]}"
+            } else {
+                "Invalid Date"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "Invalid Date"
+        }
+    }
+
+
 
     fun showSoftKeyboard(context: Context, editText: EditText?) {
         Handler().postDelayed({
