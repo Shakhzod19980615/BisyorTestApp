@@ -1,0 +1,34 @@
+<resources>
+    <string-array name="months">
+        <item>янв</item>
+        <item>фев</item>
+        <item>март</item>
+        <item>апр</item>
+        <item>май</item>
+        <item>июня</item>
+        <item>июля</item>
+        <item>авг</item>
+        <item>сент</item>
+        <item>окт</item>
+        <item>нояб</item>
+        <item>дек</item>
+    </string-array>
+
+    <string-array name="weekday">
+        <item>Воскр</item>
+        <item>Пон</item>
+        <item>Втор</item>
+        <item>Сред</item>
+        <item>Чет</item>
+        <item>Пят</item>
+        <item>Суб</item>
+    </string-array>
+
+    <string-array name="announcement_period">
+        <item>1 месяц</item>
+        <item>3 месяц</item>
+        <item>6 месяц</item>
+        <item>12 месяц</item>
+    </string-array>
+
+</resources>

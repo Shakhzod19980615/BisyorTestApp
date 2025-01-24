@@ -2,7 +2,7 @@ package com.example.testapp.domain.model.announcement
 
 data class AnnouncementItemModel(
     val description: String,
-    val favorites: Boolean,
+    var favorites: Boolean,
     val id: Int,
     val img_m: String,
     val img_s: String,

@@ -30,6 +30,7 @@ import com.example.testapp.presentation.authoration.forgotPassword.resetUser.fra
 import com.example.testapp.presentation.authoration.login.viewModel.LoginViewModel
 import com.example.testapp.presentation.authoration.registration.fragment.FragmentRegistration
 import com.example.testapp.presentation.home.fragment.FragmentHome
+import com.example.testapp.presentation.profile.FragmentProfileContainer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -149,8 +150,11 @@ class FragmentLogin : Fragment(R.layout.window_login) {
                 }
             })
         binding.submitButton.setOnClickListener {
-            val login = binding.edLogin.text.toString()
+            var login = binding.edLogin.text.toString()
             val password = binding.edPassword.text.toString()
+            if(!login.startsWith("+")){
+                login = "+$login"
+            }
             if(isLoginValid()&&isPasswordValid()){
                 loginViewModel.signIn(login, password,"ru")
                 lifecycleScope.launch {
@@ -159,7 +163,7 @@ class FragmentLogin : Fragment(R.layout.window_login) {
                             is Resource.Success->{
                                 activity?.supportFragmentManager?.commit {
                                     replace(R.id.fragment_container_view_tag,
-                                        FragmentHome()
+                                        FragmentProfileContainer()
                                     ).addToBackStack("goBack")
                                 }
                             }
@@ -185,6 +189,7 @@ class FragmentLogin : Fragment(R.layout.window_login) {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -277,6 +282,7 @@ class FragmentLogin : Fragment(R.layout.window_login) {
     @SuppressLint("ResourceAsColor")
     private fun isLoginValid():Boolean{
        val login= binding.edLogin.text.toString()
+
         var isValid = false
         loginViewModel.validatePhoneNumber(login,requireContext())
         lifecycleScope.launch {

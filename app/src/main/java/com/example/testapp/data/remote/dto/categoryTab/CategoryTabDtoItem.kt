@@ -10,9 +10,9 @@ data class CategoryDtoItem(
     val title: String
 )
 fun CategoryDtoItem.toCategoryTabItem() = CategoryModel(
-    hasChild = addr==1,
-    categoryId = categoryId,
+    id = categoryId,
     icon = icon,
-    keyword = keyword,
-    title = title
+    categoryId = categoryId,
+    title = title,
+    hasChild = addr==1,
 )

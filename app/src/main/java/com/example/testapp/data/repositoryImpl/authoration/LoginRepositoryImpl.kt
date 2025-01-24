@@ -1,5 +1,6 @@
 package com.example.testapp.data.repositoryImpl.authoration
 
+import com.example.testapp.common.MySettings
 import com.example.testapp.data.remote.AppService
 import com.example.testapp.data.remote.dto.authoration.UserDataResponse
 import com.example.testapp.data.remote.dto.authoration.toUserDataModel
@@ -15,7 +16,9 @@ import javax.inject.Inject
 ):LoginRepository {
     override suspend fun signIn(loginRequest: LoginRequest): UserDataModel {
         return try {
-            api.signIn(body = loginRequest).toUserDataModel()
+           val result= api.signIn(body = loginRequest)
+            MySettings.setToken(result.token)
+            result.toUserDataModel()
         }catch (
             e:Exception
         ){

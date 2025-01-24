@@ -16,30 +16,38 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresExtension
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.example.testapp.BaseFragment
 import com.example.testapp.R
 import com.example.testapp.common.Resource
+import com.example.testapp.common.util.NetworkUtil
+import com.example.testapp.data.request.chat.CreateChatRequest
 import com.example.testapp.databinding.WindowAnnouncementDetailBinding
 import com.example.testapp.presentation.announcementDetail.adapter.ImagePagerAdapter
 import com.example.testapp.presentation.announcementDetail.viewModel.AnnouncementDetailViewModel
+import com.example.testapp.presentation.chat.fragment.FragmentMessanger
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail) {
+class FragmentAnnouncementDetail : BaseFragment() {
 
     private val announcementDetailViewModel: AnnouncementDetailViewModel by viewModels()
     private var binding : WindowAnnouncementDetailBinding by Delegates.notNull()
     private val itemId : Int? by lazy {
         arguments?.getInt("itemId")
     }
+    private var userId:Int = 0
     private var isDescExpanded = false
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,9 +60,22 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initVm()
+        if (NetworkUtil.isInternetAvailable(requireContext())){
+            initVm()
+        }
         initClickers()
         configureContent()
+
+    }
+
+    override fun onNetworkRestored() {
+        super.onNetworkRestored()
+        initVm()
+    }
+
+    override fun onNetworkLost() {
+        super.onNetworkLost()
+        NetworkUtil.showNoInternetToast(requireView())
     }
     private  fun initVm(){
         configureImages()
@@ -72,6 +93,7 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
 
                     }
                     is Resource.Success -> {
+                        userId = resources.data.userId
                         binding.price.text = resources.data.price
                         binding.title.text = resources.data.title
                         binding.content.text = resources.data.description
@@ -140,6 +162,52 @@ class FragmentAnnouncementDetail : Fragment(R.layout.window_announcement_detail)
                     }
             }
         }*/
+        binding.clickerMessaging.setOnClickListener {
+            announcementDetailViewModel.createChat(
+                lang = "ru", userId = userId, itemId = itemId?:-1)
+
+            /*announcementDetailViewModel.announcementDetail.value.let {
+                lifecycleScope.launch {
+                    announcementDetailViewModel.announcementDetail.collect { resources ->
+                        when(resources){
+                            is Resource.Error -> {
+                                Toast.makeText(requireContext(),resources.message,Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Loading -> {
+
+                            }
+                            is Resource.Success -> {
+
+                            }
+                        }
+                    }
+
+                }
+            }*/
+            announcementDetailViewModel.createChatModel.value.let {
+                lifecycleScope.launch {
+                    announcementDetailViewModel.createChatModel.collect{ resource->
+                        when(resource){
+                            is Resource.Error -> {
+                                Toast.makeText(requireContext(),resource.message,Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Loading -> {
+
+                            }is Resource.Success -> {
+                            activity?.supportFragmentManager?.commit {
+                                replace<FragmentMessanger>(
+                                    containerViewId= R.id.fragment_container_view_tag,
+                                    args = bundleOf("chatId" to resource.data.chatId)
+                                ).addToBackStack("replacement")
+                            }
+
+                        }
+                        }
+
+                    }
+                }
+            }
+        }
         binding.appBar.addOnOffsetChangedListener { _, verticalOffset ->
             val activeIconColor = ContextCompat.getColor(requireContext(), R.color.defaultTextBckColor)
             val inactiveIconColor =

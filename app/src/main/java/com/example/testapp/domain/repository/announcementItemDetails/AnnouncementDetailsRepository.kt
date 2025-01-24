@@ -6,4 +6,5 @@ import com.example.testapp.domain.model.announcementItemDetails.AnnouncementItem
 interface AnnouncementDetailsRepository {
 
     suspend fun getAnnouncementDetails(itemId: Int?): AnnouncementItemDetailsModel
+
 }

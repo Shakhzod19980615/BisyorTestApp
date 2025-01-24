@@ -1,4 +1,4 @@
-package com.example.testapp.presentation.authoration.forgotPassword.confirmRestoreUserPassword
+package com.example.testapp.presentation.authoration.forgotPassword.confirmRestoreUserPassword.fragment
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -8,7 +8,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.TextUtils.replace
 import android.text.TextWatcher
 import android.text.style.ImageSpan
 import android.view.LayoutInflater
@@ -19,27 +18,22 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.testapp.MainActivity
+import com.example.testapp.BaseFragment
 import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.databinding.WindowUserRestoreUpdatePasswordBinding
 import com.example.testapp.presentation.authoration.forgotPassword.confirmRestoreUserPassword.viewModel.ConfirmRestorePasswordVM
-import com.example.testapp.presentation.authoration.verificationCode.fragment.FragmentVerificationCode
-import com.example.testapp.presentation.home.fragment.FragmentHome
 import com.example.testapp.presentation.profile.FragmentProfileContainer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class ConfirmRestoreUserPassword : Fragment(R.layout.window_user_restore_update_password) {
+class ConfirmRestoreUserPassword : BaseFragment() {
     private var binding : WindowUserRestoreUpdatePasswordBinding by Delegates.notNull()
     private val confirmRestorePasswordVM: ConfirmRestorePasswordVM by viewModels()
     private val login : String? by lazy {

@@ -1,6 +1,7 @@
 package com.example.testapp.common
 
 object Constants {
+    val EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"
     const val BASE_URL = "https://api.bisyor.uz/api/v1/"
     const val MY_TOKEN = "token"
     const val USER_PHONE = "user_phone"

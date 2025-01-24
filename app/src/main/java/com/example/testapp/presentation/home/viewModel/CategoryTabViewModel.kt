@@ -28,14 +28,13 @@ class CategoryTabViewModel @Inject constructor(
     val categoryItems: StateFlow<Resource<List<CategoryModel>>> get() = _categoryItems.asStateFlow()
 
 
-    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getAllCategories() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val category = getCategoriesUseCase.invoke()
                     _categoryItems.value = Resource.Success(category)
-                } catch (e: HttpException) {
+                } catch (e: Exception) {
                     (Resource.Error( "An unexpected error occured", null))
 
                 } catch (e: IOException) {

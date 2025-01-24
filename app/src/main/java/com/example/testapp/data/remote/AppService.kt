@@ -1,18 +1,29 @@
 package com.example.testapp.data.remote
 
+import ChatListResponse
 import com.example.testapp.data.remote.dto.announcementItemDetails.AnnouncementItemDetailsDto
 import com.example.testapp.data.remote.dto.announcementList.AnnouncementListDto
 import com.example.testapp.data.remote.dto.authoration.UserDataResponse
 import com.example.testapp.data.remote.dto.basicResponse.BasicResponseDto
+import com.example.testapp.data.remote.dto.basicResponse.SendChatSuccessResponse
 import com.example.testapp.data.remote.dto.categoryTab.CategoryDtoItem
+import com.example.testapp.data.remote.dto.chat.CreateChatResponse
+import com.example.testapp.data.remote.dto.chat.MessageResponseDto
+import com.example.testapp.data.remote.dto.createAnnouncement.AnnouncementDynamicResponse
+import com.example.testapp.data.remote.dto.favourite.ChangeFavoriteStatusResponse
 import com.example.testapp.data.remote.dto.searchCategory.CategoryResponseDto
 import com.example.testapp.data.request.RegistrationRequest
+import com.example.testapp.data.request.chat.CreateChatRequest
+import com.example.testapp.data.request.chat.SendTextMessageRequest
+import com.example.testapp.data.request.createAnnouncement.AnnouncementPropertiesRequest
+import com.example.testapp.data.request.favourite.ChangeFavoriteStatusRequest
 import com.example.testapp.data.request.login.LoginRequest
 import com.example.testapp.data.request.login.RegisterWithSocialRequest
 import com.example.testapp.data.request.resetPassword.ResetUserUpdatePasswordRequest
 import com.example.testapp.data.request.resetUser.ResetUserRequest
 import com.example.testapp.data.request.resetUserConfirmRequest.ResetUserConfirmRequest
 import com.example.testapp.data.request.verificationCode.VerificationCodeRequest
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,6 +31,11 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface AppService {
+    @GET("items/last-items")
+    suspend fun getItems(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): AnnouncementListDto
 
     @GET("items/main-category-list")
     suspend fun getAllMainCategories(): List<CategoryDtoItem>
@@ -43,13 +59,13 @@ interface AppService {
 
     @GET("favorites/favorites-list-id")
     suspend fun getUserFavoriteIds(): Response<List<Int>>*/
-/*
-    @POST("favorites/change-favorites")
-    suspend fun likeItem(@Body body: ChangeFavoriteStatusRequest): Response<ChangeFavoriteStatusResponse>
-
-    @POST("favorites/favorites-set-list")
-    suspend fun saveUnAuthUserFavorites(@Body body: UploadUnAuthUserFavoritesRequest): Response<ResponseBody>*/
-
+    @POST("favorites/change-favorites/")
+    suspend fun likeItem(@Body body: ChangeFavoriteStatusRequest): ChangeFavoriteStatusResponse
+    @GET("favorites/favorites-list-id")
+    suspend fun getUserFavoriteIds(): List<Int>
+   /* @POST("favorites/favorites-set-list")
+    suspend fun saveUnAuthUserFavorites(@Body body: UploadUnAuthUserFavoritesRequest): Response<ResponseBody>
+*/
     @POST("login/registration")
     suspend fun signUp(@Body body: RegistrationRequest):BasicResponseDto
     @POST("login/send-code")
@@ -71,7 +87,76 @@ interface AppService {
     suspend fun getActiveInsideCategories(
         @Query("lang") lang: String,
         @Query("category_id") categoryId: Int?
-    ): List<CategoryDtoItem>
+    ): List<CategoryResponseDto>
+    @POST("items/get-item-fields")
+    suspend fun getDynamicItemsByCategoryId(@Body body: AnnouncementPropertiesRequest):
+           List<AnnouncementDynamicResponse>
+    @GET("items/child-category-list")
+    suspend fun getAllInsideCategories(
+        @Query("lang") lang: String,
+        @Query("category_id") categoryId: Int?
+    ):List<CategoryResponseDto>
+    @GET("search/category-items")
+    suspend fun getItemsByCategory(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int,
+        @Query("cat_id") categoryId: Int,
+        @Query("sorting") sorting: String? = null
+    ): AnnouncementListDto
+
+    @GET("search/global-search-items")
+    suspend fun getItemsByQuery(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int,
+        @Query("text") query: String,
+        @Query("sorting") sorting: String? = null
+    ): AnnouncementListDto
+
+
+    //TODO: - MESSAGING SECTION
+
+    @POST("items-chats/create-items-chats")
+    suspend fun createChatByAnnouncement(@Body body: CreateChatRequest): CreateChatResponse
+
+    @GET("chats/chats-all-list")
+    suspend fun getAllChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): ChatListResponse
+
+    @GET("chats/admin-users-list")
+    suspend fun getAdminChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ):ChatListResponse
+
+    @GET("items-chats/shops-users-list")
+    suspend fun getStoreChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): ChatListResponse
+
+    @GET("items-chats/items-users-list")
+    suspend fun getAllAnnouncementChats(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): ChatListResponse
+
+    @GET("items-chats/personal-item-message-list")
+    suspend fun getAnnouncementChatsById(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int,
+        @Query("item_id") id: Int
+    ): Response<ChatListResponse>
+    @GET("chats/active-chats")
+    suspend fun getUserMessages(
+        @Query("lang") lang: String,
+        @Query("chat_id") id: Int,
+        @Query("page") offset: Int
+    ): MessageResponseDto
+
+    @POST("chats/send-message")
+    suspend fun sendMessageToUser(@Body body: SendTextMessageRequest): SendChatSuccessResponse
 
     /*//TODO: - Authorization section
     @POST("login/login")
