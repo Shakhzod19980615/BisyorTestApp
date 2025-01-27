@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:background="@color/transparent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="4dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            android:fitsSystemWindows="true"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                style="@style/Bisyor.LayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/clicker_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="@drawable/custom_ripple"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/item_img"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/template_image" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_toStartOf="@id/icon_item_detail"
+                        android:layout_toEndOf="@id/item_img"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Bisyor.TitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="17sp"
+                            tools:text="Some name" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="Some name" />
+
+                    </LinearLayout>
+
+
+                    <include
+                        layout="@layout/view_more_right"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/custom_ripple_borderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:tint="@color/inactiveIconColor" />
+
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    tools:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="The user has no announcements in profile" />
+
+                </FrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_product_subscription"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+</layout>

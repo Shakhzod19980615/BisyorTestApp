@@ -46,8 +46,8 @@ class GroupedChatAdapter(
             // Set the date
             binding.dateSeparatorText.text = groupedChat.date
             // Set up the nested RecyclerView for messages
-            val messageAdapter = MessangerAdapter(LayoutInflater.from(binding.root.context))
-            binding.messageRecyclerView.layoutManager = LinearLayoutManager(binding.root.context)
+            val messageAdapter = MessengerAdapter(LayoutInflater.from(binding.root.context))
+            binding.messageRecyclerView.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL, false)
             binding.messageRecyclerView.adapter = messageAdapter
 
             // Populate messages for this date
@@ -56,6 +56,8 @@ class GroupedChatAdapter(
                 binding.messageRecyclerView.scrollToPosition(messageAdapter.itemCount - 1)
             }
         }
+
+
     }
 
     class GroupedChatDiffCallback(

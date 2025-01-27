@@ -23,7 +23,7 @@ data class User(
 
 data class Message(
     val text: String,
-    val createdAt: String,
+    val createdAt: String?,
     val unreadCount: Int
 )
 

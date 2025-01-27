@@ -1,5 +1,6 @@
 package com.example.testapp.data.request.chat
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 
 data class ChatRequest(
@@ -19,10 +20,10 @@ data class ChatByAnnouncementRequest(
 )
 
 data class CreateChatRequest(
-    @SerialName("lang")
+    @SerializedName("lang")
     val lang: String,
-    @SerialName("user_id")
+    @SerializedName("user_id")
     val userId: Int,
-    @SerialName("item_id")
+    @SerializedName("item_id")
     val itemId: Int
 )

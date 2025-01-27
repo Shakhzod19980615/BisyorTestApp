@@ -1,10 +1,7 @@
 package com.example.testapp.presentation.chat.fragment
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,12 +20,10 @@ import com.example.testapp.R
 import com.example.testapp.common.Resource
 import com.example.testapp.common.util.MyUtil
 import com.example.testapp.data.request.chat.MessageRequest
-import com.example.testapp.data.request.chat.SendTextMessageRequest
 import com.example.testapp.databinding.WindowMessangerBinding
 import com.example.testapp.domain.model.chat.ChatSortedByDateModel
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.chat.adapter.GroupedChatAdapter
-import com.example.testapp.presentation.chat.adapter.MessangerAdapter
 import com.example.testapp.presentation.chat.viewModel.FragmentMessangerVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -80,6 +75,9 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
                 binding.sendImage.visibility = View.VISIBLE
                 binding.sendFile.visibility = View.VISIBLE
             }
+            recyclerView.postDelayed({
+                recyclerView.scrollToPosition(0)
+            }, 100)
         }
 
         binding.editMessage.setOnTouchListener { _, _ ->
@@ -100,7 +98,7 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
         adapter = GroupedChatAdapter(layoutInflater)
         binding.listMessage.adapter = adapter
     }*/
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun observeVM(){
 
         lifecycleScope.launch {
@@ -144,8 +142,11 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
                         recyclerView.adapter = adapter
                         adapter.setItems(messageList)
                         recyclerView.post {
-                            recyclerView.scrollToPosition(adapter.itemCount - 1)
+                            recyclerView.scrollToPosition(0)
                         }
+
+
+
                     }
                 }
             }
@@ -176,6 +177,9 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
            // val request = SendTextMessageRequest("ru", chatId?:0, text)
             viewModel.sendMessage("ru", chatId?:0, text)
             binding.editMessage.text.clear()
+            recyclerView.post {
+                recyclerView.scrollToPosition(0)
+            }
     }
     }
 

@@ -11,6 +11,7 @@ import com.example.testapp.R
 import com.example.testapp.common.MySettings
 import com.example.testapp.databinding.WindowProfileContainerBinding
 import com.example.testapp.presentation.authoration.login.fragment.FragmentLogin
+import com.example.testapp.presentation.favourite.FragmentFavourites
 import kotlin.properties.Delegates
 
 class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
@@ -72,5 +73,10 @@ class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
             binding.contactsTv.text =getString(R.string.contacts)
             binding.aboutAppTv.text = getString(R.string.about_app)
 
+            binding.userFavTv.setOnClickListener {
+                activity?.supportFragmentManager?.commit {
+                    replace(R.id.fragment_container_view_tag, FragmentFavourites()).addToBackStack("goBack")
+                }
+            }
     }
 }

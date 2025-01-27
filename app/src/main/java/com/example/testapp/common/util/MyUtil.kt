@@ -116,11 +116,11 @@ object MyUtil {
                 // Format date using localized month names
                 "${calendar[Calendar.DAY_OF_MONTH]} ${months[calendar[Calendar.MONTH]]}"
             } else {
-                "Invalid Date"
+                ""
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            "Invalid Date"
+            ""
         }
     }
 
