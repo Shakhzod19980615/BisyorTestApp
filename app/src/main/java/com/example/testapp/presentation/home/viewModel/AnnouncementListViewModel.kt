@@ -36,6 +36,8 @@ class AnnouncementListViewModel @Inject constructor(
     = _announcementItems.asStateFlow()
 
     private val _favouriteStatus = MutableStateFlow<Resource<ChangeFavouriteModel>>(Resource.Loading())
+    val favouriteStatus: StateFlow<Resource<ChangeFavouriteModel>> get()
+    = _favouriteStatus.asStateFlow()
     private val _currentFavourites = MutableStateFlow<List<Int>>(emptyList())
     val currentFavourites: StateFlow<List<Int>> get()
     = _currentFavourites.asStateFlow()

@@ -1,15 +1,12 @@
 package com.example.testapp.presentation.chat.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testapp.R
@@ -17,10 +14,9 @@ import com.example.testapp.common.util.MyUtil
 import com.example.testapp.databinding.ItemMessageBinding
 import com.example.testapp.databinding.ItemMessageDocumentBinding
 import com.example.testapp.databinding.ItemMessageImageBinding
-import com.example.testapp.domain.model.chat.GroupedMessage
 import com.example.testapp.domain.model.chat.Message
 
-class MessangerAdapter(
+class MessengerAdapter(
     private val layoutInflater: LayoutInflater,
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val messagesList: MutableList<Message> = mutableListOf()
@@ -75,23 +71,6 @@ class MessangerAdapter(
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
-    /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            TYPE_TEXT -> TextMessageViewHolder(
-                ItemMessageBinding.inflate(layoutInflater, parent, false)
-            )
-            TYPE_FILE -> FileMessageViewHolder(
-                ItemMessageDocumentBinding.inflate(layoutInflater, parent, false)
-            )
-            TYPE_IMAGE -> ImageMessageViewHolder(
-                ItemMessageImageBinding.inflate(layoutInflater, parent, false)
-            )
-            TYPE_DATE -> DateSeparatorViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_date_separator, parent, false)
-            )
-            else -> throw IllegalArgumentException("Invalid view type")
-        }
-    }*/
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messagesList[position]
@@ -101,21 +80,7 @@ class MessangerAdapter(
             is ImageMessageViewHolder -> holder.bind(message)
         }
     }
-    /*override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (val item = groupedMessages[position]) {
-            is GroupedMessage.DateSeparator -> {
-                if (holder is DateSeparatorViewHolder) holder.bind(item.date)
-            }
-            is GroupedMessage.ChatMessage -> {
-                when (holder) {
-                    is TextMessageViewHolder -> holder.bind(item.message)
-                    is FileMessageViewHolder -> holder.bind(item.message)
-                    is ImageMessageViewHolder -> holder.bind(item.message)
-                }
-            }
 
-        }
-    }*/
 
     override fun getItemCount(): Int = messagesList.size
     @SuppressLint("NotifyDataSetChanged")
@@ -125,58 +90,7 @@ class MessangerAdapter(
         notifyDataSetChanged()
     }
 
-    /*fun setItems(messages: List<Message>) {
-        groupedMessages.clear()
 
-        // Group messages by date and ensure the date comes first
-        val groupedByDate = messages.groupBy { message ->
-            MyUtil.formatDateLocalized(layoutInflater.context, message.date_cr, "HH:mm dd.MM.yyyy")
-        }
-
-        for ((date, messagesOnDate) in groupedByDate.entries) {
-            // Add the date first
-            groupedMessages.add(GroupedMessage.DateSeparator(date))
-            // Add all messages for this date
-            messagesOnDate.forEach { message ->
-                groupedMessages.add(GroupedMessage.ChatMessage(message))
-            }
-        }
-
-        notifyDataSetChanged()
-    }*/
-   /* fun setItems(messages: List<Message>) {
-        groupedMessages.clear()
-
-        // Step 1: Sort messages by their timestamp (ascending order)
-        val sortedMessages = messages.sortedBy { it.date_cr }
-
-        // Step 2: Group messages by date
-        val groupedByDate = sortedMessages.groupBy { message ->
-            // Format date as needed (e.g., "HH:mm dd.MM.yyyy")
-            MyUtil.formatDateLocalized(layoutInflater.context, message.date_cr, "HH:mm dd.MM.yyyy")
-        }
-
-        // Step 3: Add the date and messages to groupedMessages in the correct order
-        for ((date, messagesOnDate) in groupedByDate) {
-            // Add the date first
-            groupedMessages.add(GroupedMessage.DateSeparator(date))
-            // Add all messages for this date
-            messagesOnDate.forEach { message ->
-                groupedMessages.add(GroupedMessage.ChatMessage(message))
-            }
-        }
-
-        // Notify the adapter that the data has changed
-        notifyDataSetChanged()
-    }*/
-
-
-   /* class DateSeparatorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val dateText: TextView = itemView.findViewById(R.id.date_separator_text)
-        fun bind(date: String) {
-            dateText.text = date
-        }
-    }*/
     class TextMessageViewHolder(private val binding: ItemMessageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n", "ResourceAsColor")
@@ -206,7 +120,7 @@ class MessangerAdapter(
                 val messageLayoutParams = binding.messageLL.layoutParams as? ViewGroup.MarginLayoutParams
                 messageLayoutParams?.let {
                     it.marginStart = 100
-                    it.marginEnd = 4 // Add your desired margin
+                    it.marginEnd = 4
                     binding.messageLL.layoutParams = it
                 }
 

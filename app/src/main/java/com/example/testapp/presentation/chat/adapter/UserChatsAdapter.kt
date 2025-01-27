@@ -45,13 +45,11 @@ class UserChatsAdapter(
         private val binding: ItemChatBinding
     ): RecyclerView.ViewHolder(binding.root){
         fun bind(chat: UserChat){
-            if(chat.item?.title.isNullOrEmpty()){
+            if(chat.item?.title.isNullOrBlank()){
                 binding.userName.text = chat.user.fullName
-
-
             }
             else{
-                binding.userName.text =  chat.item?.title
+                binding.userName.text = chat.item?.title
             }
             if (chat.item?.imageUrl.isNullOrEmpty()) {
                 // Hide item image
@@ -80,7 +78,14 @@ class UserChatsAdapter(
 
             binding.userName.text = chat.user.fullName
             binding.message.text = chat.lastMessage.text
-            binding.date.text = MyUtil.formatDateLocalized(itemView.context,chat.lastMessage.createdAt, "HH:mm dd.MM.yyyy")
+            if(chat.lastMessage.createdAt != null){
+                binding.date.visibility = View.VISIBLE
+                binding.date.text = MyUtil.formatDateLocalized(itemView.context,chat.lastMessage.createdAt, "HH:mm dd.MM.yyyy")
+            }else{
+                binding.date.visibility = View.GONE
+            }
+
+
             Glide.with(binding.root).load(chat.user.avatarUrl).into(binding.userAvatar)
 
             itemView.setOnClickListener {
