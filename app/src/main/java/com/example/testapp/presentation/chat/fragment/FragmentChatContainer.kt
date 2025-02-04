@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
@@ -21,7 +20,6 @@ import com.example.testapp.common.Resource
 import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.data.request.chat.ChatRequest
 import com.example.testapp.databinding.WindowChatContainerBinding
-import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.chat.adapter.UserChatsAdapter
 import com.example.testapp.presentation.chat.viewModel.FragmentChatContainerVM
 import com.google.android.material.tabs.TabLayout
@@ -36,6 +34,12 @@ class FragmentChatContainer: BaseFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: UserChatsAdapter
+
+    companion object {
+        const val ALL_Messages = 0
+        const val BUY_Messages = 1
+        const val SELL_Messages = 2
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,18 +67,18 @@ class FragmentChatContainer: BaseFragment() {
         recyclerView.adapter = adapter
         // Set default tab to the first tab (position 0)
         view.post {
-            val defaultTab = tabLayout.getTabAt(0)
+            val defaultTab = tabLayout.getTabAt(ALL_Messages)
             defaultTab?.select()
 
             // Explicitly load data for the first tab
-            getChatItemList(1)
+            getChatList(ALL_Messages)
         }
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
-                    0->getChatItemList(1)
-                    1->getChatItemList(2)
-                    2->getChatItemList(3)
+                    ALL_Messages->getChatList(ALL_Messages)
+                    BUY_Messages->getChatList(BUY_Messages)
+                    SELL_Messages->getChatList(SELL_Messages)
                 }
             }
 
@@ -88,14 +92,14 @@ class FragmentChatContainer: BaseFragment() {
 
     override fun onNetworkRestored() {
         super.onNetworkRestored()
-        getChatItemList(1)
+        getChatList(ALL_Messages)
     }
 
     override fun onNetworkLost() {
         super.onNetworkLost()
         NetworkUtil.showNoInternetToast(requireView())
     }
-    private fun getChatItemList(tabIndex: Int){
+    private fun getChatList(tabIndex: Int){
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val request = ChatRequest("ru", 0)
         viewModel.getChats(Pair(tabIndex,request) )

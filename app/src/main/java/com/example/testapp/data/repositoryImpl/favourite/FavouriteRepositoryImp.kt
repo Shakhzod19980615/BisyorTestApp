@@ -1,18 +1,22 @@
 package com.example.testapp.data.repositoryImpl.favourite
 
 import com.example.testapp.data.remote.AppService
-import com.example.testapp.data.remote.dto.favourite.ChangeFavoriteStatusResponse
 import com.example.testapp.data.remote.dto.favourite.toChangeFavouriteModel
 import com.example.testapp.data.request.favourite.ChangeFavoriteStatusRequest
 import com.example.testapp.domain.model.ChangeFavouriteModel
-import com.example.testapp.domain.repository.favourite.ChangeFavouriteStatusRepository
+import com.example.testapp.domain.repository.favourite.FavouriteRepository
 import javax.inject.Inject
 
 import android.util.Log
+import com.example.testapp.data.remote.dto.announcementList.toAnnouncementItem
+import com.example.testapp.data.remote.dto.favourite.toSubscribedUserModel
+import com.example.testapp.data.request.favourite.UserSubscriptionsRequest
+import com.example.testapp.domain.model.announcement.AnnouncementItemModel
+import com.example.testapp.domain.model.userDataModel.SubscribedUserModel
 
-class ChangeFavouriteStatusRepImpl @Inject constructor(
+class FavouriteRepositoryImp @Inject constructor(
     private val api: AppService
-) : ChangeFavouriteStatusRepository {
+) : FavouriteRepository {
 
     override suspend fun likeItem(param: ChangeFavoriteStatusRequest): ChangeFavouriteModel {
         // Log the input parameters
@@ -52,6 +56,25 @@ class ChangeFavouriteStatusRepImpl @Inject constructor(
         return try {
             api.getUserFavoriteIds()
         } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    override suspend fun getFavouriteItems(lang:String,page:Int): List<AnnouncementItemModel> {
+        return try{
+            api.getFavouriteItems(lang = lang, offset = page).items.map { it.toAnnouncementItem() }
+        }catch (e:Exception){
+            emptyList()
+            }
+        }
+
+    override suspend fun getSubscribedUsers(param: UserSubscriptionsRequest): List<SubscribedUserModel> {
+        return try {
+            api.getUserSubscriptions(lang = param.lang, page = param.page)
+                .users.map { it.toSubscribedUserModel() }
+        }catch (
+            e:Exception
+        ){
             emptyList()
         }
     }

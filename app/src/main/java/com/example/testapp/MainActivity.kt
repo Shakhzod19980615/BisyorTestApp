@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             replaceFragment(FragmentHome())
         }
+
         binding.bottomNav.setOnItemSelectedListener {
             binding.bottomNav.itemIconTintList = null
             when (it.itemId) {

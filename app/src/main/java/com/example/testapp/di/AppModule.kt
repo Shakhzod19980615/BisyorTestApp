@@ -13,7 +13,7 @@ import com.example.testapp.data.repositoryImpl.authoration.VerifyCodeRepositoryI
 import com.example.testapp.data.repositoryImpl.categoryTab.CategoryTabRepositoryImpl
 import com.example.testapp.data.repositoryImpl.chat.ChatRepositoryImpl
 import com.example.testapp.data.repositoryImpl.createAnnouncement.CreateAnnouncementRepositoryImpl
-import com.example.testapp.data.repositoryImpl.favourite.ChangeFavouriteStatusRepImpl
+import com.example.testapp.data.repositoryImpl.favourite.FavouriteRepositoryImp
 import com.example.testapp.data.repositoryImpl.searchRepository.SearchRepositoryImpl
 import com.example.testapp.domain.repository.announcement.AnnouncementItemRepository
 import com.example.testapp.domain.repository.announcementItemDetails.AnnouncementDetailsRepository
@@ -26,7 +26,7 @@ import com.example.testapp.domain.repository.authoration.VerifyCodeRepository
 import com.example.testapp.domain.repository.categoryTab.CategoryTabRepository
 import com.example.testapp.domain.repository.chat.ChatRepository
 import com.example.testapp.domain.repository.createAnnouncement.CreateAnnouncementRepository
-import com.example.testapp.domain.repository.favourite.ChangeFavouriteStatusRepository
+import com.example.testapp.domain.repository.favourite.FavouriteRepository
 import com.example.testapp.domain.repository.searchRepository.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -146,8 +146,8 @@ object AppModule {
     }
    @Provides
     @Singleton
-    fun provideChangeFavouriteStatusRepository(api: AppService): ChangeFavouriteStatusRepository {
-        return ChangeFavouriteStatusRepImpl(api)
+    fun provideChangeFavouriteStatusRepository(api: AppService): FavouriteRepository {
+        return FavouriteRepositoryImp(api)
     }
     @Provides
     @Singleton

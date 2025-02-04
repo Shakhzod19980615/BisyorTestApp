@@ -29,12 +29,6 @@ class MessengerAdapter(
 
     }
 
-    /*companion object {
-        private const val TYPE_TEXT = 0
-        private const val TYPE_FILE = 1
-        private const val TYPE_IMAGE = 2
-        private const val TYPE_DATE = 3
-    }*/
     override fun getItemViewType(position: Int): Int {
         return when (messagesList[position].type) {
             TYPE_TEXT -> 0
@@ -43,19 +37,6 @@ class MessengerAdapter(
             else -> throw IllegalArgumentException("Invalid message type")
         }
     }
-    /* override fun getItemViewType(position: Int): Int {
-        return when (groupedMessages[position]) {
-            is GroupedMessage.DateSeparator -> TYPE_DATE
-            is GroupedMessage.ChatMessage -> {
-                when ((groupedMessages[position] as GroupedMessage.ChatMessage).message.type) {
-                    "text" -> TYPE_TEXT
-                    "file" -> TYPE_FILE
-                    "image" -> TYPE_IMAGE
-                    else -> throw IllegalArgumentException("Invalid message type")
-                }
-            }
-
-        }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
