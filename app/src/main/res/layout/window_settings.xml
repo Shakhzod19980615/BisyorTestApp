@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="0dp"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    app:navigationIcon="@drawable/vicon_arrow_back"
+                    app:title="@string/settings">
+
+                </androidx.appcompat.widget.Toolbar>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_save"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/save"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/buttonColor"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            style="@style/Bisyor.SurfaceStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                style="@style/Bisyor.SurfaceStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/notifiaction_lay"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        tools:visibility="visible"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent">
+
+
+                                <TextView
+                                    style="@style/Bisyor.TitleText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/email_notifications_head"
+                                    android:textSize="17sp" />
+
+
+                            </RelativeLayout>
+
+                            <View
+                                style="@style/Bisyor.LineStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/Bisyor.LayoutStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/clicker_email_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="24dp">
+
+                                    <TextView
+                                        android:id="@+id/text_registration"
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif"
+                                        android:text="@string/email_news_notif_text"
+                                        android:textSize="17sp" />
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/switch_email_1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        />
+
+                                </LinearLayout>
+
+
+                                <View
+                                    style="@style/Bisyor.LineStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0.7dp"
+                                    android:layout_marginTop="12dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/clicker_email_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="24dp">
+
+                                    <TextView
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif"
+                                        android:text="@string/email_news_messages_text"
+                                        android:textSize="17sp" />
+
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/switch_email_2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        />
+
+                                </LinearLayout>
+
+                                <View
+                                    style="@style/Bisyor.LineStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0.7dp"
+                                    android:layout_marginTop="12dp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/clicker_email_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:gravity="center"
+                                    android:layout_marginEnd="24dp"
+                                    android:layout_marginBottom="16dp">
+
+                                    <TextView
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif"
+                                        android:text="@string/email_news_comment_text"
+                                        android:textSize="17sp" />
+
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/switch_email_3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <View
+                                style="@style/Bisyor.LineStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent">
+
+
+                                <TextView
+                                    style="@style/Bisyor.TitleText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/sms_notifications_head"
+                                    android:textSize="17sp" />
+
+
+                            </RelativeLayout>
+
+                            <View
+                                style="@style/Bisyor.LineStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/Bisyor.LayoutStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:id="@+id/clicker_message_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="24dp">
+
+                                    <TextView
+                                        android:id="@+id/text_message_1"
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif"
+                                        android:text="@string/sms_news_text"
+                                        android:textSize="17sp" />
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/switch_message_1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        />
+
+                                </LinearLayout>
+
+                                <View
+                                    style="@style/Bisyor.LineStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="12dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/clicker_message_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_ripple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="24dp">
+
+                                    <TextView
+                                        style="@style/Bisyor.TitleText"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif"
+                                        android:text="@string/sms_comments_text"
+                                        android:textSize="17sp" />
+
+
+                                    <androidx.appcompat.widget.SwitchCompat
+                                        android:id="@+id/switch_message_2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                         />
+
+                                </LinearLayout>
+
+                                <View
+                                    style="@style/Bisyor.LineStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="2dp"
+                                    android:layout_marginTop="12dp" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:background="@color/transparent"
+                        android:orientation="vertical">
+
+                        <View
+                            style="@style/Bisyor.LineStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+
+                        <View
+                            style="@style/Bisyor.LineStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        style="@style/Bisyor.LayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/clicker_language"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@drawable/custom_ripple"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/text_language"
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="24dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/language_picker_text"
+                                android:textSize="17sp" />
+
+                            <include
+                                layout="@layout/view_more_right"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="8dp"
+                                android:checked="true" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/clicker_night_mode"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@drawable/custom_ripple"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/text_night_mode"
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="24dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/theme_picker_text"
+                                android:textSize="17sp" />
+
+                            <include
+                                layout="@layout/view_more_right"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="8dp"
+                                android:checked="true"/>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:background="@color/transparent"
+                        android:orientation="vertical">
+
+                        <View
+                            style="@style/Bisyor.LineStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+
+                        <View
+                            style="@style/Bisyor.LineStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        style="@style/Bisyor.LayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/clicker_terms"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@drawable/custom_ripple"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/text_notification"
+                                style="@style/Bisyor.TitleText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="24dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/licence"
+                                android:textSize="17sp" />
+
+                            <include
+                                layout="@layout/view_more_right"
+                                android:id="@+id/swith_nofifications"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="8dp"
+                                android:checked="true" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:background="@color/transparent"
+                        android:orientation="vertical">
+
+                        <View
+                            style="@style/Bisyor.LineStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+
+                        <View
+                            style="@style/Bisyor.LineStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

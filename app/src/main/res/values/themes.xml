@@ -228,6 +228,10 @@
         <item name="android:background">@color/list_bck</item>
         <item name="background">@color/list_bck</item>
     </style>
+    <style name="MyToolbarSubtitleAppearance" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
     <style name="Bisyor.BottomNav" parent="Widget.Design.BottomNavigationView">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:background">@android:color/transparent</item>

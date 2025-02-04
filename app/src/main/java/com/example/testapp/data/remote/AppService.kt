@@ -11,6 +11,7 @@ import com.example.testapp.data.remote.dto.chat.CreateChatResponse
 import com.example.testapp.data.remote.dto.chat.MessageResponseDto
 import com.example.testapp.data.remote.dto.createAnnouncement.AnnouncementDynamicResponse
 import com.example.testapp.data.remote.dto.favourite.ChangeFavoriteStatusResponse
+import com.example.testapp.data.remote.dto.favourite.UserSubscriptionListResponse
 import com.example.testapp.data.remote.dto.searchCategory.CategoryResponseDto
 import com.example.testapp.data.request.RegistrationRequest
 import com.example.testapp.data.request.chat.CreateChatRequest
@@ -63,7 +64,19 @@ interface AppService {
     suspend fun likeItem(@Body body: ChangeFavoriteStatusRequest): ChangeFavoriteStatusResponse
     @GET("favorites/favorites-list-id")
     suspend fun getUserFavoriteIds(): List<Int>
-   /* @POST("favorites/favorites-set-list")
+
+    @GET("favorites/favorites-list")
+    suspend fun getFavouriteItems(
+        @Query("lang") lang: String,
+        @Query("page") offset: Int
+    ): AnnouncementListDto
+    @GET("profile/subscriptions-items-list")
+    suspend fun getUserSubscriptions(
+        @Query("lang") lang: String,
+        @Query("page") page: Int
+    ): UserSubscriptionListResponse
+
+    /* @POST("favorites/favorites-set-list")
     suspend fun saveUnAuthUserFavorites(@Body body: UploadUnAuthUserFavoritesRequest): Response<ResponseBody>
 */
     @POST("login/registration")

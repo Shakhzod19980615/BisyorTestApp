@@ -13,8 +13,8 @@ class UserMainChatUseCase @Inject constructor(
 ){
     suspend fun invoke(param:Pair<Int,ChatRequest >):List<UserChat>{
         return when(param.first){
-            1-> repository.getAllChats(param.second)
-            2-> repository.getAdminChats(param.second)
+            0-> repository.getAllChats(param.second)
+            1-> repository.getAdminChats(param.second)
             else-> repository.getAllAnnouncementChats(param.second)
         }
     }

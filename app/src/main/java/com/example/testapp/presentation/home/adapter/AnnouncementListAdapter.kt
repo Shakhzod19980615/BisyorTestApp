@@ -35,11 +35,12 @@ class AnnouncementListAdapter (
 
     @SuppressLint("NotifyDataSetChanged")
     fun setAnnouncementItems(announcementList: List<AnnouncementItemModel>){
-        val diffCallback = ItemsDiffCallBack(this.announcementList, announcementList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
+       /* val diffCallback = ItemsDiffCallBack(this.announcementList, announcementList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)*/
         this.announcementList.clear()
         this.announcementList.addAll(announcementList)
-        diffResult.dispatchUpdatesTo(this)
+        //diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
     @SuppressLint("NotifyDataSetChanged")
     fun updateFavouriteList(favouriteList: List<Int>) {

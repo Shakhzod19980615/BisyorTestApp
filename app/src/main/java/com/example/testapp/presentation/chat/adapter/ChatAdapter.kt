@@ -31,8 +31,7 @@ class ChatAdapter(private val items: List<Any>) : RecyclerView.Adapter<RecyclerV
                 .inflate(R.layout.item_date_separator, parent, false)
             DateViewHolder(view)
         } else {
-            /*val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_message, parent, false)*/
+
             MessageViewHolder(ItemMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
     }

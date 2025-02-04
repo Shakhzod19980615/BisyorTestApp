@@ -12,6 +12,7 @@ import com.example.testapp.common.MySettings
 import com.example.testapp.databinding.WindowProfileContainerBinding
 import com.example.testapp.presentation.authoration.login.fragment.FragmentLogin
 import com.example.testapp.presentation.favourite.FragmentFavourites
+import com.example.testapp.presentation.profile.settings.FragmentSettings
 import kotlin.properties.Delegates
 
 class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
@@ -36,6 +37,16 @@ class FragmentProfileContainer : Fragment(R.layout.window_profile_container) {
                     replace(R.id.fragment_container_view_tag, FragmentLogin()).addToBackStack("goBack")
                 }
             }
+        binding.iconSettings.setOnClickListener {
+            activity?.supportFragmentManager?.commit {
+                replace(R.id.fragment_container_view_tag, FragmentSettings()).addToBackStack("goBack")
+            }
+        }
+        binding.icAddUser.setOnClickListener {
+            activity?.supportFragmentManager?.commit {
+                replace(R.id.fragment_container_view_tag, FragmentInviteContacts()).addToBackStack("goBack")
+            }
+        }
             if(MySettings.getToken()!!.isNotEmpty()){
                 binding.avatarLl.visibility = View.GONE
                 binding.balanceLl.visibility = View.VISIBLE
