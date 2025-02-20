@@ -54,7 +54,7 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
         (activity as? MainActivity)?.hideBottomNavBar()
         //setupRecyclerView()
 
-
+        adapter = GroupedChatAdapter(layoutInflater)
         binding.iconBack.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
@@ -93,6 +93,7 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
         binding.sendMessage.setOnClickListener {
             sendMessage()
         }
+
     }
     /*private fun setupRecyclerView() {
         adapter = GroupedChatAdapter(layoutInflater)
@@ -109,9 +110,11 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
                         Toast.makeText(requireContext(),resource.message, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> {
-
+                        adapter.setLoadingState(true)
                     }
                     is Resource.Success-> {
+
+                        adapter.setLoadingState(false)
                         if (resource.data.items.item_title.isEmpty()){
                             binding.clickerUserAnnouncements.visibility = View.GONE
                         }else{
@@ -130,12 +133,13 @@ class FragmentMessanger : Fragment(R.layout.window_messanger) {
                             }
                         }
                         binding.userName.text = resource.data.liveUser.userFIO
-                        binding.userPhonenumber.text = resource.data.liveUser.phone
+                        binding.userPhonenumber.text =
+                            MyUtil.hidePhone(resource.data.liveUser.phone)
 
                         Glide.with(binding.root).load(resource.data.liveUser.avatar)
                             .into(binding.avatar)
                         recyclerView = binding.listMessage
-                        adapter = GroupedChatAdapter(layoutInflater)
+
                         val messageList = resource.data.messages.messagesList
                             .groupBy{MyUtil.formatDateLocalized(requireContext(), it.date_cr, "HH:mm dd.MM.yyyy")}
                             .map{ChatSortedByDateModel(date = it.key, messages = it.value)}

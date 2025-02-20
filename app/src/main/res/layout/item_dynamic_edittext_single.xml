@@ -22,7 +22,8 @@
             android:imeOptions="actionNext"
             android:maxLines="1"
             android:singleLine="true"
-            tools:text="Some test" />
+            tools:text="Some test"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

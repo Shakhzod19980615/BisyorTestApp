@@ -3,6 +3,7 @@ package com.example.testapp.presentation.createAnnouncement.fragment
 import DynamicPropertiesAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -118,6 +119,7 @@ class FragmentCreateEditAnnouncement: BaseFragment() {
         NetworkUtil.showNoInternetToast(requireView())
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setUpDynamicFields(){
         dynamicPropertiesAdapter = DynamicPropertiesAdapter(
             context = requireContext(),
@@ -125,16 +127,22 @@ class FragmentCreateEditAnnouncement: BaseFragment() {
         categoryId?.let { fieldId?.let { it1 ->
             viewModel.getItemFields(it, it1) } }
         if (categoryTitle != null) {
+            binding.dynamicLay.visibility = View.VISIBLE
             binding.dynamicList.apply {
                 adapter = dynamicPropertiesAdapter
                 layoutManager = LinearLayoutManager(requireContext(),
                     LinearLayoutManager.HORIZONTAL,false)
             }
+            binding.dynamicList.post {
+                dynamicPropertiesAdapter.notifyDataSetChanged()
+            }
             lifecycleScope.launch {
                 viewModel.dynamicProperties.collect { resource ->
                     when(resource) {
                         is Resource.Success -> {
-                            dynamicPropertiesAdapter.updateDynamicProperties(resource.data)
+                            Log.d("DynamicProperties", "Data: ${resource.data}")
+                            dynamicPropertiesAdapter.updateDynamicProperties(resource.data,
+                                )
                         }
                         is Resource.Error -> {
                             context?.let { AlertDialogHelper.showAlertDialog(it,resource.message) }

@@ -2,6 +2,7 @@ package com.example.testapp.presentation.chat.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,7 +11,8 @@ import com.example.testapp.databinding.ItemDateSeparatorBinding
 import com.example.testapp.domain.model.chat.ChatSortedByDateModel
 
 class GroupedChatAdapter(
-    private val layoutInflater: LayoutInflater
+    private val layoutInflater: LayoutInflater,
+    private var isLoading: Boolean =false
 ) : RecyclerView.Adapter<GroupedChatAdapter.GroupedChatViewHolder>() {
 
     private val groupedChats: MutableList<ChatSortedByDateModel> = mutableListOf()
@@ -22,11 +24,15 @@ class GroupedChatAdapter(
     }
 
     override fun onBindViewHolder(holder: GroupedChatViewHolder, position: Int) {
-        holder.bind(groupedChats[position])
+        holder.bind(groupedChats[position],isLoading)
     }
 
     override fun getItemCount(): Int = groupedChats.size
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun setLoadingState(isLoading: Boolean) {
+        this.isLoading = isLoading
+        notifyDataSetChanged()
+    }
     @SuppressLint("NotifyDataSetChanged")
     fun setItems(newGroupedChats: List<ChatSortedByDateModel>) {
         // Use DiffUtil to calculate changes
@@ -42,10 +48,13 @@ class GroupedChatAdapter(
     class GroupedChatViewHolder(private val binding: ItemDateSeparatorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(groupedChat: ChatSortedByDateModel) {
+        fun bind(groupedChat: ChatSortedByDateModel,isLoading: Boolean) {
             // Set the date
             binding.dateSeparatorText.text = groupedChat.date
             // Set up the nested RecyclerView for messages
+            // Show Lottie animation if loading
+            binding.lottieUpload.visibility = if (isLoading) View.VISIBLE else View.GONE
+
             val messageAdapter = MessengerAdapter(LayoutInflater.from(binding.root.context))
             binding.messageRecyclerView.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL, false)
             binding.messageRecyclerView.adapter = messageAdapter

@@ -232,7 +232,6 @@ object MyUtil {
     fun formatPhoneNumber(phone: String?): String {
         if (phone == null || phone.isEmpty()) return ""
         var temp: String = phone
-        println(phone)
         if (!phone.startsWith("+")) {
             temp = if (!phone.startsWith("998")) "+998$temp" else "+$temp"
         }

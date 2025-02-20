@@ -94,10 +94,12 @@ class FragmentFavourites :BaseFragment() {
             },
             onFavouriteClicked = { itemId ->
                 viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
-               // binding.swiper.isRefreshing = true
-                // Refresh data
+                viewModelAnnouncement.refreshFavouriteList()
                 getAnnouncements()
-            }
+
+            },
+
+
 
         )
         subcriptionAdapter = SubscriptionsAdapter(layoutInflater)
