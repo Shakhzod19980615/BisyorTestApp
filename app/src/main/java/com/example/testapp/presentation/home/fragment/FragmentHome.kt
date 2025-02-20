@@ -1,8 +1,10 @@
 package com.example.testapp.presentation.home.fragment
 
 import AlertDialogHelper
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +16,13 @@ import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,13 +39,14 @@ import com.example.testapp.presentation.home.adapter.CategoryTabAdapter
 import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
 import com.example.testapp.presentation.home.viewModel.CategoryTabViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class FragmentHome: BaseFragment() {
     private val viewModelTab: CategoryTabViewModel by viewModels()
-    private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
+    private val viewModelAnnouncement: AnnouncementListViewModel by activityViewModels()
     private var binding : WindowHomeBinding by Delegates.notNull()
     private lateinit var shimmerLayout: LinearLayout
     private lateinit var contentLayout: RecyclerView
@@ -69,6 +75,10 @@ class FragmentHome: BaseFragment() {
        }
         getAnnouncementList()
         observeFavouriteList()
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModelAnnouncement.refreshFavouriteList()
     }
 
 
@@ -136,6 +146,7 @@ class FragmentHome: BaseFragment() {
             },
              onFavouriteClicked = { itemId ->
                  viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
+                 viewModelAnnouncement.refreshFavouriteList()
              }
 
          )
@@ -161,13 +172,28 @@ class FragmentHome: BaseFragment() {
 
 
     }
+   /* @SuppressLint("NotifyDataSetChanged")
     private fun observeFavouriteList() {
         lifecycleScope.launch {
-            viewModelAnnouncement.currentFavourites.collect { favouriteList ->
+            viewModelAnnouncement.currentFavourites.collectLatest { favouriteList ->
                 announcementAdapter.updateFavouriteList(favouriteList)
+                Log.d("FragmentHome", "Favourite list updated: $favouriteList")
             }
         }
-    }
+
+    }*/
+   @SuppressLint("NotifyDataSetChanged", "RepeatOnLifecycleWrongUsage")
+   private fun observeFavouriteList() {
+       viewLifecycleOwner.lifecycleScope.launch {
+           viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+               viewModelAnnouncement.currentFavourites.collectLatest { favouriteList ->
+                   announcementAdapter.updateFavouriteList(favouriteList)
+                   Log.d("FragmentHome", "Favourite list updated: $favouriteList")
+               }
+           }
+       }
+   }
+
     private fun showAlertDialog(message: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_universal_messaging, null)
         val alertDialog  = AlertDialog.Builder(requireContext())

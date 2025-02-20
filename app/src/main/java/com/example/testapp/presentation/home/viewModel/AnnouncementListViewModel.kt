@@ -2,6 +2,7 @@ package com.example.testapp.presentation.home.viewModel
 
 import android.net.http.HttpException
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,11 @@ import com.example.testapp.domain.use_case.favourite.ChangeFavouriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -105,13 +109,19 @@ class AnnouncementListViewModel @Inject constructor(
             }
         }
     }
-    private fun fetchFavouriteList() {
+    fun isFavourite(itemId: Int): StateFlow<Boolean> {
+        return currentFavourites.map { items ->
+            items.any { it == itemId }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+    }
+     fun fetchFavouriteList() {
         // Simulate fetching the favorite list
         viewModelScope.launch {
             kotlin.runCatching {
                 changeFavouriteUseCase.getUserFavoriteIds()
             }.onSuccess { favouriteIds ->
                 _currentFavourites.value = favouriteIds
+                Log.d("AnnouncementListViewModel", "Favourite list updated: $favouriteIds")
                 //_favouriteStatus.value = Resource.Success(favouriteIds)
 
             }.onFailure { throwable ->
@@ -119,4 +129,10 @@ class AnnouncementListViewModel @Inject constructor(
             }
         }
     }
+    fun refreshFavouriteList() {
+        viewModelScope.launch {
+            _currentFavourites.value = _currentFavourites.value.toList() // Re-emit current value
+        }
+    }
+
 }

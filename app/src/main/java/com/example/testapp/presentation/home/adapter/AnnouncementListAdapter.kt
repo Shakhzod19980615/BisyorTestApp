@@ -1,6 +1,7 @@
 package com.example.testapp.presentation.home.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -13,7 +14,7 @@ import com.example.testapp.domain.model.announcement.AnnouncementItemModel
 class AnnouncementListAdapter (
     private val layoutInflater: LayoutInflater,
     private val onItemClicked: (itemId:Int) -> Unit,
-    private val onFavouriteClicked: (itemId: Int) -> Unit
+    private val onFavouriteClicked: (itemId: Int) -> Unit,
 ): RecyclerView.Adapter<AnnouncementListAdapter.ViewHolder> () {
     private var announcementList : MutableList<AnnouncementItemModel> = mutableListOf()
     private var favouriteList: List<Int> = emptyList()
@@ -43,9 +44,10 @@ class AnnouncementListAdapter (
         notifyDataSetChanged()
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun updateFavouriteList(favouriteList: List<Int>) {
-        this.favouriteList = favouriteList
+    fun updateFavouriteList(favouritesList: List<Int>) {
+        this.favouriteList = favouritesList.toMutableList()
         notifyDataSetChanged()
+        Log.d("AnnouncementListAdapter", "Favourite list updated: $favouritesList")
     }
     inner class ViewHolder(
         private val binding: ItemProductGridBinding

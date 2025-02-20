@@ -15,10 +15,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresExtension
+import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
@@ -34,7 +36,13 @@ import com.example.testapp.databinding.WindowAnnouncementDetailBinding
 import com.example.testapp.presentation.announcementDetail.adapter.ImagePagerAdapter
 import com.example.testapp.presentation.announcementDetail.viewModel.AnnouncementDetailViewModel
 import com.example.testapp.presentation.chat.fragment.FragmentMessanger
+import com.example.testapp.presentation.favourite.viewModel.FragmentFavouriteVM
+import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
@@ -44,6 +52,7 @@ class FragmentAnnouncementDetail : BaseFragment() {
 
     private val announcementDetailViewModel: AnnouncementDetailViewModel by viewModels()
     private var binding : WindowAnnouncementDetailBinding by Delegates.notNull()
+    private val favouriteVM :AnnouncementListViewModel by activityViewModels()
     private val itemId : Int? by lazy {
         arguments?.getInt("itemId")
     }
@@ -65,6 +74,28 @@ class FragmentAnnouncementDetail : BaseFragment() {
         }
         initClickers()
         configureContent()
+        lifecycleScope.launch {
+            favouriteVM.isFavourite(itemId ?: 0).collect { isFavourite ->
+                val iconRes = if (isFavourite) R.drawable.vicon_favorite_active
+                else R.drawable.vicon_favorite_inactive
+                binding.iconLike.setImageResource(iconRes)
+                binding.fabLike.setImageResource(iconRes)
+            }
+        }
+        binding.iconLike.setOnClickListener {
+            if (NetworkUtil.isInternetAvailable(requireContext())){
+                favouriteVM.changeFavouriteStatus("ru",itemId ?: 0)
+                favouriteVM.refreshFavouriteList()
+            }
+        }
+        binding.fabLike.setOnClickListener {
+            if (NetworkUtil.isInternetAvailable(requireContext())){
+                favouriteVM.changeFavouriteStatus("ru",itemId ?: 0)
+                favouriteVM.refreshFavouriteList()
+
+            }
+        }
+
 
     }
 
@@ -284,7 +315,6 @@ class FragmentAnnouncementDetail : BaseFragment() {
         }
 
     }
-
 
     @SuppressLint("SuspiciousIndentation")
     private  fun configureImages(){

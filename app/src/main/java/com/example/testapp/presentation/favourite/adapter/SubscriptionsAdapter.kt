@@ -48,7 +48,7 @@ class SubscriptionsAdapter(
             val itemAdapter = AnnouncementListAdapter(
                 LayoutInflater.from(binding.root.context),
                 onItemClicked = {},
-                onFavouriteClicked = {}
+                onFavouriteClicked = {},
             )
             binding.list.layoutManager = LinearLayoutManager(binding.root.context,
                 LinearLayoutManager.HORIZONTAL, false)

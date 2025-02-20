@@ -19,7 +19,7 @@ class CreateAnnouncementRepositoryImpl @Inject constructor(
            // Log.d("ResponseDynamic", "Raw API Response: $response")
             val toModel = response.map { item ->
                 item.toAnnouncementDynamicPropertyModel() }
-           // Log.d("ResponseDynamic", "Mapped items: $toModel")
+            Log.d("ResponseDynamic", "Mapped items: $toModel")
            toModel
 
         }catch (e:Exception){
