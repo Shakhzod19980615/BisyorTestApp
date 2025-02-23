@@ -52,7 +52,7 @@ class FragmentAnnouncementDetail : BaseFragment() {
 
     private val announcementDetailViewModel: AnnouncementDetailViewModel by viewModels()
     private var binding : WindowAnnouncementDetailBinding by Delegates.notNull()
-    private val favouriteVM :AnnouncementListViewModel by activityViewModels()
+    private val favouriteVM :FragmentFavouriteVM by activityViewModels()
     private val itemId : Int? by lazy {
         arguments?.getInt("itemId")
     }

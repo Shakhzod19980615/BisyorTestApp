@@ -1,10 +1,13 @@
 package com.example.testapp.presentation.favourite.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.common.ErrorParser
 import com.example.testapp.common.Resource
+import com.example.testapp.data.request.favourite.ChangeFavoriteStatusRequest
 import com.example.testapp.data.request.favourite.UserSubscriptionsRequest
+import com.example.testapp.domain.model.ChangeFavouriteModel
 import com.example.testapp.domain.model.announcement.AnnouncementItemModel
 import com.example.testapp.domain.model.userDataModel.SubscribedUserModel
 import com.example.testapp.domain.use_case.chat.UserMainChatUseCase
@@ -17,7 +20,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,7 +44,13 @@ class FragmentFavouriteVM @Inject constructor(
     val subscribedUsers: StateFlow<Resource<List<SubscribedUserModel>>>
         get() = _subscribedUsers.asStateFlow()
 
+    private val _currentFavourites = MutableStateFlow<List<Int>>(emptyList())
+    val currentFavourites: StateFlow<List<Int>> get()
+    = _currentFavourites.asStateFlow()
 
+    init {
+        fetchFavouriteList()
+    }
      fun getFavouriteItems(lang:String,page:Int){
        viewModelScope.launch {
            withContext(Dispatchers.IO){
@@ -47,6 +58,7 @@ class FragmentFavouriteVM @Inject constructor(
                    useCase.getFavouriteItems(lang,page)
                }.onSuccess {
                    _favouriteItems.value = Resource.Success(it)
+
                }.onFailure { throwable->
                    when (throwable) {
                        is retrofit2.HttpException -> {
@@ -65,14 +77,6 @@ class FragmentFavouriteVM @Inject constructor(
                    } }
            }
        }
-    }
-    fun isFavourite(itemId:Int):StateFlow<Boolean>{
-        return favouriteItems.map { items->
-            when(items){
-                is Resource.Success -> items.data.any { it.id == itemId } ?: false
-                else -> false
-            }
-        }.stateIn(viewModelScope, SharingStarted.Lazily, false)
     }
     fun getSubscribedUsers(lang:String,page:Int){
         val param = UserSubscriptionsRequest(lang,page)
@@ -101,5 +105,57 @@ class FragmentFavouriteVM @Inject constructor(
                 }
             }
         }
+    }
+    fun changeFavouriteStatus(lang: String, itemId: Int) {
+        val request = ChangeFavoriteStatusRequest(lang, itemId)
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    changeFavouriteUseCase.invoke(request)
+                }.onSuccess {
+                  //fetchFavouriteList()
+                    _currentFavourites.value =it.favouriteList
+                    getFavouriteItems(lang, 0)                }.onFailure { throwable ->
+                    when (throwable) {
+                        is retrofit2.HttpException -> {
+                            val errorResponse: Response<*>? = throwable.response()
+                            if (errorResponse?.errorBody() != null) {
+                                val parsedError = errorParser.parseError(errorResponse)
+                                if (parsedError != null) {
+                                   //favouriteStatus.value = Resource.Error(parsedError.message)
+                                } else {
+                                   //favouriteStatus.value = Resource.Error("Unknown error")
+                                }
+                            } else {
+                                //avouriteStatus.value = Resource.Error("Unknown error")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fun isFavourite(itemId: Int): StateFlow<Boolean> {
+        return currentFavourites
+            .map { it.contains(itemId) }
+            .onStart { emit(false) }
+            .catch { emit(false) }
+            .stateIn(viewModelScope, SharingStarted.Lazily, false)
+
+    }
+    private fun fetchFavouriteList() {
+        // Simulate fetching the favorite list
+        viewModelScope.launch {
+            kotlin.runCatching {
+                changeFavouriteUseCase.getUserFavoriteIds()
+            }.onSuccess { favouriteIds ->
+                _currentFavourites.value = favouriteIds
+            }.onFailure { throwable ->
+                _currentFavourites.value = emptyList()
+            }
+        }
+    }
+    fun refreshFavouriteList() {
+       fetchFavouriteList()
     }
 }

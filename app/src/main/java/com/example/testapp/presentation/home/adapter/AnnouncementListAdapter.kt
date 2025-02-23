@@ -17,7 +17,7 @@ class AnnouncementListAdapter (
     private val onFavouriteClicked: (itemId: Int) -> Unit,
 ): RecyclerView.Adapter<AnnouncementListAdapter.ViewHolder> () {
     private var announcementList : MutableList<AnnouncementItemModel> = mutableListOf()
-    private var favouriteList: List<Int> = emptyList()
+    private var favouriteList: MutableList<Int> = mutableListOf()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -35,20 +35,34 @@ class AnnouncementListAdapter (
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setAnnouncementItems(announcementList: List<AnnouncementItemModel>){
-       /* val diffCallback = ItemsDiffCallBack(this.announcementList, announcementList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)*/
-        this.announcementList.clear()
-        this.announcementList.addAll(announcementList)
-        //diffResult.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+    fun setAnnouncementItems(newList: List<AnnouncementItemModel>){
+        val diffCallback = ItemsDiffCallBack(announcementList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        announcementList.clear()
+        announcementList.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun updateFavouriteList(favouritesList: List<Int>) {
-        this.favouriteList = favouritesList.toMutableList()
+    fun updateFavouriteList(newFavourites: List<Int>) {
+        val diffCallback = FavouriteDiffCallback(favouriteList, newFavourites)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        favouriteList.clear()
+        favouriteList.addAll(newFavourites)
         notifyDataSetChanged()
-        Log.d("AnnouncementListAdapter", "Favourite list updated: $favouritesList")
+        //favouriteList = newFavourites.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+       // Log.d("AnnouncementListAdapter", "Favourite list updated: $favouritesList")
     }
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeItemById(itemId: Int) {
+        val index = announcementList.indexOfFirst { it.id == itemId }
+        if (index != -1) {
+            announcementList.removeAt(index)
+            notifyDataSetChanged()
+        }
+    }
+
     inner class ViewHolder(
         private val binding: ItemProductGridBinding
     ): RecyclerView.ViewHolder(binding.root){
@@ -100,3 +114,20 @@ class ItemsDiffCallBack(
         return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }
+class FavouriteDiffCallback(
+    private val oldList: List<Int>,
+    private val newList: List<Int>
+) : DiffUtil.Callback() {
+
+    override fun getOldListSize(): Int = oldList.size
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+}
+

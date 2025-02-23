@@ -15,7 +15,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapp.BaseFragment
@@ -25,9 +27,10 @@ import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.databinding.WindowUniversalListBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
 import com.example.testapp.presentation.createAnnouncement.viewModel.FragmentSubCategoryVM
-import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
+import com.example.testapp.presentation.favourite.viewModel.FragmentFavouriteVM
 import com.example.testapp.presentation.searching.viewModel.FragmentUniversalListVM
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 @AndroidEntryPoint
@@ -35,7 +38,7 @@ class FragmentUniversalList(): BaseFragment() {
     private var binding : WindowUniversalListBinding by Delegates.notNull()
     private val viewModel: FragmentSubCategoryVM by viewModels()
     private lateinit var universalListAdapter: UniversalListAdapter
-    private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
+    private val viewModelFavourite: FragmentFavouriteVM by viewModels()
 
     private val categoryId : Int? by lazy {
         arguments?.getInt("categoryId")
@@ -112,14 +115,19 @@ class FragmentUniversalList(): BaseFragment() {
                }
            },
             onFavouriteClicked = { itemId ->
-                viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
+                viewModelFavourite.changeFavouriteStatus("ru", itemId)
+                viewModelFavourite.refreshFavouriteList()
             }
            )
    }
+
     private fun observeFavouriteList() {
-        lifecycleScope.launch {
-            viewModelAnnouncement.currentFavourites.collect { favouriteList ->
-                universalListAdapter.updateFavouriteList(favouriteList)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModelFavourite.currentFavourites.collectLatest { favouriteList ->
+                    universalListAdapter.updateFavouriteList(favouriteList)
+                    //Log.d("FragmentHome", "Favourite list updated: $favouriteList")
+                }
             }
         }
     }
