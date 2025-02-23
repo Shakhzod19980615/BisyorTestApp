@@ -1,14 +1,19 @@
 package com.example.testapp.presentation.favourite
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.BaseFragment
 import com.example.testapp.R
@@ -24,6 +29,7 @@ import com.example.testapp.presentation.home.adapter.AnnouncementListAdapter
 import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.bisyor.corelib.common.extension.showAlertDialog
 import kotlin.properties.Delegates
@@ -31,7 +37,7 @@ import kotlin.properties.Delegates
 class FragmentFavourites :BaseFragment() {
     private var binding: WindowOwnFavouritesBinding by Delegates.notNull()
     private val viewModel: FragmentFavouriteVM by viewModels()
-    private val viewModelAnnouncement: AnnouncementListViewModel by viewModels()
+    //private val viewModelAnnouncement: AnnouncementListViewModel by activityViewModels()
     private lateinit var announcementAdapter: AnnouncementListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var subcriptionAdapter: SubscriptionsAdapter
@@ -54,7 +60,7 @@ class FragmentFavourites :BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         setupSwipeRefresh()
-        observeFavouriteList()
+
         view.post {
             /*val defaultTab = binding.tabLayout.getTabAt(ALL_Messages)
             defaultTab?.select()*/
@@ -62,6 +68,7 @@ class FragmentFavourites :BaseFragment() {
             // Explicitly load data for the first tab
             getAnnouncements()
         }
+        observeFavouriteList()
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
@@ -93,23 +100,17 @@ class FragmentFavourites :BaseFragment() {
                 }
             },
             onFavouriteClicked = { itemId ->
-                viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
-                viewModelAnnouncement.refreshFavouriteList()
-                getAnnouncements()
+                viewModel.changeFavouriteStatus("ru", itemId)
 
             },
-
-
-
         )
         subcriptionAdapter = SubscriptionsAdapter(layoutInflater)
     }
     fun getAnnouncements() {
-
         recyclerView.adapter = announcementAdapter
         viewModel.getFavouriteItems("ru", 0)
         lifecycleScope.launch {
-            viewModel.favouriteItems.collect { resource ->
+            viewModel.favouriteItems.collectLatest  { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         binding.swiper.isRefreshing = false // Stop refreshing animation
@@ -150,10 +151,14 @@ class FragmentFavourites :BaseFragment() {
             }
         }
     }
+    @SuppressLint("NotifyDataSetChanged", "RepeatOnLifecycleWrongUsage")
     private fun observeFavouriteList() {
-        lifecycleScope.launch {
-            viewModelAnnouncement.currentFavourites.collect { favouriteList ->
-                announcementAdapter.updateFavouriteList(favouriteList)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentFavourites.collectLatest { favouriteList ->
+                    announcementAdapter.updateFavouriteList(favouriteList)
+                    //Log.d("FragmentHome", "Favourite list updated: $favouriteList")
+                }
             }
         }
     }

@@ -39,15 +39,15 @@ class AnnouncementListViewModel @Inject constructor(
     val announcementItems: StateFlow<Resource<List<AnnouncementItemModel>>> get()
     = _announcementItems.asStateFlow()
 
-    private val _favouriteStatus = MutableStateFlow<Resource<ChangeFavouriteModel>>(Resource.Loading())
+   /* private val _favouriteStatus = MutableStateFlow<Resource<ChangeFavouriteModel>>(Resource.Loading())
     val favouriteStatus: StateFlow<Resource<ChangeFavouriteModel>> get()
     = _favouriteStatus.asStateFlow()
     private val _currentFavourites = MutableStateFlow<List<Int>>(emptyList())
     val currentFavourites: StateFlow<List<Int>> get()
     = _currentFavourites.asStateFlow()
-
+*/
     init {
-      fetchFavouriteList()
+      //fetchFavouriteList()
     }
     fun getAnnouncementList(categoryId: Int){
         viewModelScope.launch {
@@ -80,7 +80,7 @@ class AnnouncementListViewModel @Inject constructor(
         }
     }
 
-    fun changeFavouriteStatus(lang: String, itemId: Int) {
+   /* fun changeFavouriteStatus(lang: String, itemId: Int) {
         val request = ChangeFavoriteStatusRequest(lang, itemId)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -89,6 +89,7 @@ class AnnouncementListViewModel @Inject constructor(
                 }.onSuccess {
                     _favouriteStatus.value = Resource.Success(it)
                     fetchFavouriteList()
+                    refreshFavouriteList()
                 }.onFailure { throwable ->
                     when (throwable) {
                         is retrofit2.HttpException -> {
@@ -133,6 +134,6 @@ class AnnouncementListViewModel @Inject constructor(
         viewModelScope.launch {
             _currentFavourites.value = _currentFavourites.value.toList() // Re-emit current value
         }
-    }
+    }*/
 
 }

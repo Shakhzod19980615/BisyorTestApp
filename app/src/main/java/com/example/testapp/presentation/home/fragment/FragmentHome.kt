@@ -34,6 +34,7 @@ import com.example.testapp.common.util.MyUtil
 import com.example.testapp.common.util.NetworkUtil
 import com.example.testapp.databinding.WindowHomeBinding
 import com.example.testapp.presentation.announcementDetail.fragment.FragmentAnnouncementDetail
+import com.example.testapp.presentation.favourite.viewModel.FragmentFavouriteVM
 import com.example.testapp.presentation.home.adapter.AnnouncementListAdapter
 import com.example.testapp.presentation.home.adapter.CategoryTabAdapter
 import com.example.testapp.presentation.home.viewModel.AnnouncementListViewModel
@@ -47,6 +48,7 @@ import kotlin.properties.Delegates
 class FragmentHome: BaseFragment() {
     private val viewModelTab: CategoryTabViewModel by viewModels()
     private val viewModelAnnouncement: AnnouncementListViewModel by activityViewModels()
+    private val viewModelFavourite: FragmentFavouriteVM by activityViewModels()
     private var binding : WindowHomeBinding by Delegates.notNull()
     private lateinit var shimmerLayout: LinearLayout
     private lateinit var contentLayout: RecyclerView
@@ -78,7 +80,7 @@ class FragmentHome: BaseFragment() {
     }
     override fun onResume() {
         super.onResume()
-        viewModelAnnouncement.refreshFavouriteList()
+        viewModelFavourite.refreshFavouriteList()
     }
 
 
@@ -145,8 +147,8 @@ class FragmentHome: BaseFragment() {
                 }
             },
              onFavouriteClicked = { itemId ->
-                 viewModelAnnouncement.changeFavouriteStatus("ru", itemId)
-                 viewModelAnnouncement.refreshFavouriteList()
+                 viewModelFavourite.changeFavouriteStatus("ru", itemId)
+                 //viewModelFavourite.refreshFavouriteList()
              }
 
          )
@@ -172,27 +174,16 @@ class FragmentHome: BaseFragment() {
 
 
     }
-   /* @SuppressLint("NotifyDataSetChanged")
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun observeFavouriteList() {
         lifecycleScope.launch {
-            viewModelAnnouncement.currentFavourites.collectLatest { favouriteList ->
+            viewModelFavourite.currentFavourites.collectLatest { favouriteList ->
                 announcementAdapter.updateFavouriteList(favouriteList)
-                Log.d("FragmentHome", "Favourite list updated: $favouriteList")
+                //Log.d("FragmentHome", "Favourite list updated: $favouriteList")
             }
         }
-
-    }*/
-   @SuppressLint("NotifyDataSetChanged", "RepeatOnLifecycleWrongUsage")
-   private fun observeFavouriteList() {
-       viewLifecycleOwner.lifecycleScope.launch {
-           viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-               viewModelAnnouncement.currentFavourites.collectLatest { favouriteList ->
-                   announcementAdapter.updateFavouriteList(favouriteList)
-                   Log.d("FragmentHome", "Favourite list updated: $favouriteList")
-               }
-           }
-       }
-   }
+    }
 
     private fun showAlertDialog(message: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_universal_messaging, null)
